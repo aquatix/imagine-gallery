@@ -1,60 +1,100 @@
 import argparse
+import os
+import sqlite3
+import sys
 
-parser = argparse.ArgumentParser(description='Cleanup Mapleleaves program tables')
+imageExtensions = ['jpg', 'png', 'cr2']
 
-#parser.add_argument('inputFile', metavar='1', type=string
-#parser.add_argument('inputFile', help='original table snippet from Gnumeric', dest='inputFile')
-parser.add_argument('inputFile', help='original table snippet from Gnumeric')
-parser.add_argument('outputFile', help='new file with clean html')
+
+def prt(messageType, message):
+	if messageType == 'i':
+		print '[Info] {0}'.format(message)
+	elif messageType == 'e':
+		print '[Error] {0}'.format(message)
+	elif messageType == 'd':
+		print '[Debug] {0}'.format(message)
+
+
+def createArchiveDB(archiveDBConn):
+	archiveDBConn.execute("CREATE TABLE image(path STRING, filetype STRING, addedAt INTEGER, fileDate INTEGER, meta STRING)")
+
+	archiveDBConn.commit()
+	return 0
+
+
+def getImageFile(imagesDir, filename):
+
+	#newFilename, fileExtension = os.path.splitext(filename)[1][1:].strip()
+	#print os.path.splitext(filename)[1][1:].strip()
+	fileExtension = os.path.splitext(filename)[1][1:].strip().lower()
+	#print '[Info] {0} - {1}'.format(filename, fileExtension)
+
+	newFilename = filename.replace(imagesDir,'')
+	return (newFilename, fileExtension)
+
+
+
+def newArchive(imagesDir, archiveDir):
+	""" Creates a new image archive in archiveDir
+	"""
+	print 'Writing new archive to {0}'.format(archiveDir)
+
+	imagesDir = os.path.join(imagesDir,'')
+
+	conn = sqlite3.connect(archiveDir + '/archiveDB.sqlite')
+
+	createArchiveDB(conn)
+	imageCounter = 0
+
+	prt('d', 'imagesDir: {0}'.format(imagesDir,''))
+	for dirname, dirnames, filenames in os.walk(imagesDir):
+		for subdirname in dirnames:
+			prt('d', 'dir: {0}'.format(os.path.join(dirname, subdirname)))
+		for filename in filenames:
+			#print os.path.join(dirname, filename)
+			thisFile, thisFileExt = getImageFile(imagesDir, os.path.join(dirname, filename))
+			#print '[Debug] ext: {0}'.format(thisFileExt)
+			if  thisFileExt in imageExtensions:
+				conn.execute("INSERT INTO image values('{0}', '{1}', strftime('now'), strftime('{2}'), '{3}');".format(thisFile, thisFileExt, 'now', ''))
+				imageCounter = imageCounter + 1
+			else:
+				prt('i', 'skipped {0}'.format(filename))
+
+	prt('i', 'added {0} images to archive'.format(imageCounter))
+
+	conn.commit()
+	conn.close()
+	return 42
+
+
+def updateArchive(imagesDir, archiveDir):
+	""" Updates existing image archive archiveDir with new images in imagesDir"""
+	print 'Updating archive {0}'.format(archiveDir)
+	return 42
+
+
+
+parser = argparse.ArgumentParser(description='Image archive')
+
+parser.add_argument('imagesDir', help='directory with your images')
+parser.add_argument('archiveDir', help='directory to store the image archive in')
 
 args = parser.parse_args()
 #print vars(args)
 #argparse.Namespace(origFile='inputFile')
 
-print 'Sanitising {0}'.format(args.inputFile)
-print 'Writing to {0}'.format(args.outputFile)
+imagesDir = args.imagesDir
+archiveDir = args.archiveDir
 
-#origFile = open(args['inputFile'], 'r')
-origFile = open(args.inputFile, 'r')
-cleanFile = open(args.outputFile, 'w')
+#origFile = open(args.inputFile, 'r')
+#cleanFile = open(args.outputFile, 'w')
 
-#thisLine = origFile.readline()
-#print thisLine
+if not os.path.isdir(archiveDir):
+	sys.exit('[Error] Archive directory ' + args.archiveDir + ' does not exist')
 
-inHeader = False
+print 'Scanning {0}'.format(args.imagesDir)
 
-for thisLine in origFile.readlines():
-	thisLine = thisLine.strip()
-	# regular strippage
-	thisLine = thisLine.replace(' font-size:9pt;', '').replace(' font-size:11pt;', '').replace('  style=""', '').replace('  valign="bottom"', '').replace('  ', ' ').replace('<b></b>', '')
-	thisLine = thisLine.replace('<i></i>', '').replace('<b></b>', '').replace('<td></td>', '<td>&nbsp;</td>')
-
-	lineSoFar = thisLine
-
-	# if it is a table header
-	thisLine = thisLine.replace('<td align="left"><b>Datum</b></td>', '<th align="left">Datum</th>')
-	thisLine = thisLine.replace('<td align="left"><b>Tijd</b></td>', '<th align="left">Tijd</th>')
-	thisLine = thisLine.replace('<td align="center"><b>Veld</b></td>', '<th align="center">Veld</th>')
-	thisLine = thisLine.replace('<td align="left"><b>Poule</b></td>', '<th align="left">Poule</th>')
-	thisLine = thisLine.replace('<td align="center"><b>Code</b></td>', '<th align="center">Code</th>')
-	thisLine = thisLine.replace('<td align="left"><b>Team Thuis</b></td>', '<th align="left">Team Thuis</th>')
-	thisLine = thisLine.replace('<td align="left"><b>Team Uit</b></td>', '<th align="left">Team Uit</th>')
-	thisLine = thisLine.replace('<td align="left"><b>Plaats/Sporthal</b></td>', '<th align="left">Plaats/Sporthal</th>')
-	thisLine = thisLine.replace('<td align="left"><b>Scheidsrechters</b></td>', '<th align="left">Scheidsrechters</th>')
-	thisLine = thisLine.replace('<td align="left"><b>Schrijvers</b></td>', '<th align="left">Schrijvers</th>')
-	thisLine = thisLine.replace('<td align="left"><b>Zaaldienst</b></td>', '<th align="left">Zaaldienst</th>')
-	thisLine = thisLine.replace('<td align="left"><b>Vertrektijd</b></td>', '<th align="left">Vertrektijd</th>')
-
-	if (thisLine != lineSoFar):
-		inHeader = True
-
-	if (inHeader):
-		thisLine = thisLine.replace('<td>&nbsp;</td>', '<th>&nbsp;</th>')
-		if thisLine == '</tr>':
-			inHeader = False
-
-	#print thisLine
-	cleanFile.write(thisLine + '\n')
-
-origFile.close()
-cleanFile.close()
+if os.path.isfile(args.archiveDir + '/archiveDB.sqlite'):
+	updateArchive(args.imagesDir, args.archiveDir)
+else:
+	newArchive(args.imagesDir, args.archiveDir)
