@@ -30,8 +30,16 @@ def createArchiveDB(archiveDBConn, imagesDir):
 	archiveDBConn.execute("CREATE TABLE archive(dbVersion INTEGER, host STRING, path STRING, created INTEGER);")
 	archiveDBConn.execute("INSERT INTO archive values ({0}, '{1}', '{2}', 'now');".format(DBVERSION, gethostname(), imagesDir))
 
+	# directories info table
+	archiveDBConn.execute("CREATE TABLE directory(path STRING, addedAt INTEGER, meta STRING);")
+
 	# images info table
-	archiveDBConn.execute("CREATE TABLE image(path STRING, filetype STRING, addedAt INTEGER, fileDate INTEGER, meta STRING);")
+	archiveDBConn.execute("""
+		CREATE TABLE image(filename STRING,
+		directory STRING,
+		filetype STRING,
+		addedAt INTEGER,
+		fileDate INTEGER, meta STRING);""")
 
 	archiveDBConn.commit()
 	return 0
@@ -50,10 +58,17 @@ def getImageFile(imagesDir, filename):
 
 def getImageInfo(filename):
 	print os.stat(filename)
+	imageFileinfo = os.stat(filename)
+	imageSize = os.stat(filename).st_size
 
 	image = Image.open(filename)
-	print image.size
-	return 0
+	#print image.size
+
+	imageInfo = {'size': imageSize, 'width': image.size[0], 'height': image.size[1]}
+	return imageInfo
+
+
+
 
 	file = open(filename, 'r')
 	parser = ImageFile.Parser()
@@ -76,6 +91,16 @@ def getImageInfo(filename):
 #	print image.size().height()
 
 
+def addImage(conn, imageInfo):
+	"""Add a new image tuple to the list"""
+	#conn.execute("INSERT INTO image values('{0}', '{1}', '{2}', strftime('now'), strftime('{3}'), '{4}');".format(thisFile, thisDir, thisFileExt, 'now', ''))
+	return 42
+
+
+def updateImage(conn, imageInfo):
+	"""Updates existing image tuple in the list"""
+	return 42
+
 
 def newArchive(imagesDir, archiveDir):
 	""" Creates a new image archive in archiveDir
@@ -89,16 +114,26 @@ def newArchive(imagesDir, archiveDir):
 
 	imageCounter = 0
 	for dirname, dirnames, filenames in os.walk(imagesDir):
+		thisDir = os.path.join(dirname, '')	# be sure to have trailing / and such
+		thisDir = thisDir.replace(imagesDir, '')
 		for subdirname in dirnames:
 			prt('d', 'dir: {0}'.format(os.path.join(dirname, subdirname)))
+		#if thisDir.trim() != '':
+		#	conn.execute("INSERT INTO directory values('{0}', strftime('now'), '');".format(thisDir))
 		for filename in filenames:
 			#print os.path.join(dirname, filename)
 			thisFile, thisFileExt = getImageFile(imagesDir, os.path.join(dirname, filename))
+			thisFile = thisFile.replace(thisDir, '')
 			#print '[Debug] ext: {0}'.format(thisFileExt)
 			if  thisFileExt in IMAGEEXTENSIONS:
-				conn.execute("INSERT INTO image values('{0}', '{1}', strftime('now'), strftime('{2}'), '{3}');".format(thisFile, thisFileExt, 'now', ''))
+				imageInfo = getImageInfo(os.path.join(dirname, filename))
+				imageInfo['filename'] = thisFile
+				imageInfo['directory'] = thisDir
+				imageInfo['extension'] = thisFileExt
+				print imageInfo
+				addImage(conn, imageInfo)
+				conn.execute("INSERT INTO image values('{0}', '{1}', '{2}', strftime('now'), strftime('{3}'), '{4}');".format(thisFile, thisDir, thisFileExt, 'now', ''))
 				imageCounter = imageCounter + 1
-				getImageInfo(os.path.join(dirname, filename))
 			else:
 				prt('i', 'skipped {0}'.format(filename))
 
