@@ -93,18 +93,18 @@ def getImageInfo(filename):
 #	print image.size().height()
 
 
-def addImage(conn, imageInfo):
+def add_image(conn, imageInfo):
 	"""Add a new image tuple to the list"""
 	#conn.execute("INSERT INTO image values('{0}', '{1}', '{2}', strftime('now'), strftime('{3}'), '{4}');".format(thisFile, thisDir, thisFileExt, 'now', ''))
 	return 42
 
 
-def updateImage(conn, imageInfo):
+def update_image(conn, imageInfo):
 	"""Updates existing image tuple in the list"""
 	return 42
 
 
-def newArchive(imagesDir, archiveDir):
+def new_archive(imagesDir, archiveDir):
 	""" Creates a new image archive in archiveDir
 	"""
 	print 'Writing new archive to {0}'.format(archiveDir)
@@ -146,7 +146,7 @@ def newArchive(imagesDir, archiveDir):
 	return 42
 
 
-def updateArchive(imagesDir, archiveDir):
+def update_archive(imagesDir, archiveDir):
 	""" Updates existing image archive archiveDir with new images in imagesDir"""
 	print 'Updating archive {0}'.format(archiveDir)
 
@@ -154,30 +154,3 @@ def updateArchive(imagesDir, archiveDir):
 
 	return 42
 
-
-
-parser = argparse.ArgumentParser(description='Image archive')
-
-parser.add_argument('imagesDir', help='directory with your images')
-parser.add_argument('archiveDir', help='directory to store the image archive in')
-
-args = parser.parse_args()
-#print vars(args)
-#argparse.Namespace(origFile='inputFile')
-
-imagesDir = args.imagesDir
-archiveDir = args.archiveDir
-
-# expand directories and appending / if needed
-imagesDir = os.path.join(imagesDir,'')
-archiveDir = os.path.join(archiveDir,'')
-
-if not os.path.isdir(archiveDir):
-	sys.exit('[Error] Archive directory ' + archiveDir + ' does not exist')
-
-print 'Scanning {0}'.format(imagesDir)
-
-if os.path.isfile(args.archiveDir + '/' + DBFILE):
-	updateArchive(imagesDir, archiveDir)
-else:
-	newArchive(imagesDir, archiveDir)
