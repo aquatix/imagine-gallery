@@ -5,11 +5,11 @@ import os
 import sqlite3
 import sys
 from socket import gethostname
-from PIL import Image, ImageFile
-from peewee import *
+
+import imagine
 
 DBVERSION = 1
-IMAGEEXTENSIONS = ['jpg', 'jpeg', 'png', 'cr2']
+DBFILE = 'imagine.db'
 
 DEBUG = True
 #DEBUG = False
