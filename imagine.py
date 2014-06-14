@@ -1,16 +1,18 @@
+import datetime
+
 import argparse
 import os
 import sqlite3
 import sys
 from socket import gethostname
 from PIL import Image, ImageFile
+from peewee import *
 
 DBVERSION = 1
-DBFILE = 'imagine.sqlite'
-IMAGEEXTENSIONS = ['jpg', 'png', 'cr2']
+IMAGEEXTENSIONS = ['jpg', 'jpeg', 'png', 'cr2']
 
-#DEBUG = True
-DEBUG = False
+DEBUG = True
+#DEBUG = False
 
 
 def prt(messageType, message):
