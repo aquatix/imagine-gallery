@@ -9,7 +9,12 @@ from socket import gethostname
 import imagine
 
 DBVERSION = 1
-DBFILE = 'imagine.db'
+imagine.DATABASE = 'imagine_cli.db'
+imagine.database = imagine.SqliteDatabase(imagine.DATABASE)
+
+imagine.create_archive()
+
+#imagine.Database = 
 
 DEBUG = True
 #DEBUG = False

@@ -5,14 +5,18 @@ import os
 import sqlite3
 import sys
 from socket import gethostname
-from PIL import Image, ImageFile
+#from PIL import Image, ImageFile
 from peewee import *
 
 DBVERSION = 1
+DATABASE = 'imagine.db' # default value
 IMAGEEXTENSIONS = ['jpg', 'jpeg', 'png', 'cr2']
 
 DEBUG = True
 #DEBUG = False
+
+# database = SqliteDatabase(DATABASE)
+database = None
 
 
 def prt(messageType, message):
@@ -27,35 +31,44 @@ def prt(messageType, message):
 		print '[Debug] {0}'.format(message)
 
 
-def createArchiveDB(archiveDBConn, imagesDir):
-	# meta table
-	archiveDBConn.execute("CREATE TABLE archive(dbVersion INTEGER, host STRING, path STRING, created INTEGER);")
-	archiveDBConn.execute("INSERT INTO archive values ({0}, '{1}', '{2}', 'now');".format(DBVERSION, gethostname(), imagesDir))
-
-	# directories info table
-	archiveDBConn.execute("CREATE TABLE directory(path STRING, addedAt INTEGER, meta STRING);")
-
-	# images info table
-	archiveDBConn.execute("""
-		CREATE TABLE image(filename STRING,
-		directory STRING,
-		filetype STRING,
-		addedAt INTEGER,
-		fileDate INTEGER, meta STRING);""")
-
-	archiveDBConn.commit()
-	return 0
+class BaseModel(Model):
+    class Meta:
+        database = database
 
 
-def getImageFile(imagesDir, filename):
+class Directory(BaseModel):
+    directory = CharField()
+    added_at = DateTimeField()
+
+
+class Image(BaseModel):
+    filename = CharField()
+    directory = ForeignKeyField(Directory, related_name='parent')
+    filetype = CharField()
+    added_at = DateTimeField()
+    file_modified = DateTimeField()
+    meta = CharField()
+
+    class Meta:
+        order_by = ('filename',)
+
+
+
+def create_archive():
+    database.connect()
+    Directory.create_table()
+    Image.create_table()
+
+
+def get_filename(directory, filename):
 
 	#newFilename, fileExtension = os.path.splitext(filename)[1][1:].strip()
 	#print os.path.splitext(filename)[1][1:].strip()
-	fileExtension = os.path.splitext(filename)[1][1:].strip().lower()
+	extension = os.path.splitext(filename)[1][1:].strip().lower()
 	#print '[Info] {0} - {1}'.format(filename, fileExtension)
 
-	newFilename = filename.replace(imagesDir,'')
-	return (newFilename, fileExtension)
+	new_filename = filename.replace(directory,'')
+	return (new_filename, extension)
 
 
 def getImageInfo(filename):
@@ -72,18 +85,19 @@ def getImageInfo(filename):
 
 
 
-	file = open(filename, 'r')
-	parser = ImageFile.Parser()
+	#file = open(filename, 'r')
+	#parser = ImageFile.Parser()
 
-	while True:
-		s = file.read(1024)
-		if not s:
-			break
-		parser.feed(s)
-	image = parser.close()
+	#while True:
+	#	s = file.read(1024)
+	#	if not s:
+	#		break
+	#	parser.feed(s)
+	#image = parser.close()
 
 
-	print image.size
+	#print image.size
+
 	#rw, rh = image.size()
 	#print image.size
 
