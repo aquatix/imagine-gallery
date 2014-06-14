@@ -5,7 +5,7 @@ import os
 import sqlite3
 import sys
 from socket import gethostname
-#from PIL import Image, ImageFile
+from PIL import Image, ImageFile
 from peewee import *
 
 DBVERSION = 1
@@ -45,19 +45,42 @@ class Image(BaseModel):
     filename = CharField()
     directory = ForeignKeyField(Directory, related_name='parent')
     filetype = CharField()
-    added_at = DateTimeField()
+    filesize = IntegerField()
     file_modified = DateTimeField()
-    meta = CharField()
+
+    added_at = DateTimeField()
+    description = TextField()
+
+    width = IntegerField()
+    height = IntegerField()
+
+    image_hash = CharField()
+    thumb_hash = CharField()
 
     class Meta:
         order_by = ('filename',)
 
+
+    def get_filename(self):
+        dirname = Directory.select().where(
+                Directory = self.directory
+        )
+        return '%s/%s'.format(dirname, self.filename)
+
+
+class ExifItem(BaseModel):
+    image = ForeignKeyField(Image)
+    key = CharField()
+    value = CharField()
+    value_int = IntegerField()
+    value_float = FloatField()
 
 
 def create_archive():
     database.connect()
     Directory.create_table()
     Image.create_table()
+    ExifItem.create_table()
 
 
 def get_filename(directory, filename):
@@ -71,22 +94,26 @@ def get_filename(directory, filename):
 	return (new_filename, extension)
 
 
-def getImageInfo(filename):
+def get_image_info(filename):
 	print os.stat(filename)
 	imageFileinfo = os.stat(filename)
-	imageSize = os.stat(filename).st_size
 
 	image = Image.open(filename)
 	#print image.size
 
-	imageInfo = {'size': imageSize, 'width': image.size[0], 'height': image.size[1]}
-	return imageInfo
+    new_image = Image.create(
+            filename=filename,
+    )
 
+	#imageInfo = {'size': imageSize, 'width': image.size[0], 'height': image.size[1]}
+	#return imageInfo
 
+    new_image.width = image.size[0]
+    new_image.height = image.size[1]
+    new_image.filesize = os.stat(filename).st_size
 
-
-	#file = open(filename, 'r')
-	#parser = ImageFile.Parser()
+	file = open(filename, 'r')
+	parser = ImageFile.Parser()
 
 	#while True:
 	#	s = file.read(1024)
