@@ -143,18 +143,18 @@ def save_image_info(directory, filename):
 
     new_image.save()
 
-	#while True:
-	#	s = file.read(1024)
-	#	if not s:
-	#		break
-	#	parser.feed(s)
-	#image = parser.close()
+    #while True:
+    #	s = file.read(1024)
+    #	if not s:
+    #		break
+    #	parser.feed(s)
+    #image = parser.close()
 
 
-	#print image.size
+    #print image.size
 
-	#rw, rh = image.size()
-	#print image.size
+    #rw, rh = image.size()
+    #print image.size
 
 #	print image.fileName()
 #	print image.magick()
@@ -163,60 +163,60 @@ def save_image_info(directory, filename):
 
 
 def add_image(conn, imageInfo):
-	"""Add a new image tuple to the list"""
-	#conn.execute("INSERT INTO image values('{0}', '{1}', '{2}', strftime('now'), strftime('{3}'), '{4}');".format(thisFile, thisDir, thisFileExt, 'now', ''))
-	return 42
+    """Add a new image tuple to the list"""
+    #conn.execute("INSERT INTO image values('{0}', '{1}', '{2}', strftime('now'), strftime('{3}'), '{4}');".format(thisFile, thisDir, thisFileExt, 'now', ''))
+    return 42
 
 
 def update_image(conn, imageInfo):
-	"""Updates existing image tuple in the list"""
-	return 42
+    """Updates existing image tuple in the list"""
+    return 42
 
 
 def new_archive(collection, images_dir, archive_dir):
-	""" Creates a new image archive in archive_dir
-	"""
-	print 'Writing new archive to {0}'.format(archive_dir)
-	prt('d', 'images_dir: {0}'.format(images_dir,''))
+    """ Creates a new image archive in archive_dir
+    """
+    print 'Writing new archive to {0}'.format(archive_dir)
+    prt('d', 'images_dir: {0}'.format(images_dir,''))
 
-	create_archive()
+    create_archive()
 
-	imageCounter = 0
-	for dirname, dirnames, filenames in os.walk(images_dir):
-		thisDir = os.path.join(dirname, '')	# be sure to have trailing / and such
-		thisDir = thisDir.replace(images_dir, '')
+    imageCounter = 0
+    for dirname, dirnames, filenames in os.walk(images_dir):
+        thisDir = os.path.join(dirname, '')	# be sure to have trailing / and such
+        thisDir = thisDir.replace(images_dir, '')
         directory = Directory.create(directory=thisDir, collection=collection)
-		for subdirname in dirnames:
-			prt('d', 'dir: {0}'.format(os.path.join(dirname, subdirname)))
-		#if thisDir.trim() != '':
-		#	conn.execute("INSERT INTO directory values('{0}', strftime('now'), '');".format(thisDir))
-		for filename in filenames:
-			#print os.path.join(dirname, filename)
-			thisFile, thisFileExt = get_filename(images_dir, os.path.join(dirname, filename))
-			thisFile = thisFile.replace(thisDir, '')
-			#print '[Debug] ext: {0}'.format(thisFileExt)
-			if  thisFileExt in IMAGEEXTENSIONS:
-				imageInfo = getImageInfo(os.path.join(dirname, filename))
-				imageInfo['filename'] = thisFile
-				imageInfo['directory'] = thisDir
-				imageInfo['extension'] = thisFileExt
-				print imageInfo
-				addImage(conn, imageInfo)
-				conn.execute("INSERT INTO image values('{0}', '{1}', '{2}', strftime('now'), strftime('{3}'), '{4}');".format(thisFile, thisDir, thisFileExt, 'now', ''))
-				imageCounter = imageCounter + 1
-			else:
-				prt('i', 'skipped {0}'.format(filename))
+        for subdirname in dirnames:
+            prt('d', 'dir: {0}'.format(os.path.join(dirname, subdirname)))
+        #if thisDir.trim() != '':
+        #	conn.execute("INSERT INTO directory values('{0}', strftime('now'), '');".format(thisDir))
+        for filename in filenames:
+            #print os.path.join(dirname, filename)
+            thisFile, thisFileExt = get_filename(images_dir, os.path.join(dirname, filename))
+            thisFile = thisFile.replace(thisDir, '')
+            #print '[Debug] ext: {0}'.format(thisFileExt)
+            if  thisFileExt in IMAGEEXTENSIONS:
+                imageInfo = getImageInfo(os.path.join(dirname, filename))
+                imageInfo['filename'] = thisFile
+                imageInfo['directory'] = thisDir
+                imageInfo['extension'] = thisFileExt
+                print imageInfo
+                addImage(conn, imageInfo)
+                conn.execute("INSERT INTO image values('{0}', '{1}', '{2}', strftime('now'), strftime('{3}'), '{4}');".format(thisFile, thisDir, thisFileExt, 'now', ''))
+                imageCounter = imageCounter + 1
+            else:
+                prt('i', 'skipped {0}'.format(filename))
 
-	prt('i', 'added {0} images to archive'.format(imageCounter))
+    prt('i', 'added {0} images to archive'.format(imageCounter))
 
-	return 42
+    return 42
 
 
 def update_archive(images_dir, archive_dir):
-	""" Updates existing image archive archive_dir with new images in images_dir"""
-	print 'Updating archive {0}'.format(archive_dir)
+    """ Updates existing image archive archive_dir with new images in images_dir"""
+    print 'Updating archive {0}'.format(archive_dir)
 
-	# check for DB version, update if necessary
+    # check for DB version, update if necessary
 
-	return 42
+    return 42
 
