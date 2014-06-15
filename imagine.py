@@ -5,7 +5,7 @@ import os
 import sqlite3
 import sys
 from socket import gethostname
-from PIL import Image, ImageFile
+from PIL import Image as PILImage, ImageFile as PILImageFile
 from peewee import *
 
 DBVERSION = 1
@@ -36,26 +36,36 @@ class BaseModel(Model):
         database = database
 
 
+class Collection(BaseModel):
+    name = CharField()
+    base_dir = CharField()
+
+    added_at = DateTimeField(default=datetime.datetime.now())
+
+
 class Directory(BaseModel):
     directory = CharField()
-    added_at = DateTimeField()
+    collection = ForeignKeyField(Collection)
+
+    added_at = DateTimeField(default=datetime.datetime.now())
 
 
 class Image(BaseModel):
-    filename = CharField()
     directory = ForeignKeyField(Directory, related_name='parent')
-    filetype = CharField()
-    filesize = IntegerField()
-    file_modified = DateTimeField()
+    filename = CharField()
+    file_ext = CharField()
+    filetype = CharField(null=True)
+    filesize = IntegerField(default=-1)
+    file_modified = DateTimeField(null=True)
 
-    added_at = DateTimeField()
-    description = TextField()
+    added_at = DateTimeField(default=datetime.datetime.now())
+    description = TextField(null=True)
 
-    width = IntegerField()
-    height = IntegerField()
+    width = IntegerField(default=-1)
+    height = IntegerField(default=-1)
 
-    image_hash = CharField()
-    thumb_hash = CharField()
+    image_hash = CharField(null=True)
+    thumb_hash = CharField(null=True)
 
     class Meta:
         order_by = ('filename',)
@@ -78,6 +88,7 @@ class ExifItem(BaseModel):
 
 def create_archive():
     database.connect()
+    Collection.create_table()
     Directory.create_table()
     Image.create_table()
     ExifItem.create_table()
@@ -94,26 +105,35 @@ def get_filename(directory, filename):
 	return (new_filename, extension)
 
 
-def get_image_info(filename):
-	print os.stat(filename)
-	imageFileinfo = os.stat(filename)
+def save_image_info(directory, filename):
+    #dirname = get
+    print os.stat(filename)
+    imageFileinfo = os.stat(filename)
 
-	image = Image.open(filename)
-	#print image.size
+    image = PILImage.open(filename)
+    #print image.size
 
+    (purefilename, file_ext) = get_filename(directory.directory, filename)
+
+    #with database.transaction():
     new_image = Image.create(
-            filename=filename,
+        directory=directory,
+        filename=purefilename,
+        file_ext=file_ext,
+        added_at=datetime.datetime.now()
     )
 
-	#imageInfo = {'size': imageSize, 'width': image.size[0], 'height': image.size[1]}
-	#return imageInfo
+    #imageInfo = {'size': imageSize, 'width': image.size[0], 'height': image.size[1]}
+    #return imageInfo
 
     new_image.width = image.size[0]
     new_image.height = image.size[1]
     new_image.filesize = os.stat(filename).st_size
 
-	file = open(filename, 'r')
-	parser = ImageFile.Parser()
+    file = open(filename, 'r')
+    parser = PILImageFile.Parser()
+
+    new_image.save()
 
 	#while True:
 	#	s = file.read(1024)
@@ -165,7 +185,7 @@ def new_archive(imagesDir, archiveDir):
 		#	conn.execute("INSERT INTO directory values('{0}', strftime('now'), '');".format(thisDir))
 		for filename in filenames:
 			#print os.path.join(dirname, filename)
-			thisFile, thisFileExt = getImageFile(imagesDir, os.path.join(dirname, filename))
+			thisFile, thisFileExt = get_filename(imagesDir, os.path.join(dirname, filename))
 			thisFile = thisFile.replace(thisDir, '')
 			#print '[Debug] ext: {0}'.format(thisFileExt)
 			if  thisFileExt in IMAGEEXTENSIONS:
