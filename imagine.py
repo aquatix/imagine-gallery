@@ -5,7 +5,7 @@ import os
 import sqlite3
 import sys
 from socket import gethostname
-from PIL import Image as PILImage, ImageFile as PILImageFile
+from PIL import Image as PILImage, ImageFile as PILImageFile, ExifTags
 from peewee import *
 
 DBVERSION = 1
@@ -138,10 +138,26 @@ def save_image_info(directory, filename):
     new_image.height = image.size[1]
     new_image.filesize = os.stat(filename).st_size
 
+    new_image.save()
+
+    exif = {
+            ExifTags.TAGS[k]: v
+            for k, v in image._getexif().items()
+            if k in ExifTags.TAGS
+    }
+    print(exif)
+    for k, v in exif.items():
+        try:
+            exif_item = ExifItem.create(
+                    image=new_image,
+                    key=k,
+                    value_str=v
+            )
+        except UnicodeDecodeError:
+            print ('[WARNING] Failed to save %s due to UnicodeDecodeError' % k)
+
     file = open(filename, 'r')
     parser = PILImageFile.Parser()
-
-    new_image.save()
 
     #while True:
     #	s = file.read(1024)
@@ -164,7 +180,7 @@ def save_image_info(directory, filename):
 
 def add_image(conn, imageInfo):
     """Add a new image tuple to the list"""
-    #conn.execute("INSERT INTO image values('{0}', '{1}', '{2}', strftime('now'), strftime('{3}'), '{4}');".format(thisFile, thisDir, thisFileExt, 'now', ''))
+    #conn.execute("INSERT INTO image values('{0}', '{1}', '{2}', strftime('now'), strftime('{3}'), '{4}');".format(this_file, this_dir, this_file_ext, 'now', ''))
     return 42
 
 
@@ -183,26 +199,26 @@ def new_archive(collection, images_dir, archive_dir):
 
     imageCounter = 0
     for dirname, dirnames, filenames in os.walk(images_dir):
-        thisDir = os.path.join(dirname, '')	# be sure to have trailing / and such
-        thisDir = thisDir.replace(images_dir, '')
-        directory = Directory.create(directory=thisDir, collection=collection)
+        this_dir = os.path.join(dirname, '')	# be sure to have trailing / and such
+        this_dir = this_dir.replace(images_dir, '')
+        directory = Directory.create(directory=this_dir, collection=collection)
         for subdirname in dirnames:
             prt('d', 'dir: {0}'.format(os.path.join(dirname, subdirname)))
-        #if thisDir.trim() != '':
-        #	conn.execute("INSERT INTO directory values('{0}', strftime('now'), '');".format(thisDir))
+        #if this_dir.trim() != '':
+        #	conn.execute("INSERT INTO directory values('{0}', strftime('now'), '');".format(this_dir))
         for filename in filenames:
             #print os.path.join(dirname, filename)
-            thisFile, thisFileExt = get_filename(images_dir, os.path.join(dirname, filename))
-            thisFile = thisFile.replace(thisDir, '')
-            #print '[Debug] ext: {0}'.format(thisFileExt)
-            if  thisFileExt in IMAGEEXTENSIONS:
+            this_file, this_file_ext = get_filename(images_dir, os.path.join(dirname, filename))
+            this_file = this_file.replace(this_dir, '')
+            #print '[Debug] ext: {0}'.format(this_file_ext)
+            if  this_file_ext in IMAGEEXTENSIONS:
                 imageInfo = getImageInfo(os.path.join(dirname, filename))
-                imageInfo['filename'] = thisFile
-                imageInfo['directory'] = thisDir
-                imageInfo['extension'] = thisFileExt
+                imageInfo['filename'] = this_file
+                imageInfo['directory'] = this_dir
+                imageInfo['extension'] = this_file_ext
                 print imageInfo
                 addImage(conn, imageInfo)
-                conn.execute("INSERT INTO image values('{0}', '{1}', '{2}', strftime('now'), strftime('{3}'), '{4}');".format(thisFile, thisDir, thisFileExt, 'now', ''))
+                conn.execute("INSERT INTO image values('{0}', '{1}', '{2}', strftime('now'), strftime('{3}'), '{4}');".format(this_file, this_dir, this_file_ext, 'now', ''))
                 imageCounter = imageCounter + 1
             else:
                 prt('i', 'skipped {0}'.format(filename))
