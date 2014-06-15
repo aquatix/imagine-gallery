@@ -42,6 +42,9 @@ class Collection(BaseModel):
 
     added_at = DateTimeField(default=datetime.datetime.now())
 
+    def __unicode__(self):
+        return '{0} ({1})'.format(self.name, self.base_dir)
+
 
 class Directory(BaseModel):
     directory = CharField()
@@ -50,7 +53,10 @@ class Directory(BaseModel):
     added_at = DateTimeField(default=datetime.datetime.now())
 
     def get_filepath(self, filename):
-        return '%s/%s'.format(self.directory, filename)
+        return '{0}/{1}'.format(self.directory, filename)
+
+    def __unicode__(self):
+        return self.directory
 
 
 class Image(BaseModel):
@@ -79,7 +85,10 @@ class Image(BaseModel):
         dirname = Directory.select().where(
                 Directory = self.directory
         )
-        return '%s/%s'.format(dirname, self.filename)
+        return '{0}/{1}'.format(dirname, self.filename)
+
+    def __unicode__(self):
+        return self.get_filepath(self)
 
 
 class ExifItem(BaseModel):
