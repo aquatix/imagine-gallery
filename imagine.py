@@ -49,6 +49,9 @@ class Directory(BaseModel):
 
     added_at = DateTimeField(default=datetime.datetime.now())
 
+    def get_filepath(self, filename):
+        return '%s/%s'.format(self.directory, filename)
+
 
 class Image(BaseModel):
     directory = ForeignKeyField(Directory, related_name='parent')
@@ -59,7 +62,8 @@ class Image(BaseModel):
     file_modified = DateTimeField(null=True)
 
     added_at = DateTimeField(default=datetime.datetime.now())
-    description = TextField(null=True)
+    description = TextField(default='')
+    is_visible = BooleanField(default=True)
 
     width = IntegerField(default=-1)
     height = IntegerField(default=-1)
@@ -71,7 +75,7 @@ class Image(BaseModel):
         order_by = ('filename',)
 
 
-    def get_filename(self):
+    def get_filepath(self):
         dirname = Directory.select().where(
                 Directory = self.directory
         )
@@ -81,9 +85,13 @@ class Image(BaseModel):
 class ExifItem(BaseModel):
     image = ForeignKeyField(Image)
     key = CharField()
-    value = CharField()
-    value_int = IntegerField()
-    value_float = FloatField()
+    value_str = CharField(null=True)
+    value_int = IntegerField(null=True)
+    value_float = FloatField(null=True)
+
+    def get_value(as_type='str'):
+        # TODO: be able to return _int or _float
+        return value_str
 
 
 def create_archive():
@@ -165,27 +173,26 @@ def update_image(conn, imageInfo):
 	return 42
 
 
-def new_archive(imagesDir, archiveDir):
-	""" Creates a new image archive in archiveDir
+def new_archive(collection, images_dir, archive_dir):
+	""" Creates a new image archive in archive_dir
 	"""
-	print 'Writing new archive to {0}'.format(archiveDir)
-	prt('d', 'imagesDir: {0}'.format(imagesDir,''))
+	print 'Writing new archive to {0}'.format(archive_dir)
+	prt('d', 'images_dir: {0}'.format(images_dir,''))
 
-	conn = sqlite3.connect(archiveDir + DBFILE)
-
-	createArchiveDB(conn, imagesDir)
+	create_archive()
 
 	imageCounter = 0
-	for dirname, dirnames, filenames in os.walk(imagesDir):
+	for dirname, dirnames, filenames in os.walk(images_dir):
 		thisDir = os.path.join(dirname, '')	# be sure to have trailing / and such
-		thisDir = thisDir.replace(imagesDir, '')
+		thisDir = thisDir.replace(images_dir, '')
+        directory = Directory.create(directory=thisDir, collection=collection)
 		for subdirname in dirnames:
 			prt('d', 'dir: {0}'.format(os.path.join(dirname, subdirname)))
 		#if thisDir.trim() != '':
 		#	conn.execute("INSERT INTO directory values('{0}', strftime('now'), '');".format(thisDir))
 		for filename in filenames:
 			#print os.path.join(dirname, filename)
-			thisFile, thisFileExt = get_filename(imagesDir, os.path.join(dirname, filename))
+			thisFile, thisFileExt = get_filename(images_dir, os.path.join(dirname, filename))
 			thisFile = thisFile.replace(thisDir, '')
 			#print '[Debug] ext: {0}'.format(thisFileExt)
 			if  thisFileExt in IMAGEEXTENSIONS:
@@ -202,14 +209,12 @@ def new_archive(imagesDir, archiveDir):
 
 	prt('i', 'added {0} images to archive'.format(imageCounter))
 
-	conn.commit()
-	conn.close()
 	return 42
 
 
-def update_archive(imagesDir, archiveDir):
-	""" Updates existing image archive archiveDir with new images in imagesDir"""
-	print 'Updating archive {0}'.format(archiveDir)
+def update_archive(images_dir, archive_dir):
+	""" Updates existing image archive archive_dir with new images in images_dir"""
+	print 'Updating archive {0}'.format(archive_dir)
 
 	# check for DB version, update if necessary
 
