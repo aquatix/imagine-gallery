@@ -20,15 +20,15 @@ database = None
 
 
 def prt(messageType, message):
-	if DEBUG == False:
-		return
+    if DEBUG == False:
+        return
 
-	if messageType == 'i':
-		print '[Info] {0}'.format(message)
-	elif messageType == 'e':
-		print '[Error] {0}'.format(message)
-	elif messageType == 'd':
-		print '[Debug] {0}'.format(message)
+    if messageType == 'i':
+        print '[Info] {0}'.format(message)
+    elif messageType == 'e':
+        print '[Error] {0}'.format(message)
+    elif messageType == 'd':
+        print '[Debug] {0}'.format(message)
 
 
 class BaseModel(Model):
@@ -104,13 +104,13 @@ def create_archive():
 
 def get_filename(directory, filename):
 
-	#newFilename, fileExtension = os.path.splitext(filename)[1][1:].strip()
-	#print os.path.splitext(filename)[1][1:].strip()
-	extension = os.path.splitext(filename)[1][1:].strip().lower()
-	#print '[Info] {0} - {1}'.format(filename, fileExtension)
+    #newFilename, fileExtension = os.path.splitext(filename)[1][1:].strip()
+    #print os.path.splitext(filename)[1][1:].strip()
+    extension = os.path.splitext(filename)[1][1:].strip().lower()
+    #print '[Info] {0} - {1}'.format(filename, fileExtension)
 
-	new_filename = filename.replace(directory,'')
-	return (new_filename, extension)
+    new_filename = filename.replace(directory,'')
+    return (new_filename, extension)
 
 
 def save_image_info(directory, filename):
