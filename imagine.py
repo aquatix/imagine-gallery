@@ -8,6 +8,8 @@ from socket import gethostname
 from PIL import Image as PILImage, ImageFile as PILImageFile, ExifTags
 from peewee import *
 
+import exifread
+
 DBVERSION = 1
 DATABASE = 'imagine.db' # default value
 IMAGEEXTENSIONS = ['jpg', 'jpeg', 'png', 'cr2']
@@ -149,12 +151,19 @@ def save_image_info(directory, filename):
 
     new_image.save()
 
-    exif = {
-            ExifTags.TAGS[k]: v
-            for k, v in image._getexif().items()
-            if k in ExifTags.TAGS
-    }
+    # Open image file for reading (binary mode)
+    f = open(filename, 'rb')
+
+    # Return Exif tags
+    exif = exifread.process_file(f)
     print(exif)
+
+    #exif = {
+    #        ExifTags.TAGS[k]: v
+    #        for k, v in image._getexif().items()
+    #        if k in ExifTags.TAGS
+    #}
+    #print(exif)
     for k, v in exif.items():
         try:
             exif_item = ExifItem.create(
