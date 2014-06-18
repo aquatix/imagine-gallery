@@ -12,13 +12,14 @@ import exifread
 
 DBVERSION = 1
 DATABASE = 'imagine.db' # default value
-IMAGEEXTENSIONS = ['jpg', 'jpeg', 'png', 'cr2']
+IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'cr2']
+IMAGE_EXTENSIONS_RAW = ['cr2']
 
 DEBUG = True
 #DEBUG = False
 
-# database = SqliteDatabase(DATABASE)
-database = None
+database = SqliteDatabase(DATABASE)
+# database = None
 
 
 def prt(messageType, message):
@@ -114,13 +115,14 @@ def create_archive():
 
 
 def get_filename(directory, filename):
+    """Return (filename, extension) of the file in filename"""
 
     #newFilename, fileExtension = os.path.splitext(filename)[1][1:].strip()
     #print os.path.splitext(filename)[1][1:].strip()
     extension = os.path.splitext(filename)[1][1:].strip().lower()
     #print '[Info] {0} - {1}'.format(filename, fileExtension)
 
-    new_filename = filename.replace(directory,'')
+    new_filename = filename.replace(directory, '')
     return (new_filename, extension)
 
 
@@ -144,31 +146,25 @@ def save_jpg_exif(image, filename):
 
 def save_cr2_exif(image, filename):
     """Fetch exif tags for the image Image object from the .cr2 raw file in filename"""
-    pass
+    print('cr2 support not implemented yet')
 
 
-def save_image_info(directory, filename, file_ext):
-    """Create Image object from the image in filename"""
+def save_image_info(directory, the_image, filename, file_ext):
+    """Create/update Image object from the image in filename"""
 
-    image = PILImage.open(filename)
+    the_image.filesize = os.stat(filename).st_size
+    the_image.save()
 
-    new_image = Image.create(
-        directory=directory,
-        filename=filename,
-        file_ext=file_ext,
-        added_at=datetime.datetime.now()
-    )
+    if file_ext not in IMAGE_EXTENSIONS_RAW:
+        image = PILImage.open(filename)
 
-    new_image.width = image.size[0]
-    new_image.height = image.size[1]
-    new_image.filesize = os.stat(filename).st_size
-
-    new_image.save()
+        the_image.width = image.size[0]
+        the_image.height = image.size[1]
 
     if file_ext == 'jpg':
-        save_jpg_exif(new_image, filename)
+        save_jpg_exif(the_image, filename)
     elif file_ext == 'cr2':
-        save_cr2_exif(new_image, filename)
+        save_cr2_exif(the_image, filename)
     else:
         print ('[WARNING] No supported extension found')
 
@@ -200,26 +196,20 @@ def save_image_info(directory, filename, file_ext):
 #	print image.size().height()
 
 
-def add_image(conn, imageInfo):
-    """Add a new image tuple to the list"""
-    #conn.execute("INSERT INTO image values('{0}', '{1}', '{2}', strftime('now'), strftime('{3}'), '{4}');".format(this_file, this_dir, this_file_ext, 'now', ''))
-    return 42
-
-
-def update_image(conn, imageInfo):
-    """Updates existing image tuple in the list"""
-    return 42
-
-
-def new_archive(collection, images_dir, archive_dir):
+def update_collection(collection_name, images_dir, archive_dir):
     """ Creates a new image archive in archive_dir
     """
-    print 'Writing new archive to {0}'.format(archive_dir)
+    print 'Writing archive to {0}'.format(archive_dir)
     prt('d', 'images_dir: {0}'.format(images_dir,''))
 
-    create_archive()
+    #create_archive()
+    collection = Collection.get_or_create(name=collection_name, base_dir=images_dir)
+    walk_archive(collection, images_dir, archive_dir)
 
+
+def walk_archive(collection, images_dir, archive_dir):
     image_counter = 0
+    total_files = 0
     for dirname, dirnames, filenames in os.walk(images_dir):
         this_dir = os.path.join(dirname, '')	# be sure to have trailing / and such
         this_dir = this_dir.replace(images_dir, '')
@@ -228,27 +218,24 @@ def new_archive(collection, images_dir, archive_dir):
             prt('d', 'dir: {0}'.format(os.path.join(dirname, subdirname)))
         #if this_dir.trim() != '':
         #	conn.execute("INSERT INTO directory values('{0}', strftime('now'), '');".format(this_dir))
+        total_files = total_files + len(filenames)
         for filename in filenames:
             #print os.path.join(dirname, filename)
             this_file, this_file_ext = get_filename(images_dir, os.path.join(dirname, filename))
             this_file = this_file.replace(this_dir, '')
             #print '[Debug] ext: {0}'.format(this_file_ext)
-            if  this_file_ext in IMAGEEXTENSIONS:
-                save_image_info(directory, os.path.join(dirname, filename), this_file_ext)
+            if this_file_ext in IMAGE_EXTENSIONS:
+                the_image = Image.get_or_create(
+                    directory=directory,
+                    filename=filename,
+                    file_ext=this_file_ext
+                )
+                save_image_info(directory, the_image, os.path.join(dirname, filename), this_file_ext)
                 image_counter = image_counter + 1
             else:
                 prt('i', 'skipped {0}'.format(filename))
 
-    prt('i', 'added {0} images to archive'.format(imageCounter))
-
-    return 42
-
-
-def update_archive(images_dir, archive_dir):
-    """ Updates existing image archive archive_dir with new images in images_dir"""
-    print 'Updating archive {0}'.format(archive_dir)
-
-    # check for DB version, update if necessary
+    prt('i', 'added {0} images to archive out of {1} total'.format(image_counter, total_files))
 
     return 42
 
