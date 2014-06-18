@@ -69,6 +69,7 @@ class Image(BaseModel):
     file_modified = DateTimeField(null=True)
 
     added_at = DateTimeField(default=datetime.datetime.now())
+    title = TextField(default='')
     description = TextField(default='')
     is_visible = BooleanField(default=True)
 
@@ -83,13 +84,10 @@ class Image(BaseModel):
 
 
     def get_filepath(self):
-        dirname = Directory.select().where(
-                Directory = self.directory
-        )
-        return '{0}/{1}'.format(dirname, self.filename)
+        return '{0}/{1}'.format(self.directory.directory, self.filename)
 
     def __unicode__(self):
-        return self.get_filepath(self)
+        return self.get_filepath()
 
 
 class ExifItem(BaseModel):
@@ -228,6 +226,7 @@ def walk_archive(collection, images_dir, archive_dir):
                     file_ext=this_file_ext
                 )
                 save_image_info(directory, the_image, os.path.join(dirname, filename), this_file_ext)
+                logger.debug(the_image)
                 image_counter = image_counter + 1
             else:
                 logger.info('skipped {0}'.format(filename))
