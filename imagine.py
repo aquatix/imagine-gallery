@@ -5,6 +5,7 @@ import sys
 from peewee import *
 from PIL import Image as PILImage, ImageFile as PILImageFile, ExifTags
 import exifread
+from hashlib import md5
 
 DEBUG = True
 #DEBUG = False
@@ -39,6 +40,7 @@ class BaseModel(Model):
 
 class Collection(BaseModel):
     name = CharField()
+    slug = CharField(null=True)
     base_dir = CharField()
 
     added_at = DateTimeField(default=datetime.datetime.now())
@@ -102,12 +104,24 @@ class ExifItem(BaseModel):
         return value_str
 
 
+# the user model specifies its fields (or columns) declaratively, like django
+class User(BaseModel):
+    username = CharField(unique=True)
+    password = CharField()
+    email = CharField()
+    join_date = DateTimeField()
+
+    class Meta:
+        order_by = ('username',)
+
+
 def create_archive():
     database.connect()
     Collection.create_table()
     Directory.create_table()
     Image.create_table()
     ExifItem.create_table()
+    User.create_table()
 
 
 def get_filename(directory, filename):
@@ -192,14 +206,14 @@ def save_image_info(directory, the_image, filename, file_ext):
 #	print image.size().height()
 
 
-def update_collection(collection_name, images_dir, archive_dir):
+def update_collection(collection_name, collection_slug, images_dir, archive_dir):
     """ Creates a new image archive in archive_dir
     """
     logger.debug('Writing archive to {0}'.format(archive_dir))
     logger.debug('images_dir: {0}'.format(images_dir,''))
 
     #create_archive()
-    collection = Collection.get_or_create(name=collection_name, base_dir=images_dir)
+    collection = Collection.get_or_create(name=collection_name, slug=collection_slug, base_dir=images_dir)
     walk_archive(collection, images_dir, archive_dir)
 
 
