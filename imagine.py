@@ -124,6 +124,29 @@ def get_filename(directory, filename):
     return (new_filename, extension)
 
 
+def save_jpg_exif(image, filename):
+    """Fetch exif tags for the image Image object from the .jpg in filename"""
+    # Open image file for reading (binary mode)
+    f = open(filename, 'rb')
+
+    # Return Exif tags
+    exif = exifread.process_file(f)
+    for k, v in exif.items():
+        try:
+            exif_item = ExifItem.create(
+                    image=image,
+                    key=k,
+                    value_str=v
+            )
+        except UnicodeDecodeError:
+            print ('[WARNING] Failed to save %s due to UnicodeDecodeError' % k)
+
+
+def save_cr2_exif(image, filename):
+    """Fetch exif tags for the image Image object from the .cr2 raw file in filename"""
+    pass
+
+
 def save_image_info(directory, filename):
     #dirname = get
     print os.stat(filename)
@@ -151,12 +174,12 @@ def save_image_info(directory, filename):
 
     new_image.save()
 
-    # Open image file for reading (binary mode)
-    f = open(filename, 'rb')
-
-    # Return Exif tags
-    exif = exifread.process_file(f)
-    print(exif)
+    if file_ext == 'jpg':
+        save_jpg_exif(new_image, filename)
+    else if file_ext == 'cr2':
+        save_cr2_exif(new_image, filename)
+    else:
+        print ('[WARNING] No supported extension found')
 
     #exif = {
     #        ExifTags.TAGS[k]: v
@@ -164,18 +187,8 @@ def save_image_info(directory, filename):
     #        if k in ExifTags.TAGS
     #}
     #print(exif)
-    for k, v in exif.items():
-        try:
-            exif_item = ExifItem.create(
-                    image=new_image,
-                    key=k,
-                    value_str=v
-            )
-        except UnicodeDecodeError:
-            print ('[WARNING] Failed to save %s due to UnicodeDecodeError' % k)
-
-    file = open(filename, 'r')
-    parser = PILImageFile.Parser()
+    #file = open(filename, 'r')
+    #parser = PILImageFile.Parser()
 
     #while True:
     #	s = file.read(1024)
