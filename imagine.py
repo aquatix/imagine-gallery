@@ -6,6 +6,7 @@ from peewee import *
 from PIL import Image as PILImage, ImageFile as PILImageFile, ExifTags
 import exifread
 from hashlib import md5
+#import imagehash
 
 DEBUG = True
 #DEBUG = False
@@ -167,6 +168,7 @@ def save_image_info(directory, the_image, filename, file_ext):
 
     if file_ext not in IMAGE_EXTENSIONS_RAW:
         image = PILImage.open(filename)
+        #the_image.image_hash = imagehash.average_hash(image)
 
         the_image.width = image.size[0]
         the_image.height = image.size[1]
