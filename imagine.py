@@ -54,7 +54,7 @@ class Directory(BaseModel):
     added_at = DateTimeField(default=datetime.datetime.now())
 
     def get_filepath(self, filename):
-        return '{0}/{1}'.format(self.directory, filename)
+        return '{0}{1}'.format(self.directory, filename)
 
     def __unicode__(self):
         return self.directory
@@ -84,7 +84,7 @@ class Image(BaseModel):
 
 
     def get_filepath(self):
-        return '{0}/{1}'.format(self.directory.directory, self.filename)
+        return '{0}{1}'.format(self.directory.directory, self.filename)
 
     def __unicode__(self):
         return self.get_filepath()
