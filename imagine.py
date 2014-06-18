@@ -144,7 +144,7 @@ def save_jpg_exif(image, filename):
 
 def save_cr2_exif(image, filename):
     """Fetch exif tags for the image Image object from the .cr2 raw file in filename"""
-    logger.warning('cr2 support not implemented yet')
+    logger.warning('cr2 metadata support not implemented yet')
 
 
 def save_image_info(directory, the_image, filename, file_ext):
@@ -210,12 +210,11 @@ def walk_archive(collection, images_dir, archive_dir):
     total_files = 0
     for dirname, dirnames, filenames in os.walk(images_dir):
         this_dir = os.path.join(dirname, '')	# be sure to have trailing / and such
-        this_dir = this_dir.replace(images_dir, '')
+        logger.debug(this_dir)
         directory = Directory.create(directory=this_dir, collection=collection)
+        this_dir = this_dir.replace(images_dir, '')
         for subdirname in dirnames:
             logger.debug('dir: {0}'.format(os.path.join(dirname, subdirname)))
-        #if this_dir.trim() != '':
-        #	conn.execute("INSERT INTO directory values('{0}', strftime('now'), '');".format(this_dir))
         total_files = total_files + len(filenames)
         for filename in filenames:
             #print os.path.join(dirname, filename)
