@@ -8,8 +8,11 @@ import exifread
 from hashlib import md5
 #import imagehash
 
-DEBUG = True
-#DEBUG = False
+try:
+    DEBUG
+except NameError:
+    DEBUG = True
+    #DEBUG = False
 
 logger = logging.getLogger('imagine')
 logger.setLevel(logging.DEBUG)
@@ -24,12 +27,18 @@ lh.setFormatter(formatter)
 logger.addHandler(lh)
 
 DBVERSION = 1
-DATABASE = 'imagine.db' # default value
+try:
+    DATABASE
+except NameError:
+    DATABASE = 'imagine.db' # default value
+
 IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'cr2']
 IMAGE_EXTENSIONS_RAW = ['cr2']
 
-database = SqliteDatabase(DATABASE)
-# database = None
+try:
+    database
+except NameError:
+    database = SqliteDatabase(DATABASE)
 
 
 # == imagine models

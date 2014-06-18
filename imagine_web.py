@@ -6,8 +6,6 @@ from flask import redirect
 from flask import url_for, abort, render_template, flash
 from functools import wraps
 
-from imagine import *
-
 DEBUG = True
 
 app = Flask(__name__)
@@ -16,6 +14,14 @@ app.config.from_object(__name__)
 DATABASE='imagine.db'
 
 database = SqliteDatabase(DATABASE)
+
+try:
+    from settings import *
+except ImportError:
+    pass
+
+from imagine import *
+
 
 # flask provides a "session" object, which allows us to store information across
 # requests (stored by default in a secure cookie).  this function allows us to
@@ -26,10 +32,12 @@ def auth_user(user):
     session['username'] = user.username
     flash('You are logged in as %s' % (user.username))
 
+
 # get the user from the session
 def get_current_user():
     if session.get('logged_in'):
         return User.get(User.id == session['user_id'])
+
 
 # view decorator which indicates that the requesting user must be authenticated
 # before they can access the view.  it checks the session to see if they're
