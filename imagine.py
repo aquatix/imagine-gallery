@@ -147,26 +147,17 @@ def save_cr2_exif(image, filename):
     pass
 
 
-def save_image_info(directory, filename):
-    #dirname = get
-    print os.stat(filename)
-    imageFileinfo = os.stat(filename)
+def save_image_info(directory, filename, file_ext):
+    """Create Image object from the image in filename"""
 
     image = PILImage.open(filename)
-    #print image.size
 
-    (purefilename, file_ext) = get_filename(directory.directory, filename)
-
-    #with database.transaction():
     new_image = Image.create(
         directory=directory,
-        filename=purefilename,
+        filename=filename,
         file_ext=file_ext,
         added_at=datetime.datetime.now()
     )
-
-    #imageInfo = {'size': imageSize, 'width': image.size[0], 'height': image.size[1]}
-    #return imageInfo
 
     new_image.width = image.size[0]
     new_image.height = image.size[1]
@@ -176,7 +167,7 @@ def save_image_info(directory, filename):
 
     if file_ext == 'jpg':
         save_jpg_exif(new_image, filename)
-    else if file_ext == 'cr2':
+    elif file_ext == 'cr2':
         save_cr2_exif(new_image, filename)
     else:
         print ('[WARNING] No supported extension found')
@@ -228,7 +219,7 @@ def new_archive(collection, images_dir, archive_dir):
 
     create_archive()
 
-    imageCounter = 0
+    image_counter = 0
     for dirname, dirnames, filenames in os.walk(images_dir):
         this_dir = os.path.join(dirname, '')	# be sure to have trailing / and such
         this_dir = this_dir.replace(images_dir, '')
@@ -243,14 +234,8 @@ def new_archive(collection, images_dir, archive_dir):
             this_file = this_file.replace(this_dir, '')
             #print '[Debug] ext: {0}'.format(this_file_ext)
             if  this_file_ext in IMAGEEXTENSIONS:
-                imageInfo = getImageInfo(os.path.join(dirname, filename))
-                imageInfo['filename'] = this_file
-                imageInfo['directory'] = this_dir
-                imageInfo['extension'] = this_file_ext
-                print imageInfo
-                addImage(conn, imageInfo)
-                conn.execute("INSERT INTO image values('{0}', '{1}', '{2}', strftime('now'), strftime('{3}'), '{4}');".format(this_file, this_dir, this_file_ext, 'now', ''))
-                imageCounter = imageCounter + 1
+                save_image_info(directory, os.path.join(dirname, filename), this_file_ext)
+                image_counter = image_counter + 1
             else:
                 prt('i', 'skipped {0}'.format(filename))
 
