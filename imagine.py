@@ -1,38 +1,36 @@
 import datetime
-
-import argparse
+import logging
 import os
-import sqlite3
 import sys
-from socket import gethostname
-from PIL import Image as PILImage, ImageFile as PILImageFile, ExifTags
 from peewee import *
-
+from PIL import Image as PILImage, ImageFile as PILImageFile, ExifTags
 import exifread
+
+DEBUG = True
+#DEBUG = False
+
+logger = logging.getLogger('imagine')
+logger.setLevel(logging.DEBUG)
+#lh = logging.FileHandler('imagine_lib.log')
+lh = logging.StreamHandler()
+if DEBUG == True:
+    lh.setLevel(logging.DEBUG)
+else:
+    lh.setLevel(logging.ERROR)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+lh.setFormatter(formatter)
+logger.addHandler(lh)
 
 DBVERSION = 1
 DATABASE = 'imagine.db' # default value
 IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'cr2']
 IMAGE_EXTENSIONS_RAW = ['cr2']
 
-DEBUG = True
-#DEBUG = False
-
 database = SqliteDatabase(DATABASE)
 # database = None
 
 
-def prt(messageType, message):
-    if DEBUG == False:
-        return
-
-    if messageType == 'i':
-        print '[Info] {0}'.format(message)
-    elif messageType == 'e':
-        print '[Error] {0}'.format(message)
-    elif messageType == 'd':
-        print '[Debug] {0}'.format(message)
-
+# == imagine models
 
 class BaseModel(Model):
     class Meta:
@@ -141,12 +139,12 @@ def save_jpg_exif(image, filename):
                     value_str=v
             )
         except UnicodeDecodeError:
-            print ('[WARNING] Failed to save %s due to UnicodeDecodeError' % k)
+            logger.warning('Failed to save %s due to UnicodeDecodeError' % k)
 
 
 def save_cr2_exif(image, filename):
     """Fetch exif tags for the image Image object from the .cr2 raw file in filename"""
-    print('cr2 support not implemented yet')
+    logger.warning('cr2 support not implemented yet')
 
 
 def save_image_info(directory, the_image, filename, file_ext):
@@ -166,7 +164,7 @@ def save_image_info(directory, the_image, filename, file_ext):
     elif file_ext == 'cr2':
         save_cr2_exif(the_image, filename)
     else:
-        print ('[WARNING] No supported extension found')
+        logger.warning('No supported extension found')
 
     #exif = {
     #        ExifTags.TAGS[k]: v
@@ -199,8 +197,8 @@ def save_image_info(directory, the_image, filename, file_ext):
 def update_collection(collection_name, images_dir, archive_dir):
     """ Creates a new image archive in archive_dir
     """
-    print 'Writing archive to {0}'.format(archive_dir)
-    prt('d', 'images_dir: {0}'.format(images_dir,''))
+    logger.debug('Writing archive to {0}'.format(archive_dir))
+    logger.debug('images_dir: {0}'.format(images_dir,''))
 
     #create_archive()
     collection = Collection.get_or_create(name=collection_name, base_dir=images_dir)
@@ -215,7 +213,7 @@ def walk_archive(collection, images_dir, archive_dir):
         this_dir = this_dir.replace(images_dir, '')
         directory = Directory.create(directory=this_dir, collection=collection)
         for subdirname in dirnames:
-            prt('d', 'dir: {0}'.format(os.path.join(dirname, subdirname)))
+            logger.debug('dir: {0}'.format(os.path.join(dirname, subdirname)))
         #if this_dir.trim() != '':
         #	conn.execute("INSERT INTO directory values('{0}', strftime('now'), '');".format(this_dir))
         total_files = total_files + len(filenames)
@@ -223,7 +221,7 @@ def walk_archive(collection, images_dir, archive_dir):
             #print os.path.join(dirname, filename)
             this_file, this_file_ext = get_filename(images_dir, os.path.join(dirname, filename))
             this_file = this_file.replace(this_dir, '')
-            #print '[Debug] ext: {0}'.format(this_file_ext)
+            #logger.debug('ext: {0}'.format(this_file_ext)
             if this_file_ext in IMAGE_EXTENSIONS:
                 the_image = Image.get_or_create(
                     directory=directory,
@@ -233,9 +231,9 @@ def walk_archive(collection, images_dir, archive_dir):
                 save_image_info(directory, the_image, os.path.join(dirname, filename), this_file_ext)
                 image_counter = image_counter + 1
             else:
-                prt('i', 'skipped {0}'.format(filename))
+                logger.info('skipped {0}'.format(filename))
 
-    prt('i', 'added {0} images to archive out of {1} total'.format(image_counter, total_files))
+    logger.info('added {0} images to archive out of {1} total'.format(image_counter, total_files))
 
     return 42
 
