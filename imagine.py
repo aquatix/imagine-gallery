@@ -32,7 +32,7 @@ try:
 except NameError:
     DATABASE = 'imagine.db' # default value
 
-IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'cr2']
+IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'bmp', 'gif', 'cr2']
 IMAGE_EXTENSIONS_RAW = ['cr2']
 
 try:
@@ -98,6 +98,11 @@ class Image(BaseModel):
     def get_filepath(self):
         return '{0}{1}'.format(self.directory.directory, self.filename)
 
+
+    def get_similar(self):
+        return Image.select().where(Image.image_hash==self.image_hash)
+
+
     def __unicode__(self):
         return self.get_filepath()
 
@@ -132,6 +137,14 @@ def create_archive():
     Image.create_table()
     ExifItem.create_table()
     User.create_table()
+
+
+def is_image(filename):
+    f = filename.lower()
+    for ext in IMAGE_EXTENSIONS:
+        if f.endswith(ext):
+            return True
+    return False
 
 
 def get_filename(directory, filename):
