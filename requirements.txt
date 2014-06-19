@@ -1,5 +1,8 @@
-flask
+# imagine_core
 peewee
+# imagine_web
+flask
+# imagine
 Pillow
 exifread
 imagehash
