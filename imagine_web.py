@@ -13,15 +13,14 @@ app.config.from_object(__name__)
 
 DATABASE='imagine.db'
 
-database = SqliteDatabase(DATABASE)
-
 try:
     from settings import *
 except ImportError:
     pass
 
-from imagine import *
+from imagine_core import *
 
+#database = SqliteDatabase(DATABASE)
 
 # flask provides a "session" object, which allows us to store information across
 # requests (stored by default in a secure cookie).  this function allows us to
