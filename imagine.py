@@ -5,7 +5,7 @@ from imagine_core import *
 from PIL import Image as PILImage, ImageFile as PILImageFile, ExifTags
 import exifread
 from hashlib import md5
-#import imagehash
+import imagehash
 
 try:
     DEBUG
@@ -24,6 +24,18 @@ else:
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 lh.setFormatter(formatter)
 logger.addHandler(lh)
+
+
+def get_filename(directory, filename):
+    """Return (filename, extension) of the file in filename"""
+
+    #newFilename, fileExtension = os.path.splitext(filename)[1][1:].strip()
+    #print os.path.splitext(filename)[1][1:].strip()
+    extension = os.path.splitext(filename)[1][1:].strip().lower()
+    #print '[Info] {0} - {1}'.format(filename, fileExtension)
+
+    new_filename = filename.replace(directory, '')
+    return (new_filename, extension)
 
 
 def save_jpg_exif(image, filename):
@@ -57,7 +69,7 @@ def save_image_info(directory, the_image, filename, file_ext):
 
     if file_ext not in IMAGE_EXTENSIONS_RAW:
         image = PILImage.open(filename)
-        #the_image.image_hash = imagehash.average_hash(image)
+        the_image.image_hash = imagehash.average_hash(image)
 
         the_image.width = image.size[0]
         the_image.height = image.size[1]

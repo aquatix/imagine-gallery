@@ -121,15 +121,3 @@ def is_image(filename):
             return True
     return False
 
-
-def get_filename(directory, filename):
-    """Return (filename, extension) of the file in filename"""
-
-    #newFilename, fileExtension = os.path.splitext(filename)[1][1:].strip()
-    #print os.path.splitext(filename)[1][1:].strip()
-    extension = os.path.splitext(filename)[1][1:].strip().lower()
-    #print '[Info] {0} - {1}'.format(filename, fileExtension)
-
-    new_filename = filename.replace(directory, '')
-    return (new_filename, extension)
-

@@ -1,22 +1,9 @@
 {% extends "layout.html" %}
 {% block body %}
   <h2>Dirs in {{ collection.name }}</h2>
-  {% if current_user %}
-    {% if user.username != current_user.username %}
-      {% if current_user|is_following(user) %}
-        <form action="{{ url_for('user_unfollow', username=user.username) }}" method="post">
-          <input type="submit" value="- Un-follow" />
-        </form>
-      {% else %}
-        <form action="{{ url_for('user_follow', username=user.username) }}" method="post">
-          <input type="submit" value="+ Follow" />
-        </form>
-      {% endif %}
-    {% endif %}
-  {% endif %}
   <ul>
-    {% for directory in dir_list %}
-      <li>{% include "includes/directory.html" %}</li>
+    {% for image_list in dir_list %}
+      <li>{% include "image_overview.html" %}</li>
     {% endfor %}
   </ul>
   {% include "includes/pagination.html" %}
