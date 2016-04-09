@@ -6,5 +6,5 @@ Flask
 click
 # imagine
 Pillow
-exifread
-imagehash
+ExifRead
+ImageHash
