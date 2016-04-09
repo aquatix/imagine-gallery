@@ -1,7 +1,9 @@
 # imagine_core
 peewee
 # imagine_web
-flask
+Flask
+# imagine_cli
+click
 # imagine
 Pillow
 exifread
