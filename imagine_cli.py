@@ -14,38 +14,38 @@ imagine.database = imagine.SqliteDatabase(imagine.DATABASE)
 
 imagine.create_archive()
 
-#imagine.Database = 
+#imagine.Database =
 
 DEBUG = True
 #DEBUG = False
 
 
 def prt(messageType, message):
-	if DEBUG == False:
-		return
+    if DEBUG == False:
+        return
 
-	if messageType == 'i':
-		print '[Info] {0}'.format(message)
-	elif messageType == 'e':
-		print '[Error] {0}'.format(message)
-	elif messageType == 'd':
-		print '[Debug] {0}'.format(message)
+    if messageType == 'i':
+        print '[Info] {0}'.format(message)
+    elif messageType == 'e':
+        print '[Error] {0}'.format(message)
+    elif messageType == 'd':
+        print '[Debug] {0}'.format(message)
 
 
 def new_archive(imagesDir, archiveDir):
-	""" Creates a new image archive in archiveDir
-	"""
-	print 'Writing new archive to {0}'.format(archiveDir)
-	prt('d', 'imagesDir: {0}'.format(imagesDir,''))
+    """ Creates a new image archive in archiveDir
+    """
+    print 'Writing new archive to {0}'.format(archiveDir)
+    prt('d', 'imagesDir: {0}'.format(imagesDir,''))
 
 
 def update_archive(imagesDir, archiveDir):
-	""" Updates existing image archive archiveDir with new images in imagesDir"""
-	print 'Updating archive {0}'.format(archiveDir)
+    """ Updates existing image archive archiveDir with new images in imagesDir"""
+    print 'Updating archive {0}'.format(archiveDir)
 
-	# check for DB version, update if necessary
+    # check for DB version, update if necessary
 
-	return 42
+    return 42
 
 
 
@@ -66,11 +66,11 @@ imagesDir = os.path.join(imagesDir,'')
 archiveDir = os.path.join(archiveDir,'')
 
 if not os.path.isdir(archiveDir):
-	sys.exit('[Error] Archive directory ' + archiveDir + ' does not exist')
+    sys.exit('[Error] Archive directory ' + archiveDir + ' does not exist')
 
 print 'Scanning {0}'.format(imagesDir)
 
 if os.path.isfile(args.archiveDir + '/' + DBFILE):
-	updateArchive(imagesDir, archiveDir)
+    updateArchive(imagesDir, archiveDir)
 else:
-	newArchive(imagesDir, archiveDir)
+    newArchive(imagesDir, archiveDir)
