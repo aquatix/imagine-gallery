@@ -1,18 +1,13 @@
 import datetime
 
-import argparse
 import os
-import sqlite3
 import sys
-from socket import gethostname
+import click
 
 import imagine
+from utilkit import fileutil
 
-DBVERSION = 1
-imagine.DATABASE = 'imagine_cli.db'
-imagine.database = imagine.SqliteDatabase(imagine.DATABASE)
-
-imagine.create_archive()
+#imagine.create_archive()
 
 #imagine.Database =
 
@@ -32,45 +27,35 @@ def prt(messageType, message):
         print '[Debug] {0}'.format(message)
 
 
-def new_archive(imagesDir, archiveDir):
-    """ Creates a new image archive in archiveDir
+## Main program
+@click.group()
+def cli():
     """
-    print 'Writing new archive to {0}'.format(archiveDir)
-    prt('d', 'imagesDir: {0}'.format(imagesDir,''))
+    imagine image archive
+    """
+    pass
 
 
-def update_archive(imagesDir, archiveDir):
-    """ Updates existing image archive archiveDir with new images in imagesDir"""
-    print 'Updating archive {0}'.format(archiveDir)
+@cli.command()
+@click.option('-i', '--inputdir', prompt='Input/source directory path', help='Input/source directory path')
+@click.option('-a', '--archivedir', prompt='Archive/target directory path', help='Archive/target directory path')
+def update_archive(inputdir, archivedir):
+    print('Updating or creating archive in {0} from source at {1}'.format(archivedir, inputdir))
 
-    # check for DB version, update if necessary
+    # expand directories and appending / if needed
+    inputdir = os.path.join(inputdir,'')
+    archivedir = os.path.join(archivedir,'')
 
-    return 42
+    fileutil.ensure_dir_exists(archivedir)
+
+    print 'Scanning {0}'.format(inputdir)
+
+    imagine.DATABASE = os.path.join(archivedir, 'imagine_cli.db')
+    imagine.database = imagine.SqliteDatabase(imagine.DATABASE)
 
 
-
-parser = argparse.ArgumentParser(description='Image archive')
-
-parser.add_argument('imagesDir', help='directory with your images')
-parser.add_argument('archiveDir', help='directory to store the image archive in')
-
-args = parser.parse_args()
-#print vars(args)
-#argparse.Namespace(origFile='inputFile')
-
-imagesDir = args.imagesDir
-archiveDir = args.archiveDir
-
-# expand directories and appending / if needed
-imagesDir = os.path.join(imagesDir,'')
-archiveDir = os.path.join(archiveDir,'')
-
-if not os.path.isdir(archiveDir):
-    sys.exit('[Error] Archive directory ' + archiveDir + ' does not exist')
-
-print 'Scanning {0}'.format(imagesDir)
-
-if os.path.isfile(args.archiveDir + '/' + imagine.DATABASE):
-    updateArchive(imagesDir, archiveDir)
-else:
-    newArchive(imagesDir, archiveDir)
+if __name__ == '__main__':
+    """
+    imagine is ran standalone
+    """
+    cli()
