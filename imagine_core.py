@@ -24,6 +24,7 @@ class BaseModel(Model):
 
 
 class Collection(BaseModel):
+    """Collection of images in a certain base_dir"""
     name = CharField()
     slug = CharField(null=True)
     base_dir = CharField()
@@ -35,6 +36,7 @@ class Collection(BaseModel):
 
 
 class Directory(BaseModel):
+    """Directory/collection umbrella object"""
     directory = CharField()
     collection = ForeignKeyField(Collection)
 
@@ -48,6 +50,7 @@ class Directory(BaseModel):
 
 
 class Image(BaseModel):
+    """Image object, with generic image file information"""
     directory = ForeignKeyField(Directory, related_name='parent')
     filename = CharField()
     file_ext = CharField()
@@ -83,6 +86,7 @@ class Image(BaseModel):
 
 
 class ExifItem(BaseModel):
+    """Piece of exif info of a certain Image"""
     image = ForeignKeyField(Image)
     key = CharField()
     value_str = CharField(null=True)
@@ -90,8 +94,14 @@ class ExifItem(BaseModel):
     value_float = FloatField(null=True)
 
     def get_value(as_type='str'):
-        # TODO: be able to return _int or _float
-        return value_str
+        if value_str:
+            return value_str
+        elif value_int:
+            return value_int
+        elif value_float:
+            return value_float
+        else:
+            return None
 
 
 # the user model specifies its fields (or columns) declaratively, like django

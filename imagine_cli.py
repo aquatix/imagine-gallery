@@ -70,7 +70,7 @@ if not os.path.isdir(archiveDir):
 
 print 'Scanning {0}'.format(imagesDir)
 
-if os.path.isfile(args.archiveDir + '/' + DBFILE):
+if os.path.isfile(args.archiveDir + '/' + imagine.DATABASE):
     updateArchive(imagesDir, archiveDir)
 else:
     newArchive(imagesDir, archiveDir)
