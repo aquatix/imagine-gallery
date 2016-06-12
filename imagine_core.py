@@ -70,6 +70,11 @@ class Image(BaseModel):
     image_hash = CharField(null=True)
     thumb_hash = CharField(null=True)
 
+    # TODO: GPS geotag
+    # http://stackoverflow.com/questions/10799366/geotagging-jpegs-with-pyexiv2
+    # https://pypi.python.org/pypi/geopy
+    # https://pypi.python.org/pypi/LatLon
+
     class Meta:
         order_by = ('filename',)
 
