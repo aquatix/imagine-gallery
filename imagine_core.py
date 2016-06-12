@@ -10,10 +10,11 @@ except NameError:
 IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'bmp', 'gif', 'cr2']
 IMAGE_EXTENSIONS_RAW = ['cr2']
 
-try:
-    database
-except NameError:
-    database = SqliteDatabase(DATABASE)
+#try:
+#    database
+#except NameError:
+#    database = SqliteDatabase(DATABASE)
+database = None
 
 
 # == imagine models
