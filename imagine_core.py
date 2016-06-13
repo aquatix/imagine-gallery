@@ -14,7 +14,6 @@ database = SqliteDatabase(None)
 class BaseModel(Model):
     class Meta:
         database = database
-        print database
 
 
 class Collection(BaseModel):
