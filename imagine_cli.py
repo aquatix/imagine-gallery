@@ -59,8 +59,9 @@ def update_archive(inputdir, archivedir):
     imagine.database = imagine.SqliteDatabase(db_file)
     imagine.BaseModel.database = imagine.database
 
+    imagine.init_db(db_file)
     if should_create:
-        imagine.create_archive(db_file)
+        imagine.create_archive()
 
     imagine.update_collection('test', 'test-slug', inputdir, archivedir)
 

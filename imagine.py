@@ -68,11 +68,14 @@ def save_image_info(directory, the_image, filename, file_ext):
     the_image.save()
 
     if file_ext not in IMAGE_EXTENSIONS_RAW:
-        image = PILImage.open(filename)
-        the_image.image_hash = imagehash.average_hash(image)
+        try:
+            image = PILImage.open(filename)
+            the_image.image_hash = imagehash.average_hash(image)
 
-        the_image.width = image.size[0]
-        the_image.height = image.size[1]
+            the_image.width = image.size[0]
+            the_image.height = image.size[1]
+        except IOError:
+            logger.error('IOError opening ' + filename)
 
     if file_ext == 'jpg':
         save_jpg_exif(the_image, filename)
@@ -117,7 +120,7 @@ def update_collection(collection_name, collection_slug, images_dir, archive_dir)
 
     #create_archive()
     collection = Collection.get_or_create(name=collection_name, slug=collection_slug, base_dir=images_dir)
-    walk_archive(collection, images_dir, archive_dir)
+    walk_archive(collection[0], images_dir, archive_dir)
 
 
 def walk_archive(collection, images_dir, archive_dir):
@@ -142,7 +145,7 @@ def walk_archive(collection, images_dir, archive_dir):
                     filename=filename,
                     file_ext=this_file_ext
                 )
-                save_image_info(directory, the_image, os.path.join(dirname, filename), this_file_ext)
+                save_image_info(directory, the_image[0], os.path.join(dirname, filename), this_file_ext)
                 logger.debug(the_image)
                 image_counter = image_counter + 1
             else:

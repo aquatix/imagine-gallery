@@ -114,8 +114,10 @@ class User(BaseModel):
         order_by = ('username',)
 
 
-def create_archive(db_file):
+def init_db(db_file):
     database.init(db_file)
+
+def create_archive():
     database.connect()
     Collection.create_table()
     Directory.create_table()
