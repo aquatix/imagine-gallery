@@ -50,8 +50,19 @@ def update_archive(inputdir, archivedir):
 
     print 'Scanning {0}'.format(inputdir)
 
-    imagine.DATABASE = os.path.join(archivedir, 'imagine_cli.db')
-    imagine.database = imagine.SqliteDatabase(imagine.DATABASE)
+    db_file = os.path.join(archivedir, 'imagine_cli.db')
+    should_create = True
+    print db_file
+    if os.path.exists(db_file):
+        should_create = False
+
+    imagine.database = imagine.SqliteDatabase(db_file)
+    imagine.BaseModel.database = imagine.database
+
+    if should_create:
+        imagine.create_archive(db_file)
+
+    imagine.update_collection('test', 'test-slug', inputdir, archivedir)
 
 
 if __name__ == '__main__':

@@ -2,19 +2,11 @@ import datetime
 from peewee import *
 
 DBVERSION = 1
-try:
-    DATABASE
-except NameError:
-    DATABASE = 'imagine.db' # default value
 
 IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'bmp', 'gif', 'cr2']
 IMAGE_EXTENSIONS_RAW = ['cr2']
 
-#try:
-#    database
-#except NameError:
-#    database = SqliteDatabase(DATABASE)
-database = None
+database = SqliteDatabase(None)
 
 
 # == imagine models
@@ -22,6 +14,7 @@ database = None
 class BaseModel(Model):
     class Meta:
         database = database
+        print database
 
 
 class Collection(BaseModel):
@@ -121,7 +114,8 @@ class User(BaseModel):
         order_by = ('username',)
 
 
-def create_archive():
+def create_archive(db_file):
+    database.init(db_file)
     database.connect()
     Collection.create_table()
     Directory.create_table()
