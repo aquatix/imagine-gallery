@@ -119,17 +119,20 @@ def update_collection(collection_name, collection_slug, images_dir, archive_dir)
     logger.debug('images_dir: {0}'.format(images_dir,''))
 
     #create_archive()
-    collection = Collection.get_or_create(name=collection_name, slug=collection_slug, base_dir=images_dir)
-    walk_archive(collection[0], images_dir, archive_dir)
+    collection, created = Collection.get_or_create(name=collection_name, slug=collection_slug, base_dir=images_dir)
+    logger.debug('Collection created: ' + str(created))
+    walk_archive(collection, images_dir, archive_dir)
 
 
 def walk_archive(collection, images_dir, archive_dir):
     image_counter = 0
+    skipped_counter = 0
     total_files = 0
     for dirname, dirnames, filenames in os.walk(images_dir):
         this_dir = os.path.join(dirname, '')	# be sure to have trailing / and such
         logger.debug(this_dir)
-        directory = Directory.create(directory=this_dir, collection=collection)
+        directory, created = Directory.get_or_create(directory=this_dir, collection=collection)
+        logger.debug('Directory created: ' + str(created))
         this_dir = this_dir.replace(images_dir, '')
         for subdirname in dirnames:
             logger.debug('dir: {0}'.format(os.path.join(dirname, subdirname)))
@@ -140,18 +143,22 @@ def walk_archive(collection, images_dir, archive_dir):
             this_file = this_file.replace(this_dir, '')
             #logger.debug('ext: {0}'.format(this_file_ext)
             if this_file_ext in IMAGE_EXTENSIONS:
-                the_image = Image.get_or_create(
+                the_image, created = Image.get_or_create(
                     directory=directory,
                     filename=filename,
                     file_ext=this_file_ext
                 )
-                save_image_info(directory, the_image[0], os.path.join(dirname, filename), this_file_ext)
-                logger.debug(the_image)
-                image_counter = image_counter + 1
+                if created:
+                    # Only save if new image
+                    save_image_info(directory, the_image, os.path.join(dirname, filename), this_file_ext)
+                    logger.debug(the_image)
+                    image_counter = image_counter + 1
+                else:
+                    skipped_counter = skipped_counter + 1
             else:
                 logger.info('skipped {0}'.format(filename))
 
-    logger.info('added {0} images to archive out of {1} total'.format(image_counter, total_files))
+    logger.info('added {0} images to archive out of {1} total, skipped {2}'.format(image_counter, total_files, skipped_counter))
 
     return 42
 
