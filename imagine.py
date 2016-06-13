@@ -53,7 +53,7 @@ def save_jpg_exif(image, filename):
                     value_str=v
             )
         except UnicodeDecodeError:
-            logger.warning('Failed to save %s due to UnicodeDecodeError' % k)
+            logger.warning('Failed to save exif item %s due to UnicodeDecodeError' % k)
 
 
 def save_cr2_exif(image, filename):
@@ -74,6 +74,9 @@ def save_image_info(directory, the_image, filename, file_ext):
 
             the_image.width = image.size[0]
             the_image.height = image.size[1]
+
+            # Done with image info for now, save
+            the_image.save()
         except IOError:
             logger.error('IOError opening ' + filename)
 
