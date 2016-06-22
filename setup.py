@@ -16,8 +16,8 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-    name='imagine', # pip install imagine
-    description='Image archive',
+    name='imagine-core', # pip install imagine
+    description='Image archive, core (models)',
     #long_description=open('README.md', 'rt').read(),
     long_description=long_description,
 
@@ -29,15 +29,15 @@ setup(
     author='Michiel Scholten',
     author_email='michiel@diginaut.net',
 
-    url='https://github.com/aquatix/imagine/',
+    url='https://github.com/aquatix/imagine-core',
     license='Apache',
 
     # as a practice no need to hard code version unless you know program wont
     # work unless the specific versions are used
-    install_requires=['Pillow', 'peewee', 'click', 'utilkit>=0.3.0'],
+    install_requires=['peewee'],
     # Flask for web
 
-    py_modules=['imagine'],
+    py_modules=['imagine-core'],
 
     zip_safe=True,
 )

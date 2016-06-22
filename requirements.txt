@@ -1,10 +1,2 @@
 # imagine_core
 peewee
-# imagine_web
-Flask
-# imagine_cli
-click
-# imagine
-Pillow
-ExifRead
-ImageHash
