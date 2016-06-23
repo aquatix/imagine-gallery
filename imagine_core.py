@@ -50,6 +50,7 @@ class Image(BaseModel):
     filetype = CharField(null=True)
     filesize = IntegerField(default=-1)
     file_modified = DateTimeField(null=True)
+    exif_modified = DateTimeField(null=True)
 
     added_at = DateTimeField(default=datetime.datetime.now())
     title = TextField(default='')
@@ -100,6 +101,13 @@ class ExifItem(BaseModel):
             return value_float
         else:
             return None
+
+
+class Event(BaseModel):
+    """Timeframe in which something happened, enabling grouping of images"""
+    title = CharField()
+    start_datetime = DateTimeField()
+    end_datetime = DateTimeField()
 
 
 # the user model specifies its fields (or columns) declaratively, like django
