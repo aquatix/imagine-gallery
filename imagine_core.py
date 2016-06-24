@@ -51,8 +51,12 @@ class Image(BaseModel):
     file_ext = CharField()
     filetype = CharField(null=True)
     filesize = IntegerField(default=-1)
+
+    # Datetime stamps
     file_modified = DateTimeField(null=True)
     exif_modified = DateTimeField(null=True)
+    # Contains either file_modified or exif_modified, used for filtering into events and such:
+    filter_modified = DateTimeField()
 
     added_at = DateTimeField(default=datetime.datetime.now())
     title = TextField(default='')
@@ -83,7 +87,7 @@ class Image(BaseModel):
 
 
     def modified_datetime(self):
-        """Returns file_modified or exif_modified, whichever is more accurate"""
+        """Returns file_modified or exif_modified, whichever is more accurate, redundant over filter_modified"""
         if exif_modified:
             return exif_modified
         else:
