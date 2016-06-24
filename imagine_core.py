@@ -82,6 +82,14 @@ class Image(BaseModel):
         return Image.select().where(Image.image_hash==self.image_hash)
 
 
+    def modified_datetime(self):
+        """Returns file_modified or exif_modified, whichever is more accurate"""
+        if exif_modified:
+            return exif_modified
+        else:
+            return file_modified
+
+
     def __unicode__(self):
         return self.get_filepath()
 
