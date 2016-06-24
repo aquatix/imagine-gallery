@@ -22,7 +22,7 @@ class Collection(BaseModel):
     slug = CharField(null=True)
     base_dir = CharField()
 
-    password = CharField() # TODO: something with encryption, preferably through a function in the model
+    password = CharField(null=True) # TODO: something with encryption, preferably through a function in the model
 
     added_at = DateTimeField(default=datetime.datetime.now())
 
@@ -56,7 +56,7 @@ class Image(BaseModel):
     file_modified = DateTimeField(null=True)
     exif_modified = DateTimeField(null=True)
     # Contains either file_modified or exif_modified, used for filtering into events and such:
-    filter_modified = DateTimeField()
+    filter_modified = DateTimeField(null=True)
 
     added_at = DateTimeField(default=datetime.datetime.now())
     title = TextField(default='')
@@ -137,6 +137,7 @@ class User(BaseModel):
 
 def init_db(db_file):
     database.init(db_file)
+
 
 def create_archive():
     database.connect()
