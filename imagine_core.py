@@ -119,6 +119,14 @@ class ExifItem(BaseModel):
             return None
 
 
+class Comment(BaseModel):
+    """Comment on an image"""
+    image = ForeignKeyField(Image)
+    name = CharField()
+    email = CharField()
+    comment = CharField()
+
+
 class Event(BaseModel):
     """Timeframe in which something happened, enabling grouping of images"""
     title = CharField()
