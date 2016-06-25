@@ -22,6 +22,8 @@ class Collection(BaseModel):
     slug = CharField(null=True)
     base_dir = CharField()
 
+    description = CharField(null=True)
+
     password = CharField(null=True) # TODO: something with encryption, preferably through a function in the model
 
     added_at = DateTimeField(default=datetime.datetime.now())
