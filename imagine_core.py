@@ -9,8 +9,6 @@ IMAGE_EXTENSIONS_RAW = ['cr2']
 database = SqliteDatabase(None)
 
 
-# == imagine models
-
 class BaseModel(Model):
     class Meta:
         database = database
@@ -24,7 +22,7 @@ class Collection(BaseModel):
 
     description = CharField(null=True)
 
-    password = CharField(null=True) # TODO: something with encryption, preferably through a function in the model
+    password = CharField(null=True)  # TODO: something with encryption, preferably through a function in the model
 
     added_at = DateTimeField(default=datetime.datetime.now())
 
@@ -134,8 +132,9 @@ class Event(BaseModel):
     end_datetime = DateTimeField()
 
 
-# the user model specifies its fields (or columns) declaratively, like django
+# The User model specifies its fields (or columns) declaratively, like Django
 class User(BaseModel):
+    """User model for content protection"""
     username = CharField(unique=True)
     password = CharField()
     email = CharField()
@@ -146,10 +145,12 @@ class User(BaseModel):
 
 
 def init_db(db_file):
+    """Peewee database initialisation"""
     database.init(db_file)
 
 
 def create_archive():
+    """Peewee database initialisation: creation of tables"""
     database.connect()
     Collection.create_table()
     Directory.create_table()
@@ -159,8 +160,12 @@ def create_archive():
 
 
 def is_image(filename):
+    """Is file in `filename` of a supported image type"""
     f = filename.lower()
     for ext in IMAGE_EXTENSIONS:
+        if f.endswith(ext):
+            return True
+    for ext in IMAGE_EXTENSIONS_RAW:
         if f.endswith(ext):
             return True
     return False
