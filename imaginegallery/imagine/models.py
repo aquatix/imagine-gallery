@@ -6,9 +6,6 @@ from django.utils.translation import ugettext as _
 
 from django_extensions.db.fields import AutoSlugField
 
-IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'bmp', 'gif', 'cr2']
-IMAGE_EXTENSIONS_RAW = ['cr2']
-
 
 class BaseModel(models.Model):
     created = models.DateTimeField(auto_now_add=True)
@@ -47,6 +44,10 @@ class Directory(BaseModel):
 
 class Image(BaseModel):
     """Image object, with generic image file information"""
+
+    IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'bmp', 'gif', 'cr2']
+    IMAGE_EXTENSIONS_RAW = ['cr2']
+
     directory = ForeignKeyField(Directory, related_name='parent')
     filename = CharField()
     file_ext = CharField()
@@ -95,6 +96,19 @@ class Image(BaseModel):
             return file_modified
 
 
+    @classmethod
+    def is_image(cls, filename):
+        """Is file in `filename` of a supported image type"""
+        f = filename.lower()
+        for ext in IMAGE_EXTENSIONS:
+            if f.endswith(ext):
+                return True
+        for ext in IMAGE_EXTENSIONS_RAW:
+            if f.endswith(ext):
+                return True
+        return False
+
+
     def __unicode__(self):
         return self.get_filepath()
 
@@ -131,42 +145,3 @@ class Event(BaseModel):
     title = CharField()
     start_datetime = DateTimeField()
     end_datetime = DateTimeField()
-
-
-# The User model specifies its fields (or columns) declaratively, like Django
-class User(BaseModel):
-    """User model for content protection"""
-    username = CharField(unique=True)
-    password = CharField()
-    email = CharField()
-    join_date = DateTimeField()
-
-    class Meta:
-        order_by = ('username',)
-
-
-def init_db(db_file):
-    """Peewee database initialisation"""
-    database.init(db_file)
-
-
-def create_archive():
-    """Peewee database initialisation: creation of tables"""
-    database.connect()
-    Collection.create_table()
-    Directory.create_table()
-    Image.create_table()
-    ExifItem.create_table()
-    User.create_table()
-
-
-def is_image(filename):
-    """Is file in `filename` of a supported image type"""
-    f = filename.lower()
-    for ext in IMAGE_EXTENSIONS:
-        if f.endswith(ext):
-            return True
-    for ext in IMAGE_EXTENSIONS_RAW:
-        if f.endswith(ext):
-            return True
-    return False

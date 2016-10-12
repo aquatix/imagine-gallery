@@ -1,11 +1,14 @@
+# encoding: utf-8
+
+from __future__ import absolute_import
+
 import datetime
 import logging
 import os
 import sys
 import click
-#from imagine_core import *
 import imagine_core
-from imagine_core import Collection, Directory, Image, ExifItem, Event
+from imagine.models import Collection, Directory, Image, ExifItem, Event
 from utilkit import fileutil
 from PIL import Image as PILImage, ImageFile as PILImageFile, ExifTags
 import exifread
