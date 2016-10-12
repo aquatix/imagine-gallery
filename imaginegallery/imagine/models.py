@@ -1,17 +1,18 @@
-import datetime
-from peewee import *
+from django.conf import settings
+from django.core.urlresolvers import reverse
+from django.db import models
+from django.dispatch import receiver
+from django.utils.translation import ugettext as _
 
-DBVERSION = 1
+from django_extensions.db.fields import AutoSlugField
 
 IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'bmp', 'gif', 'cr2']
 IMAGE_EXTENSIONS_RAW = ['cr2']
 
-database = SqliteDatabase(None)
 
-
-class BaseModel(Model):
-    class Meta:
-        database = database
+class BaseModel(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
 
 
 class Collection(BaseModel):
@@ -169,4 +170,3 @@ def is_image(filename):
         if f.endswith(ext):
             return True
     return False
-
