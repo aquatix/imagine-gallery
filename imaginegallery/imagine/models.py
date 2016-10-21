@@ -6,7 +6,7 @@ from django.db import models
 from django.dispatch import receiver
 from django.utils.translation import ugettext as _
 
-from django_extensions.db.fields import AutoSlugField
+#from django_extensions.db.fields import AutoSlugField
 
 
 class BaseModel(models.Model):
@@ -76,8 +76,8 @@ class Image(BaseModel):
     # https://pypi.python.org/pypi/geopy
     # https://pypi.python.org/pypi/LatLon
 
-    class Meta:
-        order_by = ('filename',)
+    #class Meta:
+    #    order_by = ('filename',)
 
 
     def get_filepath(self):
