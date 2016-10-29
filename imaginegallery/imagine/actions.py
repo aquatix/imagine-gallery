@@ -6,8 +6,6 @@ import datetime
 import logging
 import os
 import sys
-import click
-import imagine_core
 from imagine.models import Collection, Directory, Image, ExifItem, Event
 from utilkit import fileutil
 from PIL import Image as PILImage, ImageFile as PILImageFile, ExifTags
@@ -174,20 +172,11 @@ def walk_archive(collection, images_dir, archive_dir):
     return 42
 
 
-## Main program
-@click.group()
-def cli():
-    """
-    imagine image archive
-    """
-    pass
-
-
-@cli.command()
-@click.option('-i', '--inputdir', prompt='Input/source directory path', help='Input/source directory path')
-@click.option('-a', '--archivedir', prompt='Archive/target directory path', help='Archive/target directory path')
 def update_archive(inputdir, archivedir):
-    print('Updating or creating archive in {0} from source at {1}'.format(archivedir, inputdir))
+    """
+    inputdir', prompt='Input/source directory path', help='Input/source directory path')
+    archivedir', prompt='Archive/target directory path', help='Archive/target directory path')
+    """
 
     # expand directories and appending / if needed
     inputdir = os.path.join(inputdir,'')
@@ -208,10 +197,3 @@ def update_archive(inputdir, archivedir):
         imagine_core.create_archive()
 
     update_collection('test', 'test-slug', inputdir, archivedir)
-
-
-if __name__ == '__main__':
-    """
-    imagine is ran standalone
-    """
-    cli()
