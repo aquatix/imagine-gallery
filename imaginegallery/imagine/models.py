@@ -13,16 +13,19 @@ class BaseModel(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        abstract = True
+
 
 class Collection(BaseModel):
     """Collection of images in a certain base_dir"""
-    name = models.CharField()
-    slug = models.CharField(null=True)
-    base_dir = models.CharField()
+    title = models.CharField(max_length=255)
+    slug = models.CharField(max_length=255, null=True)
+    base_dir = models.CharField(max_length=255)
 
-    description = models.CharField(null=True)
+    description = models.TextField(null=True)
 
-    password = models.CharField(null=True)  # TODO: something with encryption, preferably through a function in the model
+    password = models.CharField(max_length=255, null=True)  # TODO: something with encryption, preferably through a function in the model
 
     def __unicode__(self):
         return '{0} ({1})'.format(self.name, self.base_dir)
@@ -30,10 +33,8 @@ class Collection(BaseModel):
 
 class Directory(BaseModel):
     """Directory/collection umbrella object"""
-    directory = models.CharField()
+    directory = models.CharField(max_length=255)
     collection = models.ForeignKey(Collection)
-
-    added_at = models.DateTimeField(default=datetime.datetime.now())
 
     def get_filepath(self, filename):
         return '{0}{1}'.format(self.directory, filename)
@@ -49,9 +50,9 @@ class Image(BaseModel):
     IMAGE_EXTENSIONS_RAW = ['cr2']
 
     directory = models.ForeignKey(Directory, related_name='parent')
-    filename = models.CharField()
-    file_ext = models.CharField()
-    filetype = models.CharField(null=True)
+    filename = models.CharField(max_length=255)
+    file_ext = models.CharField(max_length=255)
+    filetype = models.CharField(max_length=255, null=True)
     filesize = models.IntegerField(default=-1)
 
     # Datetime stamps
@@ -60,7 +61,6 @@ class Image(BaseModel):
     # Contains either file_modified or exif_modified, used for filtering into events and such:
     filter_modified = models.DateTimeField(null=True)
 
-    added_at = models.DateTimeField(default=datetime.datetime.now())
     title = models.TextField(default='')
     description = models.TextField(default='')
     is_visible = models.BooleanField(default=True)
@@ -68,8 +68,8 @@ class Image(BaseModel):
     width = models.IntegerField(default=-1)
     height = models.IntegerField(default=-1)
 
-    image_hash = models.CharField(null=True)
-    thumb_hash = models.CharField(null=True)
+    image_hash = models.CharField(max_length=255, null=True)
+    thumb_hash = models.CharField(max_length=255, null=True)
 
     # TODO: GPS geotag
     # http://stackoverflow.com/questions/10799366/geotagging-jpegs-with-pyexiv2
@@ -116,8 +116,8 @@ class Image(BaseModel):
 class ExifItem(BaseModel):
     """Piece of exif info of a certain Image"""
     image = models.ForeignKey(Image)
-    key = models.CharField()
-    value_str = models.CharField(null=True)
+    key = models.CharField(max_length=255)
+    value_str = models.CharField(max_length=255, null=True)
     value_int = models.IntegerField(null=True)
     value_float = models.FloatField(null=True)
 
@@ -135,13 +135,15 @@ class ExifItem(BaseModel):
 class Comment(BaseModel):
     """Comment on an image"""
     image = models.ForeignKey(Image)
-    name = models.CharField()
-    email = models.CharField()
-    comment = models.CharField()
+    name = models.CharField(max_length=255)
+    email = models.EmailField(max_length=254)
+    comment = models.TextField(default='')
 
 
 class Event(BaseModel):
     """Timeframe in which something happened, enabling grouping of images"""
-    title = models.CharField()
+    title = models.CharField(max_length=255)
+    description = models.TextField(default='')
+
     start_datetime = models.DateTimeField()
     end_datetime = models.DateTimeField()
