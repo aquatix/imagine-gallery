@@ -5,16 +5,16 @@ class Command(BaseCommand):
     help = 'Update the listing of images from a certain directory'
 
     def add_arguments(self, parser):
-        parser.add_argument('dir_id', nargs='+', type=int)
+        parser.add_argument('path', nargs='+')
 
     def handle(self, *args, **options):
-        for poll_id in options['dir_id']:
+        for path in options['path']:
             try:
-                directory = Directory.objects.get(pk=dir_id)
+                directory = Directory.objects.get(directory=path)
             except Directory.DoesNotExist:
-                raise CommandError('Directory "%s" does not exist' % dir_id)
+                raise CommandError('Directory "%s" does not exist' % path)
 
-            print(directory.path)
+            print(directory.directory)
 
-            self.stdout.write(self.style.SUCCESS('Successfully printed directory "%s"' % dir_id))
+            self.stdout.write(self.style.SUCCESS('Successfully printed directory "%s"' % path))
 
