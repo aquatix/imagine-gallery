@@ -20,15 +20,15 @@ class BaseModel(models.Model):
 class Collection(BaseModel):
     """Collection of images in a certain base_dir"""
     title = models.CharField(max_length=255)
-    slug = models.CharField(max_length=255, null=True)
-    base_dir = models.CharField(max_length=255)
+    slug = models.CharField(max_length=255, null=True, blank=True)
+    base_dir = models.CharField(max_length=255, blank=True)
 
-    description = models.TextField(null=True)
+    description = models.TextField(null=True, blank=True)
 
-    password = models.CharField(max_length=255, null=True)  # TODO: something with encryption, preferably through a function in the model
+    password = models.CharField(max_length=255, null=True, blank=True)  # TODO: something with encryption, preferably through a function in the model
 
     def __unicode__(self):
-        return '{0} ({1})'.format(self.name, self.base_dir)
+        return '{0} ({1})'.format(self.title, self.base_dir)
 
 
 class Directory(BaseModel):

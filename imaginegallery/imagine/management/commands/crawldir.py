@@ -1,5 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
 from imagine.models import Directory
+from imagine.actions import update_collection
 
 class Command(BaseCommand):
     help = 'Update the listing of images from a certain directory'
@@ -16,5 +17,8 @@ class Command(BaseCommand):
 
             print(directory.directory)
 
-            self.stdout.write(self.style.SUCCESS('Successfully printed directory "%s"' % path))
+            #update_collection()
+
+            # TODO: log
+            self.stdout.write(self.style.SUCCESS('Successfully updated directory "%s"' % path))
 
