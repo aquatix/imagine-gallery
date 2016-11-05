@@ -7,7 +7,6 @@ import logging
 import os
 import sys
 from imagine.models import Collection, Directory, Image, ExifItem, Event
-from utilkit import fileutil
 from PIL import Image as PILImage, ImageFile as PILImageFile, ExifTags
 import exifread
 from hashlib import md5
@@ -53,11 +52,12 @@ def save_jpg_exif(image, filename):
     exif = exifread.process_file(f)
     for k, v in exif.items():
         try:
-            exif_item = ExifItem.create(
+            exif_item = ExifItem(
                     image=image,
                     key=k,
                     value_str=v
             )
+            exif_item.save()
         except UnicodeDecodeError:
             logger.warning('Failed to save exif item %s due to UnicodeDecodeError' % k)
 
@@ -73,7 +73,7 @@ def save_image_info(directory, the_image, filename, file_ext):
     the_image.filesize = os.stat(filename).st_size
     the_image.save()
 
-    if file_ext not in imagine_core.IMAGE_EXTENSIONS_RAW:
+    if file_ext not in Image.IMAGE_EXTENSIONS_RAW:
         try:
             image = PILImage.open(filename)
             the_image.image_hash = imagehash.average_hash(image)
@@ -121,38 +121,39 @@ def save_image_info(directory, the_image, filename, file_ext):
 #	print image.size().height()
 
 
-def update_collection(collection_name, collection_slug, images_dir, archive_dir):
+#def update_collection(collection_name, collection_slug, images_dir, archive_dir):
+def update_collection(collection):
     """ Creates a new image archive in archive_dir
     """
-    logger.debug('Writing archive to {0}'.format(archive_dir))
-    logger.debug('images_dir: {0}'.format(images_dir,''))
+    #logger.debug('Writing archive to {0}'.format(archive_dir))
+    #logger.debug('images_dir: {0}'.format(images_dir,''))
 
     #create_archive()
-    collection, created = Collection.get_or_create(name=collection_name, slug=collection_slug, base_dir=images_dir)
-    logger.debug('Collection created: ' + str(created))
-    walk_archive(collection, images_dir, archive_dir)
+    #collection, created = Collection.get_or_create(name=collection_name, slug=collection_slug, base_dir=images_dir)
+    #logger.debug('Collection created: ' + str(created))
+    _walk_archive(collection)
 
 
-def walk_archive(collection, images_dir, archive_dir):
+def _walk_archive(collection):
     image_counter = 0
     skipped_counter = 0
     total_files = 0
-    for dirname, dirnames, filenames in os.walk(images_dir):
-        this_dir = os.path.join(dirname, '')	# be sure to have trailing / and such
+    for dirname, dirnames, filenames in os.walk(collection.base_dir):
+        this_dir = os.path.join(dirname, '')  # be sure to have trailing / and such
         logger.debug(this_dir)
-        directory, created = Directory.get_or_create(directory=this_dir, collection=collection)
+        directory, created = Directory.objects.get_or_create(directory=this_dir, collection=collection)
         logger.debug('Directory created: ' + str(created))
-        this_dir = this_dir.replace(images_dir, '')
+        this_dir = this_dir.replace(collection.base_dir, '')
         for subdirname in dirnames:
             logger.debug('dir: {0}'.format(os.path.join(dirname, subdirname)))
         total_files = total_files + len(filenames)
         for filename in filenames:
             #print os.path.join(dirname, filename)
-            this_file, this_file_ext = get_filename(images_dir, os.path.join(dirname, filename))
+            this_file, this_file_ext = get_filename(collection.base_dir, os.path.join(dirname, filename))
             this_file = this_file.replace(this_dir, '')
             #logger.debug('ext: {0}'.format(this_file_ext)
-            if this_file_ext in imagine_core.IMAGE_EXTENSIONS:
-                the_image, created = Image.get_or_create(
+            if this_file_ext in Image.IMAGE_EXTENSIONS:
+                the_image, created = Image.objects.get_or_create(
                     directory=directory,
                     filename=filename,
                     file_ext=this_file_ext
@@ -170,30 +171,3 @@ def walk_archive(collection, images_dir, archive_dir):
     logger.info('added {0} images to archive out of {1} total, skipped {2}'.format(image_counter, total_files, skipped_counter))
 
     return 42
-
-
-def update_archive(inputdir, archivedir):
-    """
-    inputdir', prompt='Input/source directory path', help='Input/source directory path')
-    archivedir', prompt='Archive/target directory path', help='Archive/target directory path')
-    """
-
-    # expand directories and appending / if needed
-    inputdir = os.path.join(inputdir,'')
-    archivedir = os.path.join(archivedir,'')
-
-    fileutil.ensure_dir_exists(archivedir)
-
-    print 'Scanning {0}'.format(inputdir)
-
-    db_file = os.path.join(archivedir, 'imagine_cli.db')
-    should_create = True
-    print db_file
-    if os.path.exists(db_file):
-        should_create = False
-
-    imagine_core.init_db(db_file)
-    if should_create:
-        imagine_core.create_archive()
-
-    update_collection('test', 'test-slug', inputdir, archivedir)

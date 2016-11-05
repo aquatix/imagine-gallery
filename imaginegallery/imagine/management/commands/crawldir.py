@@ -1,9 +1,9 @@
 from django.core.management.base import BaseCommand, CommandError
-from imagine.models import Directory
+from imagine.models import Collection
 from imagine.actions import update_collection
 
 class Command(BaseCommand):
-    help = 'Update the listing of images from a certain directory'
+    help = 'Update the listing of images from a certain directory (collection)'
 
     def add_arguments(self, parser):
         parser.add_argument('path', nargs='+')
@@ -11,14 +11,14 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         for path in options['path']:
             try:
-                directory = Directory.objects.get(directory=path)
-            except Directory.DoesNotExist:
-                raise CommandError('Directory "%s" does not exist' % path)
+                collection = Collection.objects.get(base_dir=path)
+            except Collection.DoesNotExist:
+                raise CommandError('Collection with base dir "%s" does not exist' % path)
 
-            print(directory.directory)
+            print(collection.base_dir)
 
-            #update_collection()
+            update_collection(collection)
 
             # TODO: log
-            self.stdout.write(self.style.SUCCESS('Successfully updated directory "%s"' % path))
+            self.stdout.write(self.style.SUCCESS('Successfully updated collection "%s"' % path))
 

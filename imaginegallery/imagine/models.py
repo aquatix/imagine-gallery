@@ -22,10 +22,14 @@ class Collection(BaseModel):
     title = models.CharField(max_length=255)
     slug = models.CharField(max_length=255, null=True, blank=True)
     base_dir = models.CharField(max_length=255, blank=True)
+    archive_dir = models.CharField(max_length=255, blank=True)
 
     description = models.TextField(null=True, blank=True)
 
     password = models.CharField(max_length=255, null=True, blank=True)  # TODO: something with encryption, preferably through a function in the model
+
+    def passwordprotected(self):
+        return self.password != ''
 
     def __unicode__(self):
         return '{0} ({1})'.format(self.title, self.base_dir)
