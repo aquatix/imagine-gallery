@@ -3,7 +3,8 @@ from imagine.models import Collection, Directory, Image, ExifItem, Comment, Even
 
 
 class CollectionAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('title', 'base_dir', 'archive_dir', )
+    search_fields = ('title', 'slug', 'base_dir', 'archive_dir', 'description', )
 
 
 class DirectoryAdmin(admin.ModelAdmin):
@@ -11,7 +12,8 @@ class DirectoryAdmin(admin.ModelAdmin):
 
 
 class ImageAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('get_filepath', 'filename', 'width', 'height', 'megapixel', 'filesize', 'image_hash', )
+    search_fields = ('filename', )
 
 
 class ExifItemAdmin(admin.ModelAdmin):

@@ -92,6 +92,10 @@ class Image(BaseModel):
         return Image.objects.filter(Image.image_hash==self.image_hash)
 
 
+    def megapixel(self):
+        return (self.width * self.height) / 1000000.0
+
+
     def modified_datetime(self):
         """Returns file_modified or exif_modified, whichever is more accurate, redundant over filter_modified"""
         if self.exif_modified:
