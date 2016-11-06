@@ -52,6 +52,9 @@ def save_jpg_exif(image, filename):
     exif = exifread.process_file(f)
     for k, v in exif.items():
         try:
+            if 'thumbnail' in k.lower():
+                logger.info('Skipping thumbnail exif item for {}'.format(filename))
+                continue
             exif_item = ExifItem(
                     image=image,
                     key=k,
