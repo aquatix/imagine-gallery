@@ -53,7 +53,7 @@ class Image(BaseModel):
     IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'bmp', 'gif', 'cr2']
     IMAGE_EXTENSIONS_RAW = ['cr2']
 
-    directory = models.ForeignKey(Directory, related_name='parent')
+    directory = models.ForeignKey(Directory, related_name='parent', on_delete=models.CASCADE)
     filename = models.CharField(max_length=255)
     file_ext = models.CharField(max_length=255)
     filetype = models.CharField(max_length=255, null=True)
@@ -99,6 +99,9 @@ class Image(BaseModel):
         else:
             return self.file_modified
 
+    def delete_exif_items(self):
+        """Delete all exif items belonging to this Image, useful for re-importing afterwards"""
+        ExifItem.objects.filter(image__pk=self.pk).delete()
 
     @classmethod
     def is_image(cls, filename):
@@ -119,7 +122,7 @@ class Image(BaseModel):
 
 class ExifItem(BaseModel):
     """Piece of exif info of a certain Image"""
-    image = models.ForeignKey(Image)
+    image = models.ForeignKey(Image, on_delete=models.CASCADE)
     key = models.CharField(max_length=255)
     value_str = models.CharField(max_length=255, null=True)
     value_int = models.IntegerField(null=True)
@@ -134,6 +137,9 @@ class ExifItem(BaseModel):
             return self.value_float
         else:
             return None
+
+    def __unicode__(self):
+        return self.key
 
 
 class Comment(BaseModel):
