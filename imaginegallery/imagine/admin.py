@@ -1,10 +1,18 @@
 from django.contrib import admin
 from imagine.models import Collection, Directory, Image, ExifItem, Comment, Event
+from imagine.actions import update_collection
 
 
 class CollectionAdmin(admin.ModelAdmin):
     list_display = ('title', 'base_dir', 'archive_dir', )
     search_fields = ('title', 'slug', 'base_dir', 'archive_dir', 'description', )
+
+    actions = ['refresh']
+
+    def refresh(self, request, queryset):
+        for collection in queryset:
+            update_collection(collection)
+        self.message_user(request, 'Successfully updated {} collection(s)'.format(queryset.count()))
 
 
 class DirectoryAdmin(admin.ModelAdmin):
