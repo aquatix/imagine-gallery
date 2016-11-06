@@ -1,10 +1,11 @@
 from django.contrib import admin
+from django.core import urlresolvers
 from imagine.models import Collection, Directory, Image, ExifItem, Comment, Event
 from imagine.actions import update_collection
 
 
 class CollectionAdmin(admin.ModelAdmin):
-    list_display = ('title', 'base_dir', 'archive_dir', )
+    list_display = ('title', 'base_dir', 'archive_dir', 'nr_directories', 'nr_images', )
     search_fields = ('title', 'slug', 'base_dir', 'archive_dir', 'description', )
 
     actions = ['refresh']
@@ -16,7 +17,7 @@ class CollectionAdmin(admin.ModelAdmin):
 
 
 class DirectoryAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('directory', 'nr_images', )
 
 
 class ImageAdmin(admin.ModelAdmin):
@@ -25,8 +26,13 @@ class ImageAdmin(admin.ModelAdmin):
 
 
 class ExifItemAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('key', 'get_value', 'from_image', )
+    search_fields = ('key', 'value_int', 'value_str', 'value_float', )
 
+    def from_image(self, obj):
+        link=urlresolvers.reverse("admin:imagine_image_change", args=[obj.image.id]) #model name has to be lowercase
+        return u'<a href="%s">%s</a>' % (link,obj.image.filename)
+    from_image.allow_tags=True
 
 class CommentAdmin(admin.ModelAdmin):
     pass

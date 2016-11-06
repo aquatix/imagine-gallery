@@ -31,6 +31,15 @@ class Collection(BaseModel):
     def passwordprotected(self):
         return self.password != ''
 
+    def nr_directories(self):
+        return Directory.objects.filter(collection__pk=self.pk).count()
+
+    def nr_images(self):
+        total = 0
+        for directory in Directory.objects.filter(collection__pk=self.pk):
+            total += directory.nr_images()
+        return total
+
     def __unicode__(self):
         return '{0} ({1})'.format(self.title, self.base_dir)
 
@@ -42,6 +51,9 @@ class Directory(BaseModel):
 
     def get_filepath(self, filename):
         return '{0}{1}'.format(self.directory, filename)
+
+    def nr_images(self):
+        return Image.objects.filter(directory__pk=self.pk).count()
 
     def __unicode__(self):
         return self.directory
