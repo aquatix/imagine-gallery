@@ -32,7 +32,7 @@ class Collection(BaseModel):
     )
 
     title = models.CharField(max_length=255)
-    slug = models.CharField(max_length=255, unique=True)
+    slug = models.SlugField(max_length=255, unique=True)
     base_dir = models.CharField(max_length=255, blank=True)
     archive_dir = models.CharField(max_length=255, blank=True)
 
@@ -187,6 +187,7 @@ class Comment(BaseModel):
 class Event(BaseModel):
     """Timeframe in which something happened, enabling grouping of images"""
     title = models.CharField(max_length=255)
+    slug = models.SlugField(max_length=255)
     description = models.TextField(default='')
 
     start_datetime = models.DateTimeField()

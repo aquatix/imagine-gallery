@@ -40,7 +40,9 @@ class CommentAdmin(admin.ModelAdmin):
 
 
 class EventAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('title', 'start_datetime', 'end_datetime', )
+    search_fields = ('title', 'slug', 'description', )
+    prepopulated_fields = {'slug': ('title',), }
 
 
 admin.site.register(Collection, CollectionAdmin)
