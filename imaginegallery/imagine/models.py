@@ -20,10 +20,10 @@ class BaseModel(models.Model):
 class Collection(BaseModel):
     """Collection of images in a certain base_dir"""
 
-    SORT_NAME_ASC = 0
-    SORT_NAME_DESC = 1
-    SORT_DATE_ASC = 2
-    SORT_DATE_DESC = 3
+    SORT_NAME_ASC = 'name_asc'
+    SORT_NAME_DESC = 'name_desc'
+    SORT_DATE_ASC = 'date_asc'
+    SORT_DATE_DESC = 'date_desc'
     SORT_OPTIONS = (
         (SORT_NAME_ASC, 'Name ascending'),
         (SORT_NAME_DESC, 'Name descending'),
@@ -39,7 +39,7 @@ class Collection(BaseModel):
     # Flat or nested into directories
     flat = models.BooleanField(default=False, help_text='Flatten a collection, or keep the nesting in directories')
 
-    sortmethod = models.IntegerField(choices=SORT_OPTIONS, default=SORT_DATE_DESC)
+    sortmethod = models.CharField(max_length=10, choices=SORT_OPTIONS, default=SORT_DATE_DESC)
 
     description = models.TextField(null=True, blank=True)
 
