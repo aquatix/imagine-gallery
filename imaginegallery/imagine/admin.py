@@ -35,8 +35,15 @@ class ExifItemAdmin(admin.ModelAdmin):
         return u'<a href="%s">%s</a>' % (link,obj.image.filename)
     from_image.allow_tags=True
 
+
 class CommentAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('from_image', 'name', 'email', )
+    search_fields = ('name', 'email', 'comment', )
+
+    def from_image(self, obj):
+        link=urlresolvers.reverse("admin:imagine_image_change", args=[obj.image.id]) #model name has to be lowercase
+        return u'<a href="%s">%s</a>' % (link,obj.image.filename)
+    from_image.allow_tags=True
 
 
 class EventAdmin(admin.ModelAdmin):
