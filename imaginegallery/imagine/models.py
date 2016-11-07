@@ -19,10 +19,27 @@ class BaseModel(models.Model):
 
 class Collection(BaseModel):
     """Collection of images in a certain base_dir"""
+
+    SORT_NAME_ASC = 0
+    SORT_NAME_DESC = 1
+    SORT_DATE_ASC = 2
+    SORT_DATE_DESC = 3
+    SORT_OPTIONS = (
+        (SORT_NAME_ASC, 'Name ascending'),
+        (SORT_NAME_DESC, 'Name descending'),
+        (SORT_DATE_ASC, 'Date ascending'),
+        (SORT_DATE_DESC, 'Date descending'),
+    )
+
     title = models.CharField(max_length=255)
     slug = models.CharField(max_length=255, null=True, blank=True)
     base_dir = models.CharField(max_length=255, blank=True)
     archive_dir = models.CharField(max_length=255, blank=True)
+
+    # Flat or nested into directories
+    flat = models.BooleanField(default=False, help_text='Flatten a collection, or keep the nesting in directories')
+
+    sortmethod = models.IntegerField(choices=SORT_OPTIONS, default=SORT_DATE_DESC)
 
     description = models.TextField(null=True, blank=True)
 
