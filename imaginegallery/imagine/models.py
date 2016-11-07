@@ -32,7 +32,7 @@ class Collection(BaseModel):
     )
 
     title = models.CharField(max_length=255)
-    slug = models.CharField(max_length=255, null=True, blank=True)
+    slug = models.CharField(max_length=255, unique=True)
     base_dir = models.CharField(max_length=255, blank=True)
     archive_dir = models.CharField(max_length=255, blank=True)
 
@@ -43,7 +43,8 @@ class Collection(BaseModel):
 
     description = models.TextField(null=True, blank=True)
 
-    password = models.CharField(max_length=255, null=True, blank=True)  # TODO: something with encryption, preferably through a function in the model
+    is_public = models.BooleanField(default=False, help_text='If public, the collection is visible for the world')
+    password = models.CharField(max_length=255, null=True, blank=True, help_text='Optionally, password protect this collection')  # TODO: something with encryption, preferably through a function in the model
 
     def passwordprotected(self):
         return self.password != ''
