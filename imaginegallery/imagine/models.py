@@ -48,6 +48,7 @@ class Collection(BaseModel):
 
     def passwordprotected(self):
         return self.password != ''
+    passwordprotected.boolean = True
 
     def nr_directories(self):
         return Directory.objects.filter(collection__pk=self.pk).count()

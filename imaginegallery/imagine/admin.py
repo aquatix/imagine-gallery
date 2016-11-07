@@ -5,7 +5,7 @@ from imagine.actions import update_collection
 
 
 class CollectionAdmin(admin.ModelAdmin):
-    list_display = ('title', 'base_dir', 'archive_dir', 'nr_directories', 'nr_images', )
+    list_display = ('title', 'base_dir', 'archive_dir', 'is_public', 'passwordprotected', 'nr_directories', 'nr_images', )
     search_fields = ('title', 'slug', 'base_dir', 'archive_dir', 'description', )
     prepopulated_fields = {'slug': ('title',), }
 
