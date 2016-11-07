@@ -4,4 +4,8 @@
 {% block content %}
 <h1>{{ collection.title }}</h1>
 
+{% for directory in directory_list %}
+    <a href="/{{ collection.slug }}/{{ directory.dir_path }}">{{ directory.directory }}</a>
+{% endfor %}
+
 {% endblock %}

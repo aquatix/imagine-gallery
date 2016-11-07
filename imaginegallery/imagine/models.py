@@ -67,9 +67,16 @@ class Directory(BaseModel):
     """Directory/collection umbrella object"""
     directory = models.CharField(max_length=255)
     collection = models.ForeignKey(Collection)
+    featured_image = models.ForeignKey('Image', null=True, related_name='featured_image')
 
     def get_filepath(self, filename):
         return '{0}{1}'.format(self.directory, filename)
+
+    def dir_path(self):
+        path = self.directory.replace(self.collection.base_dir, '')
+        if path[0] == '/':
+            path = path[1:]
+        return path
 
     def nr_images(self):
         return Image.objects.filter(directory__pk=self.pk).count()
