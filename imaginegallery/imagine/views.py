@@ -27,5 +27,6 @@ def collection_detail(request, collection_slug):
     context = {
         'collection': collection,
         'directory_list': directory_list,
+        'images': images,
     }
     return render(request, 'collection/detail.html', context)

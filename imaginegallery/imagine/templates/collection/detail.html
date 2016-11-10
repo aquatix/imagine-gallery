@@ -8,4 +8,9 @@
     <a href="/{{ collection.slug }}/{{ directory.dir_path }}">{{ directory.directory }}</a>
 {% endfor %}
 
+{% for image in images %}
+    <img src="file://{{ image.get_filepath }}" width="200" />
+
+{% endfor %}
+
 {% endblock %}
