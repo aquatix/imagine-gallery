@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
 from django.http import Http404
-from .models import Collection, Directory
+from .models import Collection, Directory, Image
 
 def index(request):
     collection_list = Collection.objects.all()
@@ -21,6 +21,8 @@ def collection_detail(request, collection_slug):
 
     directory_list = Directory.objects.filter(collection=collection)
     print directory_list
+
+    images = directory_list[0].images(collection.sortmethod)
 
     context = {
         'collection': collection,

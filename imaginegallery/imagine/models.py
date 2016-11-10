@@ -81,6 +81,18 @@ class Directory(BaseModel):
     def nr_images(self):
         return Image.objects.filter(directory__pk=self.pk).count()
 
+    def images(self, sortmethod):
+        """ Return all images from this dir, sorted as Collection.sortmethod """
+        result = Image.objects.filter(directory=self)
+        if sortmethod == Collection.SORT_NAME_DESC:
+            return result.order_by('-filename')
+        elif sortmethod == Collection.SORT_NAME_ASC:
+            return result.order_by('filename')
+        elif sortmethod == Collection.SORT_DATE_DESC:
+            return result.order_by('-filter_modified')
+        elif sortmethod == Collection.SORT_DATE_ASC:
+            return result.order_by('filter_modified')
+
     def __unicode__(self):
         return self.directory
 
