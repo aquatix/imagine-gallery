@@ -174,3 +174,11 @@ def _walk_archive(collection):
     logger.info('added {0} images to archive out of {1} total, skipped {2}'.format(image_counter, total_files, skipped_counter))
 
     return 42
+
+
+def update_scaled_images(collection):
+    """
+    Iterate through the images in the Collection and generate resized versions of images
+    that don't have those yet
+    """
+    images = collection.images()
