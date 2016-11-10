@@ -196,6 +196,17 @@ class ExifItem(BaseModel):
         return self.key
 
 
+class PhotoSize(BaseModel):
+    """ Size configuration """
+    name = models.CharField(max_length=20)
+    width = models.IntegerField(default=640, help_text='0 for keeping aspect ratio')
+    height = models.IntegerField(default=480, help_text='0 for keeping aspect ratio')
+    crop_to_fit = models.BooleanField(default=False, help_text="Crop image instead of retaining aspect ratio")
+
+    def __unicode__(self):
+        return self.name
+
+
 class Comment(BaseModel):
     """Comment on an image"""
     image = models.ForeignKey(Image)

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.core import urlresolvers
-from imagine.models import Collection, Directory, Image, ExifItem, Comment, Event
+from imagine.models import Collection, Directory, Image, PhotoSize, ExifItem, Comment, Event
 from imagine.actions import update_collection
 
 
@@ -24,6 +24,10 @@ class DirectoryAdmin(admin.ModelAdmin):
 class ImageAdmin(admin.ModelAdmin):
     list_display = ('get_filepath', 'filename', 'width', 'height', 'megapixel', 'filesize', 'image_hash', )
     search_fields = ('filename', )
+
+
+class PhotoSizeAdmin(admin.ModelAdmin):
+    list_display = ('name', 'width', 'height', 'crop_to_fit', )
 
 
 class ExifItemAdmin(admin.ModelAdmin):
@@ -55,6 +59,7 @@ class EventAdmin(admin.ModelAdmin):
 admin.site.register(Collection, CollectionAdmin)
 admin.site.register(Directory, DirectoryAdmin)
 admin.site.register(Image, ImageAdmin)
+admin.site.register(PhotoSize, PhotoSizeAdmin)
 admin.site.register(ExifItem, ExifItemAdmin)
 admin.site.register(Comment, CommentAdmin)
 admin.site.register(Event, EventAdmin)
