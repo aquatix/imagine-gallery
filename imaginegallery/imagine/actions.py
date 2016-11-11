@@ -212,6 +212,9 @@ def update_scaled_images(collection):
     """
     images = collection.images()
     variants = PhotoSize.objects.all()
+    if len(variants) == 0:
+        logger.info('No size variants defined, configure some PhotoSizes')
+        return
     for image in images:
         for variant in variants:
             scale_image(image.pk, collection.archive_dir, variant.width, variant.height, variant.crop_to_fit)
