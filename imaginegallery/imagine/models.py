@@ -59,6 +59,13 @@ class Collection(BaseModel):
             total += directory.nr_images()
         return total
 
+    def images(self):
+        images = []
+        directories = Directory.objects.filter(collection=self)
+        for directory in directories:
+            images += directory.images(self.sortmethod)
+        return images
+
     def __unicode__(self):
         return '{0} ({1})'.format(self.title, self.base_dir)
 

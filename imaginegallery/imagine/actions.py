@@ -6,11 +6,12 @@ import datetime
 import logging
 import os
 import sys
-from imagine.models import Collection, Directory, Image, ExifItem, Event
+from imagine.models import Collection, Directory, Image, PhotoSize, ExifItem, Event
 from PIL import Image as PILImage, ImageFile as PILImageFile, ExifTags
 import exifread
 from hashlib import md5
 import imagehash
+from utilkit import fileutil
 
 try:
     DEBUG
@@ -176,9 +177,41 @@ def _walk_archive(collection):
     return 42
 
 
+def scale_image(image_id, destination_dir, width, height, crop=False):
+    """
+    Create scaled versions of the Image with image_id
+    """
+    image = Image.objects.get(pk=image_id)
+    if not image.image_hash:
+        logger.info('No hash found for Image with pk {}'.format(image.pk))
+        return
+    dir_base = os.path.join(destination_dir, image.image_hash[:2])
+    filename_base = os.path.join(destination_dir, image.image_hash[:2], image.image_hash)
+    fileutil.ensure_dir_exists(filename_base)
+    variant = '_{}-{}.jpg'.format(width, height)
+    if os.path.isfile(filename_base + variant):
+        logger.info('Skipping resize for existing {}'.format(filename_base + variant))
+        print('skipping existing {}'.format(filename_base + variant))
+
+    print('resizing into {}'.format(filename_base + variant))
+    # TODO: be more clever with the config
+    max_size = max(width, height)
+    try:
+        im = PILImage.open(image.get_filepath())
+        im.thumbnail((max_size, max_size), PILImage.ANTIALIAS)
+        im.save(filename_base + variant, 'JPEG')
+    except IOError:
+        logger.info('Cannot create {}x{} variant for {}'.format(width, height, image))
+        print('Cannot create {}x{} variant for {}'.format(width, height, image))
+
+
 def update_scaled_images(collection):
     """
     Iterate through the images in the Collection and generate resized versions of images
     that don't have those yet
     """
     images = collection.images()
+    variants = PhotoSize.objects.all()
+    for image in images:
+        for variant in variants:
+            scale_image(image.pk, collection.archive_dir, variant.width, variant.height, variant.crop_to_fit)

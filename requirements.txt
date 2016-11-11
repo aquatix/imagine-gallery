@@ -2,3 +2,4 @@ Django>=1.10.3
 Pillow
 ExifRead
 ImageHash
+utilkit>=0.4.0
