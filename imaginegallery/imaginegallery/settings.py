@@ -25,7 +25,11 @@ SECRET_KEY = '!z7@xbvf(vlkha@9+6=6#8llb*b58mpbx##k-k-sn#uzcijp$u'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]']
+try:
+    ALLOWED_HOSTS.append(os.environ['SERVER_HOST'])
+except KeyError:
+    print('No ENV var found for SERVER_HOST')
 
 
 # Application definition
@@ -119,3 +123,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+try:
+    STATIC_ROOT = os.environ['STATIC_ROOT']
+except KeyError:
+    print('No ENV var found for STATIC_ROOT')
