@@ -9,7 +9,7 @@
 {% endfor %}
 
 {% for image in images %}
-    <img src="file://{{ image.get_filepath }}" width="200" />
+    <img src="/images/images/{{ image.get_thumbnail }}" width="200" />
 
 {% endfor %}
 
