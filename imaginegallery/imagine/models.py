@@ -169,10 +169,10 @@ class Image(BaseModel):
         return '{}/{}_{}-{}.jpg'.format(self.image_hash[:2], self.image_hash, photosize.height, photosize.width)
 
     def get_thumbnail(self):
-        return get_variant('thumbnail')
+        return self.get_variant('thumbnail')
 
     def get_normal(self):
-        return get_variant('normal')
+        return self.get_variant('normal')
 
     @classmethod
     def is_image(cls, filename):
