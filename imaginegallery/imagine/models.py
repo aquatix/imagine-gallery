@@ -164,10 +164,15 @@ class Image(BaseModel):
         """Delete all exif items belonging to this Image, useful for re-importing afterwards"""
         ExifItem.objects.filter(image__pk=self.pk).delete()
 
+    def get_variant(self, variant):
+        photosize = PhotoSize.objects.get(name=variant)
+        return '{}/{}_{}-{}.jpg'.format(self.image_hash[:2], self.image_hash, photosize.height, photosize.width)
+
     def get_thumbnail(self):
-        photosize = PhotoSize.objects.get(name='thumbnail')
-        subpath = '{}/{}_{}-{}.jpg'.format(self.image_hash[:2], self.image_hash, photosize.height, photosize.width)
-        return subpath
+        return get_variant('thumbnail')
+
+    def get_normal(self):
+        return get_variant('normal')
 
     @classmethod
     def is_image(cls, filename):
