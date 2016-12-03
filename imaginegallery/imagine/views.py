@@ -30,3 +30,7 @@ def collection_detail(request, collection_slug):
         'images': images,
     }
     return render(request, 'collection/detail.html', context)
+
+
+def image_detail(request, collection_slug, directory, imagename):
+    return HttpResponse('image: ' + imagename)
