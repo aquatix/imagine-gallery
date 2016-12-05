@@ -154,13 +154,15 @@ def _walk_archive(collection):
         for filename in filenames:
             #print os.path.join(dirname, filename)
             this_file, this_file_ext = get_filename(collection.base_dir, os.path.join(dirname, filename))
+            this_path = os.path.dirname(this_file)
             this_file = this_file.replace(this_dir, '')
             #logger.debug('ext: {0}'.format(this_file_ext)
             if this_file_ext in Image.IMAGE_EXTENSIONS:
                 the_image, created = Image.objects.get_or_create(
                     directory=directory,
                     filename=filename,
-                    file_ext=this_file_ext
+                    file_ext=this_file_ext,
+                    file_path=this_path,
                 )
                 if created:
                     # Only save if new image

@@ -113,6 +113,7 @@ class Image(BaseModel):
     directory = models.ForeignKey(Directory, related_name='parent', on_delete=models.CASCADE)
     filename = models.CharField(max_length=255)
     file_ext = models.CharField(max_length=255)
+    file_path = models.CharField(max_length=255)  # Directory path, for quick lookup
     filetype = models.CharField(max_length=255, null=True)
     filesize = models.IntegerField(default=-1)
 
