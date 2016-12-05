@@ -20,7 +20,14 @@ class CollectionAdmin(admin.ModelAdmin):
 
 
 class DirectoryAdmin(admin.ModelAdmin):
-    list_display = ('directory', 'nr_images', )
+    list_display = ('directory', 'collection_link', 'nr_images', )
+
+    def collection_link(self, obj):
+        return mark_safe('<a href="{}">{}</a>'.format(
+            reverse("admin:imagine_collection_change", args=(obj.collection.pk,)),
+            obj.collection.title
+        ))
+    collection_link.short_description = 'collection'
 
 
 class ImageAdmin(admin.ModelAdmin):
@@ -32,7 +39,7 @@ class ImageAdmin(admin.ModelAdmin):
     def collection_link(self, obj):
         return mark_safe('<a href="{}">{}</a>'.format(
             reverse("admin:imagine_collection_change", args=(obj.directory.collection.pk,)),
-            obj.directory.collection.base_dir
+            obj.directory.collection.title
         ))
     collection_link.short_description = 'collection'
 
