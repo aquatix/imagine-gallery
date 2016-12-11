@@ -1,6 +1,7 @@
 Django>=1.10.4
-Pillow
+django-taggit
 ExifRead
 ImageHash
+Pillow
 psycopg2
 utilkit>=0.4.0

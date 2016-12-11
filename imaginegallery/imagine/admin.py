@@ -2,6 +2,8 @@ from django.contrib import admin
 from django.core import urlresolvers
 from imagine.models import Collection, Directory, Image, PhotoSize, ExifItem, Comment, Event
 from imagine.actions import update_collection
+from django.core.urlresolvers import reverse
+from django.utils.safestring import mark_safe
 
 
 class CollectionAdmin(admin.ModelAdmin):
@@ -18,12 +20,31 @@ class CollectionAdmin(admin.ModelAdmin):
 
 
 class DirectoryAdmin(admin.ModelAdmin):
-    list_display = ('directory', 'nr_images', )
+    list_display = ('directory', 'collection_link', 'nr_images', )
+
+    def collection_link(self, obj):
+        return mark_safe('<a href="{}">{}</a>'.format(
+            reverse("admin:imagine_collection_change", args=(obj.collection.pk,)),
+            obj.collection.title
+        ))
+    collection_link.short_description = 'collection'
 
 
 class ImageAdmin(admin.ModelAdmin):
-    list_display = ('get_filepath', 'filename', 'width', 'height', 'megapixel', 'filesize', 'image_hash', )
+    #list_display = ('get_filepath', 'filename', 'width', 'height', 'megapixel', 'filesize', 'image_hash', )
+    list_display = ('filename', 'collection_link', 'file_path', 'width', 'height', 'megapixel', 'filesize', 'image_hash', )
     search_fields = ('filename', )
+    #readonly_fields = ('imageinegallery_collection_link',)
+
+    def collection_link(self, obj):
+        return mark_safe('<a href="{}">{}</a>'.format(
+            reverse("admin:imagine_collection_change", args=(obj.directory.collection.pk,)),
+            obj.directory.collection.title
+        ))
+    collection_link.short_description = 'collection'
+
+    def collection_path(self, instance):
+        return instance.directory.collection.base_dir
 
 
 class PhotoSizeAdmin(admin.ModelAdmin):

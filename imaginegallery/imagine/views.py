@@ -32,7 +32,7 @@ def collection_detail(request, collection_slug):
     return render(request, 'collection/detail.html', context)
 
 
-def image_detail(request, collection_slug, image_slug):
+def image_detail(request, collection_slug, directory, imagename):
     """
     Show image detail page
     """
