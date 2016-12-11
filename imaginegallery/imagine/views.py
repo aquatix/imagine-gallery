@@ -30,3 +30,21 @@ def collection_detail(request, collection_slug):
         'images': images,
     }
     return render(request, 'collection/detail.html', context)
+
+
+def image_detail(request, collection_slug, image_slug):
+    """
+    Show image detail page
+    """
+    try:
+        collection = Collection.objects.get(slug=collection_slug)
+    except Collection.DoesNotExist:
+        raise Http404('Collection does not exist')
+
+
+    context = {
+        'collection': collection,
+        #'image': image,
+    }
+
+    return render(request, 'image/detail.html', context)
