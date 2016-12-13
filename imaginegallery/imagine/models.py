@@ -80,6 +80,7 @@ class Directory(BaseModel):
     def get_filepath(self, filename):
         return '{0}{1}'.format(self.directory, filename)
 
+    @property
     def dir_path(self):
         path = self.directory.replace(self.collection.base_dir, '')
         if path[0] == '/':

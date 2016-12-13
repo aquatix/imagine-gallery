@@ -5,12 +5,8 @@
 <h1>{{ collection.title }}</h1>
 
 {% for directory in directory_list %}
-    <a href="/{{ collection.slug }}/{{ directory.dir_path }}">{{ directory.featured_image }}</a>
-{% endfor %}
-
-{% for image in images %}
-<a href="/images/{{ image.get_normal }}"><img src="/images/{{ image.get_thumbnail }}" width="200" /></a>
-
+    {#<a href="/{{ collection.slug }}/{{ directory.dir_path }}">{{ directory.featured_image }}</a>#}
+    <a href="{% url 'directory_detail' collection.slug directory.dir_path %}">{{ directory.featured_image }}</a>
 {% endfor %}
 
 {% endblock %}
