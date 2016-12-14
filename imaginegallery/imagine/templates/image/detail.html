@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}{{ image.filename }}{% endblock %}
+
+{% block content %}
+<h1>{{ image.filename }}</h1>
+
+{{ image.image_hash }}
+
+<img src="" />
+
+{% if directory.dir_path %}
+<a href="{% url 'directory_detail' collection.slug directory.dir_path %}">{{ directory.featured_image }}</a>
+{% endif %}
+
+{% endblock %}

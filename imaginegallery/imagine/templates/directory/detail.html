@@ -7,7 +7,7 @@
 {% for image in images %}
 {#<a href="/images/{{ image.get_normal }}"><img src="/images/{{ image.get_thumbnail }}" width="200" /></a>#}
 {#<a href="{% url 'image_detail' collection_slug=collection.slug directory_slug=directory.slug imagename=image.filename %}"><img src="/images/{{ image.get_thumbnail }}" width="200" /></a>#}
-<a href="{% url 'image_detail' collection.slug directory.directory image.filename %}"><img src="/images/{{ image.get_thumbnail }}" width="200" /></a>
+<a href="{% url 'image_detail' collection.slug directory.relative_path image.filename %}"><img src="/images/{{ image.get_thumbnail }}" width="200" /></a>
 
 {% endfor %}
 

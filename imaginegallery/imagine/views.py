@@ -63,15 +63,17 @@ def image_detail(request, collection_slug, file_path, imagename):
 
     if not file_path:
         file_path = '/'
+    else:
+        file_path = '/{}'.format(file_path)
 
     try:
-        image = Image.objects.get(file_path=file_path, filename=filename)
+        image = Image.objects.get(file_path=file_path, filename=imagename)
     except Image.DoesNotExist:
         raise Http404('Image does not exist')
 
     context = {
         'collection': collection,
-        'directory': directory,
+        #'directory': directory,
         'image': image,
     }
     return render(request, 'image/detail.html', context)
