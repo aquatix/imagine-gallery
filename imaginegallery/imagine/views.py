@@ -20,7 +20,6 @@ def collection_detail(request, collection_slug):
         raise Http404('Collection does not exist')
 
     directory_list = Directory.objects.filter(collection=collection)
-    print directory_list
 
     images = directory_list[0].images(collection.sortmethod)
 
@@ -38,8 +37,10 @@ def directory_detail(request, collection_slug, directory):
     except Collection.DoesNotExist:
         raise Http404('Collection does not exist')
 
-    directory = Directory.objects.get(collection=collection, directory=directory)
-    print(directory)
+    try:
+        directory = Directory.objects.get(collection=collection, relative_path=directory)
+    except Directory.DoesNotExist:
+        raise Http404('Directory does not exist')
 
     images = directory.images(collection.sortmethod)
 
@@ -48,8 +49,10 @@ def directory_detail(request, collection_slug, directory):
         'directory': directory,
         'images': images,
     }
+    return render(request, 'directory/detail.html', context)
 
-def image_detail(request, collection_slug, directory_slug, imagename):
+
+def image_detail(request, collection_slug, file_path, imagename):
     """
     Show image detail page
     """
@@ -58,13 +61,11 @@ def image_detail(request, collection_slug, directory_slug, imagename):
     except Collection.DoesNotExist:
         raise Http404('Collection does not exist')
 
-    try:
-        directory = Directory.objects.get(slug=directory_slug)
-    except Directory.DoesNotExist:
-        raise Http404('Directory does not exist')
+    if not file_path:
+        file_path = '/'
 
     try:
-        image = Image.objects.get(directory=directory, filename=filename)
+        image = Image.objects.get(file_path=file_path, filename=filename)
     except Image.DoesNotExist:
         raise Http404('Image does not exist')
 
@@ -73,8 +74,14 @@ def image_detail(request, collection_slug, directory_slug, imagename):
         'directory': directory,
         'image': image,
     }
-
     return render(request, 'image/detail.html', context)
+
+
+def rootdir_image_detail(request, collection_slug, imagename):
+    """
+    Image from the root of a collection
+    """
+    return image_detail(request=request, collection_slug=collection_slug, file_path=None, imagename=imagename)
 
 
 def imagehash_detail(request, imagehash):

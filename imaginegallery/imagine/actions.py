@@ -144,10 +144,15 @@ def _walk_archive(collection):
     total_files = 0
     for dirname, dirnames, filenames in os.walk(collection.base_dir):
         this_dir = os.path.join(dirname, '')  # be sure to have trailing / and such
+        full_dir = this_dir
         logger.debug(this_dir)
-        directory, created = Directory.objects.get_or_create(directory=this_dir, collection=collection)
-        logger.debug('Directory created: ' + str(created))
         this_dir = this_dir.replace(collection.base_dir, '')
+        if this_dir[0] == '/':
+            this_dir = this_dir[1:]
+        if this_dir and this_dir[-1] == '/':
+            this_dir = this_dir[:-1]
+        directory, created = Directory.objects.get_or_create(directory=full_dir, relative_path=this_dir, collection=collection)
+        logger.debug('Directory created: ' + str(created))
         for subdirname in dirnames:
             logger.debug('dir: {0}'.format(os.path.join(dirname, subdirname)))
         total_files = total_files + len(filenames)

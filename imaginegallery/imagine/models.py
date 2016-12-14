@@ -74,6 +74,7 @@ class Collection(BaseModel):
 class Directory(BaseModel):
     """Directory/collection umbrella object"""
     directory = models.CharField(max_length=255)
+    relative_path = models.CharField(max_length=255, help_text='Path relative to Collection base dir')
     collection = models.ForeignKey(Collection)
     featured_image = models.ForeignKey('Image', null=True, related_name='featured_image')
 
