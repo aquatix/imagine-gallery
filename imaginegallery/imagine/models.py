@@ -171,7 +171,7 @@ class Image(BaseModel):
 
     def get_variant(self, variant):
         photosize = PhotoSize.objects.get(name=variant)
-        return '{}/{}_{}-{}.jpg'.format(self.image_hash[:2], self.image_hash, photosize.height, photosize.width)
+        return '{}/{}_{}-{}.jpg'.format(self.image_hash[:2], self.image_hash, photosize.width, photosize.height)
 
     def get_thumbnail(self):
         return self.get_variant('thumbnail')

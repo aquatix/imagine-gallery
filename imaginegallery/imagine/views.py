@@ -72,7 +72,7 @@ def image_detail(request, collection_slug, file_path, imagename):
     except Image.DoesNotExist:
         raise Http404('Image does not exist')
 
-    image_url = os.path.join(collection.archive_uri, image.get_variant('normal'))
+    image_url = os.path.join(collection.archive_uri, image.get_normal())
 
     context = {
         'collection': collection,
