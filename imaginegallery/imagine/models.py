@@ -36,6 +36,7 @@ class Collection(BaseModel):
     base_dir = models.CharField(max_length=255, blank=True)
     archive_dir = models.CharField(max_length=255, blank=True)
     base_uri = models.CharField(max_length=255, blank=True, help_text='Base URI of original images')
+    archive_uri = models.CharField(max_length=255, blank=True, help_text='Base URI of image archive')
 
     # Flat or nested into directories
     flat = models.BooleanField(default=False, help_text='Flatten a collection, or keep the nesting in directories')

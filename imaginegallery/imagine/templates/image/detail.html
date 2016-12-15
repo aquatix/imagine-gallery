@@ -4,9 +4,11 @@
 {% block content %}
 <h1>{{ image.filename }}</h1>
 
+<!--
 {{ image.image_hash }}
+-->
 
-<img src="" />
+<img src="{{ image_url }}" class="image_normal" />
 
 {% if directory.dir_path %}
 <a href="{% url 'directory_detail' collection.slug directory.dir_path %}">{{ directory.featured_image }}</a>

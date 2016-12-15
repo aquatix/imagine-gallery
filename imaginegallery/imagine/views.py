@@ -1,3 +1,4 @@
+import os
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
@@ -71,10 +72,13 @@ def image_detail(request, collection_slug, file_path, imagename):
     except Image.DoesNotExist:
         raise Http404('Image does not exist')
 
+    image_url = os.path.join(collection.archive_uri, image.get_variant('normal'))
+
     context = {
         'collection': collection,
         #'directory': directory,
         'image': image,
+        'image_url': image_url,
     }
     return render(request, 'image/detail.html', context)
 
