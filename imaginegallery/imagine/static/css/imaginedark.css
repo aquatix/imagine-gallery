@@ -1,4 +1,21 @@
 
+body
+{
+    background-color: #3C3C3C;
+    color: #FFF;
+    font-family: 'Droid Sans', Arial, Verdana, sans-serif;
+}
+
+h1
+{
+    font-family: BebasNeueRegular, arial, Georgia, serif;
+    color: #FFF;
+}
+
+a
+{
+    color: #F88C00;
+}
 
 img .image_normal
 {

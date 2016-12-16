@@ -22,7 +22,10 @@ def collection_detail(request, collection_slug):
 
     directory_list = Directory.objects.filter(collection=collection)
 
-    images = directory_list[0].images(collection.sortmethod)
+    if directory_list:
+        images = directory_list[0].images(collection.sortmethod)
+    else:
+        images = None
 
     context = {
         'collection': collection,
