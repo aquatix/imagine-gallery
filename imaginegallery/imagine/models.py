@@ -127,8 +127,6 @@ class Image(BaseModel):
     # Contains either file_modified or exif_modified, used for filtering into events and such:
     filter_modified = models.DateTimeField(null=True)
 
-    title = models.TextField(default='')
-    description = models.TextField(default='')
     is_visible = models.BooleanField(default=True)
 
     width = models.IntegerField(default=-1)
@@ -229,9 +227,19 @@ class PhotoSize(BaseModel):
         return self.name
 
 
+class ImageMeta(BaseModel):
+    """
+    Metadata for an image, linked by image_hash so it's available for duplicates and
+    survives collection rebuilding
+    """
+    title = models.TextField(default='')
+    description = models.TextField(default='')
+    #tags
+
+
 class Comment(BaseModel):
     """Comment on an image"""
-    image = models.ForeignKey(Image)
+    image = models.ForeignKey(ImageMeta)
     name = models.CharField(max_length=255)
     email = models.EmailField(max_length=254)
     comment = models.TextField(default='')
