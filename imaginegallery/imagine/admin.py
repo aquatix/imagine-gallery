@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.core import urlresolvers
-from imagine.models import Collection, Directory, Image, PhotoSize, ExifItem, Comment, Event
+from imagine.models import Collection, Directory, Image, ImageMeta, PhotoSize, ExifItem, Comment, Event
 from imagine.actions import update_collection
 from django.core.urlresolvers import reverse
 from django.utils.safestring import mark_safe
@@ -32,7 +32,7 @@ class DirectoryAdmin(admin.ModelAdmin):
 
 class ImageAdmin(admin.ModelAdmin):
     #list_display = ('get_filepath', 'filename', 'width', 'height', 'megapixel', 'filesize', 'image_hash', )
-    list_display = ('filename', 'collection_link', 'file_path', 'width', 'height', 'megapixel', 'filesize', 'image_hash', )
+    list_display = ('filename', 'collection_link', 'file_path', 'width', 'height', 'megapixel', 'filesize', 'image_hash', 'meta_link', )
     search_fields = ('filename', )
     #readonly_fields = ('imageinegallery_collection_link',)
 
@@ -45,6 +45,17 @@ class ImageAdmin(admin.ModelAdmin):
 
     def collection_path(self, instance):
         return instance.directory.collection.base_dir
+
+    def meta_link(self, obj):
+        return mark_safe('<a href="{}">{}</a>'.format(
+            reverse("admin:imagine_imagemeta_change", args=(obj.image_hash,)),
+            obj.image_hash
+        ))
+    meta_link.short_description = 'image meta'
+
+
+class ImageMetaAdmin(admin.ModelAdmin):
+    search_fields = ('title', 'description', 'image_hash', )
 
 
 class PhotoSizeAdmin(admin.ModelAdmin):
@@ -80,6 +91,7 @@ class EventAdmin(admin.ModelAdmin):
 admin.site.register(Collection, CollectionAdmin)
 admin.site.register(Directory, DirectoryAdmin)
 admin.site.register(Image, ImageAdmin)
+admin.site.register(ImageMeta, ImageMetaAdmin)
 admin.site.register(PhotoSize, PhotoSizeAdmin)
 admin.site.register(ExifItem, ExifItemAdmin)
 admin.site.register(Comment, CommentAdmin)

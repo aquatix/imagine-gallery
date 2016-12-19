@@ -11,4 +11,8 @@
     {% endif %}
 {% endfor %}
 
+{% for image in images %}
+{% include "image/thumbnail.html" %}
+{% endfor %}
+
 {% endblock %}

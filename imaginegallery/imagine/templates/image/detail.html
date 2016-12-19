@@ -2,7 +2,11 @@
 {% block title %}{{ image.filename }}{% endblock %}
 
 {% block content %}
+{% if image_meta.title %}
+<h1>{{ image_meta.title }}</h1>
+{% else %}
 <h1>{{ image.filename }}</h1>
+{% endif %}
 
 <!--
 {{ image.image_hash }}

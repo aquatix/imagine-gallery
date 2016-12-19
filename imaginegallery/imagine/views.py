@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
 from django.http import Http404
-from .models import Collection, Directory, Image
+from .models import Collection, Directory, Image, ImageMeta
 
 def index(request):
     collection_list = Collection.objects.all()
@@ -24,12 +24,15 @@ def collection_detail(request, collection_slug):
 
     if directory_list:
         images = directory_list[0].images(collection.sortmethod)
+        directory = directory_list[0]
     else:
         images = None
+        directory = None
 
     context = {
         'collection': collection,
         'directory_list': directory_list,
+        'directory': directory,
         'images': images,
     }
     return render(request, 'collection/detail.html', context)
@@ -77,11 +80,17 @@ def image_detail(request, collection_slug, file_path, imagename):
 
     image_url = os.path.join(collection.archive_uri, image.get_normal())
 
+    try:
+        image_meta = ImageMeta.objects.get(image_hash=image.image_hash)
+    except ImageMeta.DoesNotExist:
+        image_meta = ImageMeta()
+
     context = {
         'collection': collection,
         #'directory': directory,
         'image': image,
         'image_url': image_url,
+        'image_meta': image_meta,
     }
     return render(request, 'image/detail.html', context)
 
