@@ -17,7 +17,12 @@ a
     color: #F88C00;
 }
 
-img .image_normal
+img .image_normal,
+#content .image_normal
 {
     width: 90%;
+}
+
+img .image_thumbnail
+{
 }
