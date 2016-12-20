@@ -1,11 +1,5 @@
 {% extends "base.html" %}
-{% load static %}
 {% block title %}{{ collection.title }}{% endblock %}
-{% block extrastyling %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="{% static "css/justifiedGallery.min.css" %}" />
-    <script src="{% static "js/jquery.justifiedGallery.min.js" %}"></script>
-{% endblock %}
 
 {% block content %}
 <h1>{{ collection.title }}</h1>
@@ -17,14 +11,7 @@
     {% endif %}
 {% endfor %}
 
-<div id="mygallery">
-{% for image in images %}
-{% include "image/thumbnail.html" %}
-{% endfor %}
-</div>
+{% include "image/thumbnails.html" %}
 
-<script language="javascript">
-$("#mygallery").justifiedGallery();
-</script>
 
 {% endblock %}

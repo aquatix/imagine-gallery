@@ -4,8 +4,6 @@
 {% block content %}
 <h1>{{ collection.title }} | {{ directory.directory }}</h1>
 
-{% for image in images %}
-{% include "image/thumbnail.html" %}
-{% endfor %}
+{% include "image/thumbnails.html" %}
 
 {% endblock %}
