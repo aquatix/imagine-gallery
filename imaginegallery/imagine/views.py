@@ -88,11 +88,12 @@ def image_detail(request, collection_slug, file_path, imagename):
     except ImageMeta.DoesNotExist:
         image_meta = ImageMeta()
 
+    directory = image.directory
     images = image.directory.images(collection.sortmethod)
 
     context = {
         'collection': collection,
-        #'directory': directory,
+        'directory': directory,
         'image': image,
         'image_url': image_url,
         'image_meta': image_meta,
