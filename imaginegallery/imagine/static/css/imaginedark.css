@@ -6,6 +6,25 @@ body
     font-family: 'Droid Sans', Arial, Verdana, sans-serif;
 }
 
+#navigation
+{
+    background-color: #121212;
+    padding: .5em;
+}
+
+#navigation ul
+{
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#navigation li
+{
+    /* Fix for IE9 */
+    list-style-type:none;
+}
+
 h1
 {
     font-family: BebasNeueRegular, arial, Georgia, serif;
@@ -20,7 +39,7 @@ a
 img .image_normal,
 #content .image_normal
 {
-    width: 90%;
+    width: 100%;
 }
 
 img .image_thumbnail
