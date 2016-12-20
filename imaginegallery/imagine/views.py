@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
 from django.http import Http404
+from django.urls import reverse
 from .models import Collection, Directory, Image, ImageMeta
 
 def index(request):
@@ -91,6 +92,32 @@ def image_detail(request, collection_slug, file_path, imagename):
     directory = image.directory
     images = image.directory.images(collection.sortmethod)
 
+    prev_image = None
+    next_image = None
+    prevpage = ''
+    nextpage = ''
+    find_next = False
+
+    for this_image in images:
+        if this_image == image:
+            find_next = True
+        elif find_next:
+            next_image = this_image
+            break
+        else:
+            prev_image = this_image
+
+    if directory.relative_path:
+        if prev_image:
+            prevpage = reverse('image_detail', args=[collection.slug, directory.relative_path, prev_image.filename])
+        if next_image:
+            nextpage = reverse('image_detail', args=[collection.slug, directory.relative_path, next_image.filename])
+    else:
+        if prev_image:
+            prevpage = reverse('rootdir_image_detail', args=[collection.slug, prev_image.filename])
+        if next_image:
+            nextpage = reverse('rootdir_image_detail', args=[collection.slug, next_image.filename])
+
     context = {
         'collection': collection,
         'directory': directory,
@@ -99,6 +126,8 @@ def image_detail(request, collection_slug, file_path, imagename):
         'image_meta': image_meta,
         'image_title': image_title,
         'images': images,
+        'prevpage': prevpage,
+        'nextpage': nextpage,
     }
     return render(request, 'image/detail.html', context)
 
