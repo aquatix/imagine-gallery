@@ -69,6 +69,7 @@ def image_detail(request, collection_slug, file_path, imagename):
         raise Http404('Collection does not exist')
 
     if not file_path:
+        # Likely an image from the root of a Collection or Directory
         file_path = '/'
     else:
         file_path = '/{}'.format(file_path)
@@ -87,6 +88,8 @@ def image_detail(request, collection_slug, file_path, imagename):
     except ImageMeta.DoesNotExist:
         image_meta = ImageMeta()
 
+    images = image.directory.images(collection.sortmethod)
+
     context = {
         'collection': collection,
         #'directory': directory,
@@ -94,6 +97,7 @@ def image_detail(request, collection_slug, file_path, imagename):
         'image_url': image_url,
         'image_meta': image_meta,
         'image_title': image_title,
+        'images': images,
     }
     return render(request, 'image/detail.html', context)
 

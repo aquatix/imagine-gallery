@@ -4,6 +4,7 @@
 {% block content %}
 <h1>{{ image_title }}</h1>
 
+<div id="imagelarge">
 <!--
 {{ image.image_hash }}
 -->
@@ -13,5 +14,9 @@
 {% if directory.dir_path %}
 <a href="{% url 'directory_detail' collection.slug directory.dir_path %}">{{ directory.featured_image }}</a>
 {% endif %}
+
+</div>
+
+{% include "image/thumbnails.html" %}
 
 {% endblock %}
