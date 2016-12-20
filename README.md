@@ -40,3 +40,5 @@ For justifying the thumbnails so they get nicely laid out, [Justified-Gallery](h
 is used.
 
 The BebasNeue (regular) font used for headings was obtained from [FontsForWeb](http://fontsforweb.com/font/show?id=1962).
+
+Swipe library: [jQuery TouchSwipe Plugin](https://github.com/mattbryson/TouchSwipe-Jquery-Plugin).

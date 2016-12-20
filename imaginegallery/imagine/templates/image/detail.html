@@ -15,7 +15,7 @@
 
 {% include "image/thumbnails.html" %}
 
-<script>
+<script type="text/javascript">
 function leftArrowPressed() {
     // Navigate to the previous image
     var location = '{{ prevpage }}';
@@ -45,6 +45,24 @@ document.onkeydown = function(evt) {
             break;
     }
 };
+
+$(function() {
+  $("#imagelarge").swipe( {
+    //Generic swipe handler for all directions
+      /*
+    swipe:function(event, direction, distance, duration, fingerCount, fingerData) {
+      $(this).text("You swiped " + direction );
+      console.log("You swiped " + direction );
+    }
+    */
+      swipeLeft:function(event, direction, distance, duration, fingerCount) {
+          leftArrowPressed();
+      }
+      swipeRight:function(event, direction, distance, duration, fingerCount) {
+          righArrowPressed();
+      }
+  });
+});
 </script>
 
 {% endblock %}
