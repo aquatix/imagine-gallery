@@ -36,10 +36,15 @@ a
     color: #F88C00;
 }
 
-img .image_normal,
 #content .image_normal
 {
-    width: 100%;
+    max-width: 100%;
+    height: 100vh;
+}
+
+#imagelarge
+{
+    text-align: center;
 }
 
 img .image_thumbnail
