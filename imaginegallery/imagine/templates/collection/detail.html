@@ -4,12 +4,19 @@
 {% block content %}
 <h1>{{ collection.title }}</h1>
 
+<div id="dirlist">
 {% for directory in directory_list %}
-    {#<a href="/{{ collection.slug }}/{{ directory.dir_path }}">{{ directory.featured_image }}</a>#}
     {% if directory.dir_path %}
-    <a href="{% url 'directory_detail' collection.slug directory.dir_path %}">{{ directory.featured_image }}</a>
+    <a href="{% url 'directory_detail' collection.slug directory.dir_path %}">
+        <img alt="{{ directory.dir_path }}" src="{{ collection.archive_uri }}/{{ directory.get_featured_image.get_thumbnail }}" class="image_thumbnail" width="200" />
+    </a>
     {% endif %}
 {% endfor %}
+</div>
+
+<script language="javascript">
+$("#dirlist").justifiedGallery({'captions': true, 'margins': 1, 'rowHeight': 160});
+</script>
 
 {% include "image/thumbnails.html" %}
 

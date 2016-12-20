@@ -85,8 +85,10 @@ class Directory(BaseModel):
     @property
     def dir_path(self):
         path = self.directory.replace(self.collection.base_dir, '')
-        if path[0] == '/':
+        if len(path) > 0 and path[0] == '/':
             path = path[1:]
+        if len(path) > 0 and path[-1] == '/':
+            path = path[:-1]
         return path
 
     def nr_images(self):
@@ -103,6 +105,14 @@ class Directory(BaseModel):
             return result.order_by('-filter_modified')
         elif sortmethod == Collection.SORT_DATE_ASC:
             return result.order_by('filter_modified')
+
+    def get_featured_image(self):
+        if self.featured_image:
+            return self.featured_image
+        else:
+            images = self.images(self.collection.sortmethod)
+            if images:
+                return images[0]
 
     def __unicode__(self):
         return self.directory

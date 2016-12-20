@@ -6,6 +6,10 @@
     <link rel='stylesheet' id='Droid+Sans-css'  href='https://fonts.googleapis.com/css?family=Droid+Sans%3Aregular%2C700' type='text/css' media='all' />
     <link rel="stylesheet" type="text/css" href="{% static "css/font/font.css" %}" />
     <link rel="stylesheet" type="text/css" href="{% static "css/imaginedark.css" %}" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="{% static "css/justifiedGallery.min.css" %}" />
+    <script src="{% static "js/jquery.justifiedGallery.min.js" %}"></script>
     {% block extrastyling %}
     {% endblock %}
 </head>
@@ -14,8 +18,7 @@
     <div id="navigation">
         {% block sidebar %}
         <ul>
-            <li><a href="/">Home</a></li>
-            <!--<li><a href="/events/">Events</a></li>-->
+            <li><a href="{% url "index" %}">Home</a></li>
         </ul>
         {% endblock %}
     </div>
