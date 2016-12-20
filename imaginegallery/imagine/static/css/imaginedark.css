@@ -27,7 +27,8 @@ body
 
 h1
 {
-    font-family: BebasNeueRegular, arial, Georgia, serif;
+    /*font-family: BebasNeueRegular, arial, Georgia, serif;*/
+    font-family: BebasNeuewebfont, arial, Georgia, serif;
     color: #FFF;
 }
 
@@ -39,7 +40,7 @@ a
 #content .image_normal
 {
     max-width: 100%;
-    height: 100vh;
+    height: 80vh;
 }
 
 #imagelarge

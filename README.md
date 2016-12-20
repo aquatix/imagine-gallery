@@ -32,3 +32,11 @@ inside the images.
 Part of the reason to create imagine was because other gallery software (zenphoto,
 gallery2/3 and such) didn't suit my needs, were flaky, insecure or had other
 shortcomings.
+
+
+## Third party libraries
+
+For justifying the thumbnails so they get nicely laid out, [Justified-Gallery](https://github.com/miromannino/Justified-Gallery)
+is used.
+
+The BebasNeue (regular) font used for headings was obtained from [FontsForWeb](http://fontsforweb.com/font/show?id=1962).
