@@ -167,6 +167,16 @@ class Image(BaseModel):
         """Delete all exif items belonging to this Image, useful for re-importing afterwards"""
         ExifItem.objects.filter(image__pk=self.pk).delete()
 
+    def get_title(self):
+        """Return filename or user-set title from ImageMeta"""
+        image_title = self.filename
+        try:
+            image_meta = ImageMeta.objects.get(image_hash=self.image_hash)
+            image_title = image_meta.title
+        except ImageMeta.DoesNotExist:
+            pass
+        return image_title
+
     def get_variant(self, variant):
         photosize = PhotoSize.objects.get(name=variant)
         return '{}/{}_{}-{}.jpg'.format(self.image_hash[:2], self.image_hash, photosize.width, photosize.height)

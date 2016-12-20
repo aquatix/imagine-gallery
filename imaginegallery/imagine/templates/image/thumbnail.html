@@ -1,5 +1,5 @@
 {% if directory.relative_path %}
-<a href="{% url 'image_detail' collection.slug directory.relative_path image.filename %}"><img src="{{ collection.archive_uri }}/{{ image.get_thumbnail }}" class="image_thumbnail" width="200" /></a>
+<a href="{% url 'image_detail' collection.slug directory.relative_path image.filename %}"><img alt="{{ image.get_title }}" src="{{ collection.archive_uri }}/{{ image.get_thumbnail }}" class="image_thumbnail" width="200" /></a>
 {% else %}
-<a href="{% url 'rootdir_image_detail' collection.slug image.filename %}"><img src="{{ collection.archive_uri }}/{{ image.get_thumbnail }}" class="image_thumbnail" width="200" /></a>
+<a href="{% url 'rootdir_image_detail' collection.slug image.filename %}"><img alt="{{ image.get_title }}" src="{{ collection.archive_uri }}/{{ image.get_thumbnail }}" class="image_thumbnail" width="200" /></a>
 {% endif %}
