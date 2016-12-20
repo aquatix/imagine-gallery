@@ -1,12 +1,8 @@
 {% extends "base.html" %}
-{% block title %}{{ image.filename }}{% endblock %}
+{% block title %}{{ image_title }}{% endblock %}
 
 {% block content %}
-{% if image_meta.title %}
-<h1>{{ image_meta.title }}</h1>
-{% else %}
-<h1>{{ image.filename }}</h1>
-{% endif %}
+<h1>{{ image_title }}</h1>
 
 <!--
 {{ image.image_hash }}

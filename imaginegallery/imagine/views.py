@@ -80,8 +80,10 @@ def image_detail(request, collection_slug, file_path, imagename):
 
     image_url = os.path.join(collection.archive_uri, image.get_normal())
 
+    image_title = image.filename
     try:
         image_meta = ImageMeta.objects.get(image_hash=image.image_hash)
+        image_title = image_meta.title
     except ImageMeta.DoesNotExist:
         image_meta = ImageMeta()
 
@@ -91,6 +93,7 @@ def image_detail(request, collection_slug, file_path, imagename):
         'image': image,
         'image_url': image_url,
         'image_meta': image_meta,
+        'image_title': image_title,
     }
     return render(request, 'image/detail.html', context)
 
