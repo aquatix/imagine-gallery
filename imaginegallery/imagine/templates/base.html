@@ -21,10 +21,11 @@
 
 <body>
     <div id="navigation">
-        {% block sidebar %}
-        <ul>
-            <li><a href="{% url "index" %}">Home</a></li>
-        </ul>
+        {% block navigation %}
+            <a href="{% url "index" %}">Home</a>
+            {% for navitem in navigation_items %}
+                &raquo; <a href="{{ navitem.url }}">{{ navitem.title }}</a>
+            {% endfor %}
         {% endblock %}
     </div>
 

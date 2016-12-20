@@ -92,6 +92,9 @@ def image_detail(request, collection_slug, file_path, imagename):
     directory = image.directory
     images = image.directory.images(collection.sortmethod)
 
+    navigation_items = []
+    navigation_items.append({'url': reverse('collection_detail', args=[collection.slug]), 'title': collection.title})
+
     prev_image = None
     next_image = None
     prevpage = ''
@@ -112,11 +115,13 @@ def image_detail(request, collection_slug, file_path, imagename):
             prevpage = reverse('image_detail', args=[collection.slug, directory.relative_path, prev_image.filename])
         if next_image:
             nextpage = reverse('image_detail', args=[collection.slug, directory.relative_path, next_image.filename])
+        navigation_items.append({'url': reverse('directory_detail', args=[collection.slug, directory.relative_path]), 'title': directory.dir_path})
     else:
         if prev_image:
             prevpage = reverse('rootdir_image_detail', args=[collection.slug, prev_image.filename])
         if next_image:
             nextpage = reverse('rootdir_image_detail', args=[collection.slug, next_image.filename])
+        #navigation_items.append({'url': reverse('directory_detail', args=[collection.slug, directory.relative_path]), 'title': directory.dir_path})
 
     context = {
         'collection': collection,
@@ -126,6 +131,7 @@ def image_detail(request, collection_slug, file_path, imagename):
         'image_meta': image_meta,
         'image_title': image_title,
         'images': images,
+        'navigation_items': navigation_items,
         'prevpage': prevpage,
         'nextpage': nextpage,
     }
