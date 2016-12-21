@@ -260,7 +260,7 @@ class ImageMeta(BaseModel):
     Metadata for an image, linked by image_hash so it's available for duplicates and
     survives collection rebuilding
     """
-    image_hash = models.CharField(max_length=255)
+    image_hash = models.CharField(max_length=255, primary_key=True)
 
     title = models.CharField(max_length=255, default='')
     description = models.TextField(default='')

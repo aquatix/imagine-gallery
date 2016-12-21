@@ -6,7 +6,7 @@ import datetime
 import logging
 import os
 import sys
-from imagine.models import Collection, Directory, Image, PhotoSize, ExifItem, Event
+from imagine.models import Collection, Directory, Image, ImageMeta, PhotoSize, ExifItem, Event
 from PIL import Image as PILImage, ImageFile as PILImageFile, ExifTags
 import exifread
 from hashlib import md5
@@ -176,6 +176,7 @@ def _walk_archive(collection):
                     image_counter = image_counter + 1
                 else:
                     skipped_counter = skipped_counter + 1
+                the_image_hash, created = ImageMeta.objects.get_or_create(image_hash=the_image.image_hash)
             else:
                 logger.info('skipped {0}'.format(filename))
 
