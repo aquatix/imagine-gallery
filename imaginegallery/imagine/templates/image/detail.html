@@ -47,21 +47,20 @@ document.onkeydown = function(evt) {
 };
 
 $(function() {
-  $("#imagelarge").swipe( {
-    //Generic swipe handler for all directions
-      /*
-    swipe:function(event, direction, distance, duration, fingerCount, fingerData) {
-      $(this).text("You swiped " + direction );
-      console.log("You swiped " + direction );
-    }
-    */
-      swipeLeft:function(event, direction, distance, duration, fingerCount) {
-          leftArrowPressed();
-      }
-      swipeRight:function(event, direction, distance, duration, fingerCount) {
-          righArrowPressed();
-      }
-  });
+    $("#imagelarge").swipe( {
+        //Generic swipe handler for all directions
+        swipe:function(event, direction, distance, duration, fingerCount, fingerData) {
+            console.log("You swiped " + direction );
+            if (direction == 'left')
+            {
+                leftArrowPressed();
+            }
+            if (direction == 'right')
+            {
+                rightArrowPressed();
+            }
+        }
+    });
 });
 </script>
 
