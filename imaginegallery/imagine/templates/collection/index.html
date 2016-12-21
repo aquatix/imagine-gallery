@@ -3,9 +3,16 @@
 
 {% block content %}
 {% if collection_list %}
-    <ul>
+    <div id="collectionlist">
     {% for collection in collection_list %}
-        <li><a href="{% url "collection_detail" collection.slug %}">{{ collection.title }}</a></li>
+        <div class="collectionitem">
+            <div class="collectionitemthumb">
+            <a href="{% url "collection_detail" collection.slug %}">
+                <img alt="{{ collection.title }}" src="{{ collection.archive_uri }}/{{ collection.get_featured_image.get_thumbnail }}" class="image_thumbnail" height="160" />
+            </a>
+            </div>
+            <div class="collectionmeta">{{ collection.title }} | Directories: {{ collection.nr_directories }} | Images: {{ collection.nr_images }}</div>
+        </div>
     {% endfor %}
     </ul>
 {% else %}

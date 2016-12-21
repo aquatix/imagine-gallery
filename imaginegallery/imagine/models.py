@@ -68,6 +68,14 @@ class Collection(BaseModel):
             images += directory.images(self.sortmethod)
         return images
 
+    def get_featured_image(self):
+        directories = Directory.objects.filter(collection=self)
+        print(directories)
+        if directories:
+            return directories[0].get_featured_image()
+        else:
+            return None
+
     def __unicode__(self):
         return '{0} ({1})'.format(self.title, self.base_dir)
 

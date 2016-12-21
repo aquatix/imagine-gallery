@@ -35,6 +35,37 @@ h1
 a
 {
     color: #F88C00;
+    text-decoration: none;
+}
+
+#collectionlist
+{
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.collectionitem
+{
+    width: 250px;
+    border-right: 1px solid #3C3C3C;
+    text-align: center;
+}
+
+.collectionitemthumb
+{
+    padding-top: 1px;
+    padding-bottom: 1px;
+    background-color: #121212;
+}
+
+.collectionitemthumb img
+{
+    vertical-align: bottom;
+}
+
+.collectionmeta
+{
+    text-align: left;
 }
 
 #dirlist
