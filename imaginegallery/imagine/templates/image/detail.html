@@ -51,13 +51,14 @@ $(function() {
         //Generic swipe handler for all directions
         swipe:function(event, direction, distance, duration, fingerCount, fingerData) {
             console.log("You swiped " + direction );
+            // It's the reverse
             if (direction == 'left')
             {
-                leftArrowPressed();
+                rightArrowPressed();
             }
             if (direction == 'right')
             {
-                rightArrowPressed();
+                leftArrowPressed();
             }
         }
     });
