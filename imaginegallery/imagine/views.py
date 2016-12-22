@@ -30,11 +30,15 @@ def collection_detail(request, collection_slug):
         images = None
         directory = None
 
+    navigation_items = []
+    navigation_items.append({'url': reverse('collection_detail', args=[collection.slug]), 'title': collection.title})
+
     context = {
         'collection': collection,
         'directory_list': directory_list,
         'directory': directory,
         'images': images,
+        'navigation_items': navigation_items,
     }
     return render(request, 'collection/detail.html', context)
 
@@ -52,10 +56,15 @@ def directory_detail(request, collection_slug, directory):
 
     images = directory.images(collection.sortmethod)
 
+    navigation_items = []
+    navigation_items.append({'url': reverse('collection_detail', args=[collection.slug]), 'title': collection.title})
+    navigation_items.append({'url': reverse('directory_detail', args=[collection.slug, directory.dir_path]), 'title': directory.dir_path})
+
     context = {
         'collection': collection,
         'directory': directory,
         'images': images,
+        'navigation_items': navigation_items,
     }
     return render(request, 'directory/detail.html', context)
 
@@ -116,12 +125,15 @@ def image_detail(request, collection_slug, file_path, imagename):
         if next_image:
             nextpage = reverse('image_detail', args=[collection.slug, directory.relative_path, next_image.filename])
         navigation_items.append({'url': reverse('directory_detail', args=[collection.slug, directory.relative_path]), 'title': directory.dir_path})
+        navigation_items.append({'url': reverse('image_detail', args=[collection.slug, directory.relative_path, image.filename]), 'title': image_title})
     else:
         if prev_image:
             prevpage = reverse('rootdir_image_detail', args=[collection.slug, prev_image.filename])
         if next_image:
             nextpage = reverse('rootdir_image_detail', args=[collection.slug, next_image.filename])
         #navigation_items.append({'url': reverse('directory_detail', args=[collection.slug, directory.relative_path]), 'title': directory.dir_path})
+        navigation_items.append({'url': reverse('rootdir_image_detail', args=[collection.slug, image.filename]), 'title': image_title})
+
 
     context = {
         'collection': collection,
