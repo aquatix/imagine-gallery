@@ -118,6 +118,15 @@ class Directory(BaseModel):
             images = self.images(self.collection.sortmethod)
             if images:
                 return images[0]
+            else:
+                try:
+                    directory = Directory.objects.filter(parent_directory=self)[0]
+                    images = directory.images(self.collection.sortmethod)
+                    return directory.images(self.collection.sortmethod)[0]
+                except Directory.DoesNotExist:
+                    # This directory is empty...
+                    # TODO: have a fallback thumbnail or something
+                    return None
 
     def __unicode__(self):
         return self.directory
@@ -194,6 +203,9 @@ class Image(BaseModel):
 
     def get_variant(self, variant):
         photosize = PhotoSize.objects.get(name=variant)
+        if not self.image_hash:
+            # Something went wrong with the hashing, no variants available this way
+            return None
         return '{}/{}_{}-{}.jpg'.format(self.image_hash[:2], self.image_hash, photosize.width, photosize.height)
 
     def get_thumbnail(self):
