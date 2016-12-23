@@ -184,6 +184,26 @@ class Image(BaseModel):
         else:
             return self.file_modified
 
+    def get_exif_highlights(self):
+        exif_items = []
+        #all_exif = ExifItem.objects.filter(image=self)
+
+        exif_tags = [
+            'Image Copyright',
+            'EXIF LensModel',
+            'EXIF FocalLength',
+        ]
+
+        for tag in exif_tags:
+            try:
+                tag_data = ExifItem.objects.get(image=self, key=tag)
+                exif_items.append({'key': tag, 'value': tag_data.get_value()})
+            except ExifItem.DoesNotExist:
+                pass
+
+        print exif_items
+        return exif_items
+
     def delete_exif_items(self):
         """Delete all exif items belonging to this Image, useful for re-importing afterwards"""
         ExifItem.objects.filter(image__pk=self.pk).delete()

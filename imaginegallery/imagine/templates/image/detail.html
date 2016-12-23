@@ -13,6 +13,15 @@
 
 </div>
 
+<div id="exifhighlights">
+
+    <ul>
+        {% for exifitem in image.get_exif_highlights %}
+        <li>{{ exifitem.key}}: {{ exifitem.value }}</li>
+        {% endfor %}
+    </ul>
+</div>
+
 {% include "image/thumbnails.html" %}
 
 <script type="text/javascript">
