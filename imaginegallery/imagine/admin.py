@@ -20,7 +20,7 @@ class CollectionAdmin(admin.ModelAdmin):
 
 
 class DirectoryAdmin(admin.ModelAdmin):
-    list_display = ('directory', 'collection_link', 'nr_images', )
+    list_display = ('directory', 'relative_path', 'parent_directory', 'collection_link', 'nr_images', )
 
     def collection_link(self, obj):
         return mark_safe('<a href="{}">{}</a>'.format(

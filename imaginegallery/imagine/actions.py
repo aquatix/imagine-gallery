@@ -135,10 +135,50 @@ def update_collection(collection):
     _walk_archive(collection)
 
 
+def _update_directory_parents(collection):
+    """
+    Correctly assign parent directories to the various directory objects
+    """
+    directory_list = Directory.objects.filter(collection=collection).order_by('directory')
+    print(directory_list)
+
+    root_directory = None
+    previous_directory = None
+    previous_root = None
+    for directory in directory_list:
+        # If relative_path is empty, it's the root of the collection, otherwise assign a parent
+        if not directory.relative_path:
+            directory.parent_directory = None  # root of Collection
+            directory.save()
+            previous_root = directory
+            root_directory = directory
+        else:
+            relative_dir = directory.relative_path.replace(previous_directory.relative_path, '')
+            if previous_directory:
+                common_prefix = os.path.commonprefix([directory.relative_path, previous_directory.relative_path])
+                #print 'common: ' + os.path.commonprefix([directory.directory, previous_directory.directory]) + '   ( ' + directory.directory + ' ' + previous_directory.directory
+                print 'common: ' + os.path.commonprefix([directory.relative_path, previous_directory.relative_path]) + '   ( ' + directory.relative_path + ' ' + previous_directory.relative_path
+                if not common_prefix:
+                    directory.parent_directory = root_directory
+                    directory.save()
+                    previous_root = directory
+                elif common_prefix[-1] == '/':
+                    # Directory's share the same root
+                    directory.parent_directory = previous_root
+                    directory.save()
+                else:
+                    # directory is a child of previous_directory
+                    directory.parent_directory = previous_directory
+                    directory.save()
+
+        previous_directory = directory
+
+
 def _walk_archive(collection):
     image_counter = 0
     skipped_counter = 0
     total_files = 0
+    created_dirs = 0
     for dirname, dirnames, filenames in os.walk(collection.base_dir):
         this_dir = os.path.join(dirname, '')  # be sure to have trailing / and such
         full_dir = this_dir
@@ -150,6 +190,8 @@ def _walk_archive(collection):
             this_dir = this_dir[:-1]
         directory, created = Directory.objects.get_or_create(directory=full_dir, relative_path=this_dir, collection=collection)
         logger.debug('Directory created: %s', str(created))
+        if created:
+            created_dirs = created_dirs + 1
         for subdirname in dirnames:
             logger.debug('dir: %s', os.path.join(dirname, subdirname))
         total_files = total_files + len(filenames)
@@ -183,7 +225,10 @@ def _walk_archive(collection):
             else:
                 logger.info('skipped %s', filename)
 
-    logger.info('added %d images to archive out of %d total, skipped %d', image_counter, total_files, skipped_counter)
+    logger.info('added %d images to archive out of %d total, skipped %d; created %d directories', image_counter, total_files, skipped_counter, created_dirs)
+
+    #if created_dirs:
+    _update_directory_parents(collection)
 
     return image_counter, total_files, skipped_counter
 

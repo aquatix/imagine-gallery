@@ -82,6 +82,8 @@ class Directory(BaseModel):
     collection = models.ForeignKey(Collection)
     featured_image = models.ForeignKey('Image', null=True, related_name='featured_image')
 
+    parent_directory = models.ForeignKey('self', null=True, blank=True, related_name='children')
+
     def get_filepath(self, filename):
         return '{0}{1}'.format(self.directory, filename)
 

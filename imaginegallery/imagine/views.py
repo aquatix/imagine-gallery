@@ -21,14 +21,18 @@ def collection_detail(request, collection_slug):
     except Collection.DoesNotExist:
         raise Http404('Collection does not exist')
 
-    directory_list = Directory.objects.filter(collection=collection)
+    collection_base = collection.base_dir
+    if collection_base[-1] != '/':
+        collection_base = collection_base + '/'
 
-    if directory_list:
-        images = directory_list[0].images(collection.sortmethod)
-        directory = directory_list[0]
-    else:
-        images = None
+    try:
+        directory = Directory.objects.get(collection=collection, parent_directory=None)
+        images = directory.images(collection.sortmethod)
+    except Directory.DoesNotExist:
         directory = None
+        images = None
+
+    directory_list = Directory.objects.filter(collection=collection, parent_directory=directory)
 
     navigation_items = []
     navigation_items.append({'url': reverse('collection_detail', args=[collection.slug]), 'title': collection.title})
@@ -54,6 +58,8 @@ def directory_detail(request, collection_slug, directory):
     except Directory.DoesNotExist:
         raise Http404('Directory does not exist')
 
+    directory_list = Directory.objects.filter(collection=collection).filter(parent_directory=directory)
+
     images = directory.images(collection.sortmethod)
 
     navigation_items = []
@@ -63,6 +69,7 @@ def directory_detail(request, collection_slug, directory):
     context = {
         'collection': collection,
         'directory': directory,
+        'directory_list': directory_list,
         'images': images,
         'navigation_items': navigation_items,
     }
