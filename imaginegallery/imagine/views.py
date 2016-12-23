@@ -164,7 +164,7 @@ def imagehash_detail(request, imagehash):
     try:
         image = Image.objects.filter(imagehash=imagehash)
     except Image.DoesNotExist:
-            raise Http404('Image not found')
+        raise Http404('Image not found')
 
     context = {
         'image': image,

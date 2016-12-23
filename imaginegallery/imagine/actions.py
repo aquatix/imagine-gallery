@@ -20,7 +20,7 @@ logger = logging.getLogger('imagine')
 logger.setLevel(logging.DEBUG)
 #lh = logging.FileHandler('imagine_lib.log')
 lh = logging.StreamHandler()
-if DEBUG == True:
+if DEBUG:
     lh.setLevel(logging.DEBUG)
 else:
     lh.setLevel(logging.ERROR)
