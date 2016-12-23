@@ -153,11 +153,8 @@ def _update_directory_parents(collection):
             previous_root = directory
             root_directory = directory
         else:
-            relative_dir = directory.relative_path.replace(previous_directory.relative_path, '')
             if previous_directory:
                 common_prefix = os.path.commonprefix([directory.relative_path, previous_directory.relative_path])
-                #print 'common: ' + os.path.commonprefix([directory.directory, previous_directory.directory]) + '   ( ' + directory.directory + ' ' + previous_directory.directory
-                print 'common: ' + os.path.commonprefix([directory.relative_path, previous_directory.relative_path]) + '   ( ' + directory.relative_path + ' ' + previous_directory.relative_path
                 if not common_prefix:
                     directory.parent_directory = root_directory
                     directory.save()
