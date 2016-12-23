@@ -64,7 +64,11 @@ def directory_detail(request, collection_slug, directory):
 
     navigation_items = []
     navigation_items.append({'url': reverse('collection_detail', args=[collection.slug]), 'title': collection.title})
-    navigation_items.append({'url': reverse('directory_detail', args=[collection.slug, directory.dir_path]), 'title': directory.dir_path})
+
+    nav_dir = directory
+    while nav_dir.parent_directory:
+        navigation_items.insert(1, {'url': reverse('directory_detail', args=[collection.slug, nav_dir.relative_path]), 'title': nav_dir.dir_name})
+        nav_dir = nav_dir.parent_directory
 
     context = {
         'collection': collection,
@@ -101,7 +105,8 @@ def image_detail(request, collection_slug, file_path, imagename):
     image_title = image.filename
     try:
         image_meta = ImageMeta.objects.get(image_hash=image.image_hash)
-        image_title = image_meta.title
+        if image_meta.title:
+            image_title = image_meta.title
     except ImageMeta.DoesNotExist:
         image_meta = ImageMeta()
 
@@ -131,14 +136,20 @@ def image_detail(request, collection_slug, file_path, imagename):
             prevpage = reverse('image_detail', args=[collection.slug, directory.relative_path, prev_image.filename])
         if next_image:
             nextpage = reverse('image_detail', args=[collection.slug, directory.relative_path, next_image.filename])
-        navigation_items.append({'url': reverse('directory_detail', args=[collection.slug, directory.relative_path]), 'title': directory.dir_path})
+        #navigation_items.append({'url': reverse('directory_detail', args=[collection.slug, directory.relative_path]), 'title': directory.relative_path})
+
+        nav_dir = directory
+        while nav_dir.parent_directory:
+            navigation_items.insert(1, {'url': reverse('directory_detail', args=[collection.slug, nav_dir.relative_path]), 'title': nav_dir.dir_name})
+            nav_dir = nav_dir.parent_directory
+
         navigation_items.append({'url': reverse('image_detail', args=[collection.slug, directory.relative_path, image.filename]), 'title': image_title})
     else:
         if prev_image:
             prevpage = reverse('rootdir_image_detail', args=[collection.slug, prev_image.filename])
         if next_image:
             nextpage = reverse('rootdir_image_detail', args=[collection.slug, next_image.filename])
-        #navigation_items.append({'url': reverse('directory_detail', args=[collection.slug, directory.relative_path]), 'title': directory.dir_path})
+        #navigation_items.append({'url': reverse('directory_detail', args=[collection.slug, directory.relative_path]), 'title': directory.relative_path})
         navigation_items.append({'url': reverse('rootdir_image_detail', args=[collection.slug, image.filename]), 'title': image_title})
 
 

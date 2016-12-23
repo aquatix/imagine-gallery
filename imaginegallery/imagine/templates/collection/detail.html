@@ -6,9 +6,9 @@
 
 <div id="dirlist">
 {% for this_directory in directory_list %}
-    {% if this_directory.dir_path %}
-    <a href="{% url 'directory_detail' collection.slug this_directory.dir_path %}">
-        <img alt="{{ this_directory.dir_path }}" src="{{ collection.archive_uri }}/{{ this_directory.get_featured_image.get_thumbnail }}" class="image_thumbnail" width="200" />
+    {% if this_directory.relative_path %}
+    <a href="{% url 'directory_detail' collection.slug this_directory.relative_path %}">
+        <img alt="{{ this_directory.relative_path }}" src="{{ collection.archive_uri }}/{{ this_directory.get_featured_image.get_thumbnail }}" class="image_thumbnail" width="200" />
     </a>
     {% endif %}
 {% endfor %}

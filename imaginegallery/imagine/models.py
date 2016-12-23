@@ -1,3 +1,4 @@
+import os
 from django.db import models
 from django.utils.translation import ugettext as _
 
@@ -88,13 +89,9 @@ class Directory(BaseModel):
         return '{0}{1}'.format(self.directory, filename)
 
     @property
-    def dir_path(self):
-        path = self.directory.replace(self.collection.base_dir, '')
-        if len(path) > 0 and path[0] == '/':
-            path = path[1:]
-        if len(path) > 0 and path[-1] == '/':
-            path = path[:-1]
-        return path
+    def dir_name(self):
+        return os.path.basename(self.relative_path)
+
 
     def nr_images(self):
         return Image.objects.filter(directory__pk=self.pk).count()
