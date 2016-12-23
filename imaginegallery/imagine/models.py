@@ -232,7 +232,7 @@ class ExifItem(BaseModel):
     """Piece of exif info of a certain Image"""
     image = models.ForeignKey(Image, on_delete=models.CASCADE)
     key = models.CharField(max_length=255)
-    value_str = models.CharField(max_length=255, null=True)
+    value_str = models.CharField(max_length=65536, null=True)
     value_int = models.IntegerField(null=True)
     value_float = models.FloatField(null=True)
 
