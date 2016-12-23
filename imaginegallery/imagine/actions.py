@@ -2,14 +2,11 @@
 
 from __future__ import absolute_import
 
-import datetime
 import logging
 import os
-import sys
-from imagine.models import Collection, Directory, Image, ImageMeta, PhotoSize, ExifItem, Event
+from imagine.models import Directory, Image, ImageMeta, PhotoSize, ExifItem, Event
 from PIL import Image as PILImage, ImageFile as PILImageFile, ExifTags
 import exifread
-from hashlib import md5
 import imagehash
 from utilkit import fileutil
 
@@ -54,7 +51,7 @@ def save_jpg_exif(image, filename):
     for k, v in exif.items():
         try:
             if 'thumbnail' in k.lower():
-                logger.info('Skipping thumbnail exif item for {}'.format(filename))
+                logger.info('Skipping thumbnail exif item for %s', filename)
                 continue
             exif_item = ExifItem(
                     image=image,
@@ -63,7 +60,7 @@ def save_jpg_exif(image, filename):
             )
             exif_item.save()
         except UnicodeDecodeError:
-            logger.warning('Failed to save exif item %s due to UnicodeDecodeError' % k)
+            logger.warning('Failed to save exif item %s due to UnicodeDecodeError', k)
 
 
 def save_cr2_exif(image, filename):
@@ -88,7 +85,7 @@ def save_image_info(directory, the_image, filename, file_ext):
             # Done with image info for now, save
             the_image.save()
         except IOError:
-            logger.error('IOError opening ' + filename)
+            logger.error('IOError opening %s', filename)
 
     if file_ext == 'jpg':
         save_jpg_exif(the_image, filename)
@@ -129,12 +126,12 @@ def save_image_info(directory, the_image, filename, file_ext):
 def update_collection(collection):
     """ Creates a new image archive in archive_dir
     """
-    #logger.debug('Writing archive to {0}'.format(archive_dir))
-    #logger.debug('images_dir: {0}'.format(images_dir,''))
+    #logger.debug('Writing archive to %s', archive_dir)
+    #logger.debug('images_dir: %s', images_dir,'')
 
     #create_archive()
     #collection, created = Collection.get_or_create(name=collection_name, slug=collection_slug, base_dir=images_dir)
-    #logger.debug('Collection created: ' + str(created))
+    #logger.debug('Collection created: %s', str(created))
     _walk_archive(collection)
 
 
@@ -152,16 +149,16 @@ def _walk_archive(collection):
         if this_dir and this_dir[-1] == '/':
             this_dir = this_dir[:-1]
         directory, created = Directory.objects.get_or_create(directory=full_dir, relative_path=this_dir, collection=collection)
-        logger.debug('Directory created: ' + str(created))
+        logger.debug('Directory created: %s', str(created))
         for subdirname in dirnames:
-            logger.debug('dir: {0}'.format(os.path.join(dirname, subdirname)))
+            logger.debug('dir: %s', os.path.join(dirname, subdirname))
         total_files = total_files + len(filenames)
         for filename in filenames:
             #print os.path.join(dirname, filename)
             this_file, this_file_ext = get_filename(collection.base_dir, os.path.join(dirname, filename))
             this_path = os.path.dirname(this_file)
             this_file = this_file.replace(this_dir, '')
-            #logger.debug('ext: {0}'.format(this_file_ext)
+            #logger.debug('ext: %s', this_file_ext)
             if this_file_ext in Image.IMAGE_EXTENSIONS:
                 the_image, created = Image.objects.get_or_create(
                     directory=directory,
@@ -178,9 +175,9 @@ def _walk_archive(collection):
                     skipped_counter = skipped_counter + 1
                 the_image_hash, created = ImageMeta.objects.get_or_create(image_hash=the_image.image_hash)
             else:
-                logger.info('skipped {0}'.format(filename))
+                logger.info('skipped %s', filename)
 
-    logger.info('added {0} images to archive out of {1} total, skipped {2}'.format(image_counter, total_files, skipped_counter))
+    logger.info('added %d images to archive out of %d total, skipped %d', image_counter, total_files, skipped_counter)
 
     return 42
 
@@ -191,14 +188,14 @@ def scale_image(image_id, destination_dir, width, height, crop=False):
     """
     image = Image.objects.get(pk=image_id)
     if not image.image_hash:
-        logger.info('No hash found for Image with pk {}'.format(image.pk))
+        logger.info('No hash found for Image with pk %d', image.pk)
         return
     dir_base = os.path.join(destination_dir, image.image_hash[:2])
     filename_base = os.path.join(destination_dir, image.image_hash[:2], image.image_hash)
     fileutil.ensure_dir_exists(filename_base)
     variant = '_{}-{}.jpg'.format(width, height)
     if os.path.isfile(filename_base + variant):
-        logger.info('Skipping resize for existing {}'.format(filename_base + variant))
+        logger.info('Skipping resize for existing %s%s', filename_base, variant)
         print('skipping existing {}'.format(filename_base + variant))
 
     print('resizing into {}'.format(filename_base + variant))
@@ -209,7 +206,7 @@ def scale_image(image_id, destination_dir, width, height, crop=False):
         im.thumbnail((max_size, max_size), PILImage.ANTIALIAS)
         im.save(filename_base + variant, 'JPEG')
     except IOError:
-        logger.info('Cannot create {}x{} variant for {}'.format(width, height, image))
+        logger.info('Cannot create %dx%d variant for %s', width, height, image)
         print('Cannot create {}x{} variant for {}'.format(width, height, image))
 
 
