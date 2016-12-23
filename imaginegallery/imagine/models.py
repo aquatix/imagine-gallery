@@ -1,9 +1,4 @@
-import datetime
-
-from django.conf import settings
-from django.core.urlresolvers import reverse
 from django.db import models
-from django.dispatch import receiver
 from django.utils.translation import ugettext as _
 
 #from django_extensions.db.fields import AutoSlugField
@@ -13,7 +8,7 @@ class BaseModel(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
-    class Meta:
+    class Meta(object):
         abstract = True
 
 
@@ -230,7 +225,7 @@ class ExifItem(BaseModel):
     value_int = models.IntegerField(null=True)
     value_float = models.FloatField(null=True)
 
-    def get_value(self, as_type='str'):
+    def get_value(self):
         if self.value_str:
             return self.value_str
         elif self.value_int:
