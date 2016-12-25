@@ -8,7 +8,7 @@ from imagine.models import Directory, Image, ImageMeta, PhotoSize, ExifItem
 from PIL import Image as PILImage, ImageFile as PILImageFile, ExifTags
 import exifread
 import imagehash
-from utilkit import fileutil
+from utilkit import fileutil, datetimeutil
 
 try:
     DEBUG
@@ -46,6 +46,8 @@ def save_jpg_exif(image, filename):
     # Open image file for reading (binary mode)
     f = open(filename, 'rb')
 
+    datetime_taken = None
+
     # Return Exif tags
     exif = exifread.process_file(f)
     for k, v in exif.items():
@@ -59,8 +61,11 @@ def save_jpg_exif(image, filename):
                     value_str=v
             )
             exif_item.save()
+            if k == 'EXIF DateTimeOriginal':
+                datetime_taken = str(v)
         except UnicodeDecodeError:
             logger.warning('Failed to save exif item %s due to UnicodeDecodeError', k)
+    return datetime_taken
 
 
 def save_cr2_exif(image, filename):
@@ -87,12 +92,19 @@ def save_image_info(the_image, filename, file_ext):
         except IOError:
             logger.error('IOError opening %s', filename)
 
+    datetime_taken = None
+
     if file_ext == 'jpg':
-        save_jpg_exif(the_image, filename)
+        datetime_taken = save_jpg_exif(the_image, filename)
     elif file_ext == 'cr2':
         save_cr2_exif(the_image, filename)
     else:
         logger.warning('No supported extension found')
+
+    if datetime_taken:
+        the_image.exif_modified = datetimeutil.load_datetime(datetime_taken, '%Y:%m:%d %H:%M:%S')
+        the_image.filter_modified = the_image.exif_modified
+    the_image.save()
 
     #exif = {
     #        ExifTags.TAGS[k]: v
