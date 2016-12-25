@@ -101,9 +101,13 @@ def save_image_info(the_image, filename, file_ext):
     else:
         logger.warning('No supported extension found')
 
+    the_image.file_modified = datetimeutil.unix_to_python(os.path.getmtime(filename))
+
     if datetime_taken:
         the_image.exif_modified = datetimeutil.load_datetime(datetime_taken, '%Y:%m:%d %H:%M:%S')
         the_image.filter_modified = the_image.exif_modified
+    else:
+        the_image.filter_modified = the_image.file_modified
     the_image.save()
 
     #exif = {
