@@ -81,7 +81,9 @@ class Directory(BaseModel):
     directory = models.CharField(max_length=255)
     relative_path = models.CharField(max_length=255, help_text='Path relative to Collection base dir')
     collection = models.ForeignKey(Collection)
-    featured_image = models.ForeignKey('Image', null=True, related_name='featured_image')
+
+    title = models.CharField(max_length=255, blank=True, null=True)
+    featured_image = models.ForeignKey('Image', blank=True, null=True, related_name='featured_image')
 
     parent_directory = models.ForeignKey('self', null=True, blank=True, related_name='children')
 
@@ -90,7 +92,10 @@ class Directory(BaseModel):
 
     @property
     def dir_name(self):
-        return os.path.basename(self.relative_path)
+        if self.title:
+            return self.title
+        else:
+            return os.path.basename(self.relative_path)
 
 
     def nr_images(self):
