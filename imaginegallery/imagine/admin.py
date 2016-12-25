@@ -32,7 +32,7 @@ class DirectoryAdmin(admin.ModelAdmin):
 
 class ImageAdmin(admin.ModelAdmin):
     #list_display = ('get_filepath', 'filename', 'width', 'height', 'megapixel', 'filesize', 'image_hash', )
-    list_display = ('filename', 'collection_link', 'file_path', 'width', 'height', 'megapixel', 'filesize', 'image_hash', 'meta_link', )
+    list_display = ('filename', 'collection_link', 'file_path', 'width', 'height', 'megapixel', 'filter_modified', 'filesize', 'image_hash', 'meta_link', )
     search_fields = ('filename', )
     #readonly_fields = ('imageinegallery_collection_link',)
 
