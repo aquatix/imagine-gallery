@@ -198,7 +198,10 @@ class Image(BaseModel):
             'Image Model',
             'Image Artist',
             'EXIF LensModel',
+            'EXIF ExposureTime',
+            'EXIF FNumber',
             'EXIF FocalLength',
+            'EXIF Flash',
         ]
 
         for exif in all_exif:

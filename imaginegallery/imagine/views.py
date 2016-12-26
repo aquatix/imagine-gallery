@@ -5,6 +5,13 @@ from django.template import loader
 from django.http import Http404
 from django.urls import reverse
 from .models import Collection, Directory, Image, ImageMeta
+from fractions import Fraction
+
+
+def fraction_to_float(fraction):
+    """Parse string with fraction and return as float"""
+    return float(sum(Fraction(s) for s in fraction.split()))
+
 
 def index(request):
     collection_list = Collection.objects.all()
@@ -111,7 +118,24 @@ def image_detail(request, collection_slug, file_path, imagename):
         image_meta = ImageMeta()
 
     exif_highlights = image.get_exif_highlights()
+    exif_highlights_pretty = []
     # TODO: translate into icons and such
+    for exif_item in exif_highlights:
+        if exif_item['key'] == 'EXIF FNumber':
+            f_value = 'f/{}'.format(fraction_to_float(exif_item['value']))
+            exif_highlights_pretty.append({'key': 'Aperture', 'value': f_value})
+        elif exif_item['key'] == 'EXIF ExposureTime':
+            exif_highlights_pretty.append({'key': 'Exposure', 'value': '{} sec'.format(exif_item['value'])})
+        elif exif_item['key'] == 'EXIF FocalLength':
+            exif_highlights_pretty.append({'key': 'Focal length', 'value': '{} mm'.format(exif_item['value'])})
+        elif exif_item['key'] == 'EXIF LensModel':
+            exif_highlights_pretty.append({'key': 'Lens', 'value': exif_item['value']})
+        elif exif_item['key'] == 'Image Model':
+            exif_highlights_pretty.append({'key': 'Camera', 'value': exif_item['value']})
+        elif exif_item['key'] == 'Image Copyright':
+            exif_highlights_pretty.append({'key': '&copy;', 'value': exif_item['value']})
+        else:
+            exif_highlights_pretty.append(exif_item)
 
     directory = image.directory
     images = image.directory.images(collection.sortmethod)
@@ -163,7 +187,7 @@ def image_detail(request, collection_slug, file_path, imagename):
         'image_url': image_url,
         'image_meta': image_meta,
         'image_title': image_title,
-        'exif_highlights': exif_highlights,
+        'exif_highlights': exif_highlights_pretty,
         'images': images,
         'navigation_items': navigation_items,
         'prevpage': prevpage,
