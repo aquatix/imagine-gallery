@@ -4,6 +4,12 @@
 {% block content %}
 <h1>{{ directory.dir_name }}</h1>
 
+{% if directory.description %}
+<div id="description">
+    {{ directory.description }}
+</div>
+{% endif %}
+
 <div id="dirlist">
 {% for this_directory in directory_list %}
     {% if this_directory.relative_path %}
