@@ -83,6 +83,7 @@ class Directory(BaseModel):
     collection = models.ForeignKey(Collection)
 
     title = models.CharField(max_length=255, blank=True, null=True)
+    description = models.TextField(null=True, blank=True)
     featured_image = models.ForeignKey('Image', blank=True, null=True, related_name='featured_image')
 
     parent_directory = models.ForeignKey('self', null=True, blank=True, related_name='children')
