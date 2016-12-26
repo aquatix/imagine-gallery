@@ -110,6 +110,9 @@ def image_detail(request, collection_slug, file_path, imagename):
     except ImageMeta.DoesNotExist:
         image_meta = ImageMeta()
 
+    exif_highlights = image.get_exif_highlights()
+    # TODO: translate into icons and such
+
     directory = image.directory
     images = image.directory.images(collection.sortmethod)
 
@@ -160,6 +163,7 @@ def image_detail(request, collection_slug, file_path, imagename):
         'image_url': image_url,
         'image_meta': image_meta,
         'image_title': image_title,
+        'exif_highlights': exif_highlights,
         'images': images,
         'navigation_items': navigation_items,
         'prevpage': prevpage,

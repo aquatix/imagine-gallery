@@ -16,7 +16,7 @@
 <div id="exifhighlights">
 
     <ul>
-        {% for exifitem in image.get_exif_highlights %}
+        {% for exifitem in exif_highlights %}
         <li>{{ exifitem.key}}: {{ exifitem.value }}</li>
         {% endfor %}
     </ul>

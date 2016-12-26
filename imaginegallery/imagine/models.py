@@ -98,7 +98,6 @@ class Directory(BaseModel):
         else:
             return os.path.basename(self.relative_path)
 
-
     def nr_images(self):
         return Image.objects.filter(directory__pk=self.pk).count()
 
@@ -192,19 +191,21 @@ class Image(BaseModel):
 
     def get_exif_highlights(self):
         exif_items = []
-        #all_exif = ExifItem.objects.filter(image=self)
+        all_exif = ExifItem.objects.filter(image=self)
 
         exif_tags = [
             'Image Copyright',
+            'Image Model',
+            'Image Artist',
             'EXIF LensModel',
             'EXIF FocalLength',
         ]
 
-        for tag in exif_tags:
+        for exif in all_exif:
             try:
-                tag_data = ExifItem.objects.get(image=self, key=tag)
-                exif_items.append({'key': tag, 'value': tag_data.get_value()})
-            except ExifItem.DoesNotExist:
+                if exif.key in exif_tags:
+                    exif_items.append({'key': exif.key, 'value': exif.get_value()})
+            except KeyError:
                 pass
 
         print exif_items
