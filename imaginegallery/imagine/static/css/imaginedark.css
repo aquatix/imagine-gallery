@@ -88,3 +88,23 @@ a
 img .image_thumbnail
 {
 }
+
+#image_meta #thumbnails
+{
+    width: 68%;
+    float: left;
+}
+
+#image_meta #description
+{
+    width: 29%;
+    float: right;
+}
+
+#image_meta #exifhighlights
+{
+    width: 29%;
+    float: right;
+    color: #DDD;
+    font-size: .8em;
+}

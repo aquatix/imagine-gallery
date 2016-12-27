@@ -13,6 +13,10 @@
 
 </div>
 
+<div id="image_meta">
+
+{% include "image/thumbnails.html" %}
+
 {% if image_meta.description %}
 <div id="description">
     {{ description }}
@@ -21,14 +25,14 @@
 
 <div id="exifhighlights">
 
-    <ul>
+    <table>
         {% for exifitem in exif_highlights %}
-        <li>{{ exifitem.key}}: {{ exifitem.value }}</li>
+        <tr><td>{{ exifitem.key}}</td><td>{{ exifitem.value }}</td></tr>
         {% endfor %}
-    </ul>
+    </table>
 </div>
 
-{% include "image/thumbnails.html" %}
+</div>
 
 <script type="text/javascript">
 function leftArrowPressed() {
