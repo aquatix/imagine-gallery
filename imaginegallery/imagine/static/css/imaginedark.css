@@ -126,7 +126,18 @@ img .image_thumbnail
     {
         width: 100%;
     }
+}
 
+@media (min-width: 501px) and (max-width: 850px)
+{
+    .item
+    {
+        width: 49%;
+    }
+}
+
+@media (max-width: 850px)
+{
     .itemthumb
     {
         width: 100%;
@@ -138,7 +149,7 @@ img .image_thumbnail
     }
 }
 
-@media (min-width: 501px)
+@media (min-width: 851px)
 {
     .itemthumb .image_thumbnail
     {
