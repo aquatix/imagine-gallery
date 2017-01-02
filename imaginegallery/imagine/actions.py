@@ -268,7 +268,7 @@ def scale_image(image_id, destination_dir, width, height, crop=False):
         raise Exception('height can not be zero')
     try:
         im = PILImage.open(image.get_filepath())
-        im.thumbnail((width, height), PILImage.ANTIALIAS)
+        im.thumbnail((width, height))
         # TODO: copy EXIF info
         im.save(filename_base + variant, 'JPEG')
     except IOError:
