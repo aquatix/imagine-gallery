@@ -67,11 +67,6 @@ a
         /*background-color: #121212; */
     }
 
-    .itemthumb .image_thumbnail
-    {
-        height: 256px;
-    }
-
     .itemthumb img
     {
         vertical-align: bottom;
@@ -123,4 +118,30 @@ img .image_thumbnail
     float: right;
     color: #DDD;
     font-size: .8em;
+}
+
+@media (max-width: 500px)
+{
+    .item
+    {
+        width: 100%;
+    }
+
+    .itemthumb
+    {
+        width: 100%;
+    }
+
+    .itemthumb .image_thumbnail
+    {
+        width: 100%;
+    }
+}
+
+@media (min-width: 501px)
+{
+    .itemthumb .image_thumbnail
+    {
+        height: 256px;
+    }
 }
