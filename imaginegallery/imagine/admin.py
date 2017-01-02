@@ -56,6 +56,7 @@ class ImageAdmin(admin.ModelAdmin):
 
 class ImageMetaAdmin(admin.ModelAdmin):
     search_fields = ('title', 'description', 'image_hash', )
+    list_display = ('image_hash', 'title', )
 
 
 class PhotoSizeAdmin(admin.ModelAdmin):
