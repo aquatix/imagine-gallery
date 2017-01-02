@@ -14,14 +14,14 @@
 {% for this_directory in directory_list %}
     {% if this_directory.relative_path %}
     <a href="{% url 'directory_detail' collection.slug this_directory.relative_path %}">
-        <img alt="{{ this_directory.dir_name }}" src="{{ collection.archive_uri }}/{{ this_directory.get_featured_image.get_thumbnail }}" class="image_thumbnail" width="200" />
+        <img alt="{{ this_directory.dir_name }}" src="{{ collection.archive_uri }}/{{ this_directory.get_featured_image.get_thumbnail }}" class="image_thumbnail" />
     </a>
     {% endif %}
 {% endfor %}
 </div>
 
 <script language="javascript">
-$("#dirlist").justifiedGallery({'captions': true, 'margins': 1, 'rowHeight': 160});
+$("#dirlist").justifiedGallery({'captions': true, 'margins': 1, 'rowHeight': 256});
 </script>
 
 {% include "image/thumbnails.html" %}

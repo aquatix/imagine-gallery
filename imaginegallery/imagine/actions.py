@@ -260,12 +260,15 @@ def scale_image(image_id, destination_dir, width, height, crop=False):
     if os.path.isfile(filename_base + variant):
         logger.debug('Skipping resize for existing %s%s', filename_base, variant)
 
-    print('resizing into {}'.format(filename_base + variant))
+    logger.info('resizing into %s', filename_base + variant)
     # TODO: be more clever with the config
-    max_size = max(width, height)
+    if width == 0:
+        raise Exception('width can not be zero')
+    if height == 0:
+        raise Exception('height can not be zero')
     try:
         im = PILImage.open(image.get_filepath())
-        im.thumbnail((max_size, max_size), PILImage.ANTIALIAS)
+        im.thumbnail((width, height), PILImage.ANTIALIAS)
         # TODO: copy EXIF info
         im.save(filename_base + variant, 'JPEG')
     except IOError:
