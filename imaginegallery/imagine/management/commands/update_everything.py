@@ -1,5 +1,4 @@
-from django.core.management.base import BaseCommand, CommandError
-from imagine.models import Collection
+from django.core.management.base import BaseCommand
 from imagine.actions import update_everything
 
 class Command(BaseCommand):
