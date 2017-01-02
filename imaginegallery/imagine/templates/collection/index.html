@@ -6,15 +6,16 @@
     <div id="collectionlist">
     {% for collection in collection_list %}
         <div class="collectionitem">
+            <h3>{{ collection.title }}</h3>
             <div class="collectionitemthumb">
             <a href="{% url "collection_detail" collection.slug %}">
-                <img alt="{{ collection.title }}" src="{{ collection.archive_uri }}/{{ collection.get_featured_image.get_thumbnail }}" class="image_thumbnail" height="160" />
+                <img alt="{{ collection.title }}" src="{{ collection.archive_uri }}/{{ collection.get_featured_image.get_thumbnail }}" class="image_thumbnail" />
             </a>
             </div>
-            <div class="collectionmeta">{{ collection.title }} | Directories: {{ collection.nr_directories }} | Images: {{ collection.nr_images }}</div>
+            <div class="collectionmeta">{{ collection.nr_directories }} albums, {{ collection.nr_images }} images</div>
         </div>
     {% endfor %}
-    </ul>
+    </div>
 {% else %}
     <p>No collections are available.</p>
 {% endif %}
