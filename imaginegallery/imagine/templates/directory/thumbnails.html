@@ -1,0 +1,15 @@
+<div class="itemlist">
+{% for this_directory in directory_list %}
+    {% if this_directory.relative_path %}
+    <div class="item">
+        <h3>{{ this_directory.dir_name }}</h3>
+        <div class="itemthumb">
+        <a href="{% url 'directory_detail' collection.slug this_directory.relative_path %}">
+            <img alt="{{ this_directory.dir_name }}" src="{{ collection.archive_uri }}/{{ this_directory.get_featured_image.get_thumbnail }}" class="image_thumbnail" />
+        </a>
+        </div>
+        <div class="meta"></div>
+    </div>
+    {% endif %}
+{% endfor %}
+</div>

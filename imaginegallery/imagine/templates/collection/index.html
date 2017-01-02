@@ -3,16 +3,16 @@
 
 {% block content %}
 {% if collection_list %}
-    <div id="collectionlist">
+    <div class="itemlist">
     {% for collection in collection_list %}
-        <div class="collectionitem">
+        <div class="item">
             <h3>{{ collection.title }}</h3>
-            <div class="collectionitemthumb">
+            <div class="itemthumb">
             <a href="{% url "collection_detail" collection.slug %}">
                 <img alt="{{ collection.title }}" src="{{ collection.archive_uri }}/{{ collection.get_featured_image.get_thumbnail }}" class="image_thumbnail" />
             </a>
             </div>
-            <div class="collectionmeta">{{ collection.nr_directories }} albums, {{ collection.nr_images }} images</div>
+            <div class="meta">{{ collection.nr_directories }} albums, {{ collection.nr_images }} images</div>
         </div>
     {% endfor %}
     </div>
