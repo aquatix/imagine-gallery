@@ -4,7 +4,7 @@ from __future__ import absolute_import
 
 import logging
 import os
-from imagine.models import Directory, Image, ImageMeta, PhotoSize, ExifItem
+from imagine.models import Collection, Directory, Image, ImageMeta, PhotoSize, ExifItem
 from PIL import Image as PILImage, ImageFile as PILImageFile, ExifTags
 import exifread
 import imagehash
@@ -272,6 +272,21 @@ def scale_image(image_id, destination_dir, width, height, crop=False):
         logger.info('Cannot create %dx%d variant for %s', width, height, image)
 
 
+def clean_collection(collection):
+    """
+    Iterate through the images in the Collection and remove those that don't exist
+    on disk anymore
+    """
+    images = collection.images()
+    number_purged = 0
+    for image in images:
+        if not os.path.isfile(image.get_filepath()):
+            logger.info('Removing Image %s from collection %s', image.get_filepath(), collection)
+            image.delete()
+            number_purged = number_purged + 1
+    return number_purged
+
+
 def update_scaled_images(collection):
     """
     Iterate through the images in the Collection and generate resized versions of images
@@ -285,3 +300,14 @@ def update_scaled_images(collection):
     for image in images:
         for variant in variants:
             scale_image(image.pk, collection.archive_dir, variant.width, variant.height, variant.crop_to_fit)
+
+
+def update_everything():
+    """
+    Iterate through all Collection's, update_collection, remove stale images and scale images
+    """
+    collections = Collection.objects.all()
+    for collection in collections:
+        update_collection(collection)
+        clean_collection(collection)
+        update_scaled_images(collection)
