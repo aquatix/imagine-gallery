@@ -29,7 +29,7 @@ class Collection(BaseModel):
 
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True)
-    base_dir = models.CharField(max_length=255, blank=True)
+    base_dir = models.CharField(max_length=255, unique=True)
     archive_dir = models.CharField(max_length=255, blank=True)
     base_uri = models.CharField(max_length=255, blank=True, help_text='Base URI of original images')
     archive_uri = models.CharField(max_length=255, blank=True, help_text='Base URI of image archive')
