@@ -20,10 +20,11 @@ from django.core.wsgi import get_wsgi_application
 _application = get_wsgi_application()
 
 #env_variables_to_pass = ['DB_NAME', 'DB_USER', 'DB_PASSWD', 'DB_HOST', ]
-env_variables_to_pass = ['SERVER_HOST', 'STATIC_ROOT', 'SECRET_KEY', ]
+env_variables_to_pass = ['IMAGINE_SERVER_HOST', 'IMAGINE_STATIC_ROOT', 'IMAGINE_SECRET_KEY', 'IMAGINE_SITE_TITLE', ]
 def application(environ, start_response):
     # pass the WSGI environment variables on through to os.environ
     for var in env_variables_to_pass:
+        #print var
         os.environ[var] = environ.get(var, '')
-    print(environ)
+    #print(environ)
     return _application(environ, start_response)

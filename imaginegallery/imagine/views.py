@@ -1,4 +1,5 @@
 import os
+from django.conf import settings
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
@@ -14,9 +15,12 @@ def fraction_to_float(fraction):
 
 
 def index(request):
+    site_title = settings.SITE_TITLE
+
     collection_list = Collection.objects.all()
     template = loader.get_template('collection/index.html')
     context = {
+        'site_title': site_title,
         'collection_list': collection_list,
     }
     return HttpResponse(template.render(context, request))
@@ -27,6 +31,8 @@ def collection_detail(request, collection_slug):
         collection = Collection.objects.get(slug=collection_slug)
     except Collection.DoesNotExist:
         raise Http404('Collection does not exist')
+
+    site_title = settings.SITE_TITLE
 
     collection_base = collection.base_dir
     if collection_base[-1] != '/':
@@ -45,6 +51,7 @@ def collection_detail(request, collection_slug):
     navigation_items.append({'url': reverse('collection_detail', args=[collection.slug]), 'title': collection.title})
 
     context = {
+        'site_title': site_title,
         'collection': collection,
         'directory_list': directory_list,
         'directory': directory,
@@ -65,6 +72,8 @@ def directory_detail(request, collection_slug, directory):
     except Directory.DoesNotExist:
         raise Http404('Directory does not exist')
 
+    site_title = settings.SITE_TITLE
+
     directory_list = Directory.objects.filter(collection=collection).filter(parent_directory=directory)
 
     images = directory.images(collection.sortmethod)
@@ -78,6 +87,7 @@ def directory_detail(request, collection_slug, directory):
         nav_dir = nav_dir.parent_directory
 
     context = {
+        'site_title': site_title,
         'collection': collection,
         'directory': directory,
         'directory_list': directory_list,
@@ -106,6 +116,8 @@ def image_detail(request, collection_slug, file_path, imagename):
         image = Image.objects.get(file_path=file_path, filename=imagename)
     except Image.DoesNotExist:
         raise Http404('Image does not exist')
+
+    site_title = settings.SITE_TITLE
 
     image_url = os.path.join(collection.archive_uri, image.get_normal())
 
@@ -181,6 +193,7 @@ def image_detail(request, collection_slug, file_path, imagename):
 
 
     context = {
+        'site_title': site_title,
         'collection': collection,
         'directory': directory,
         'image': image,
@@ -212,7 +225,10 @@ def imagehash_detail(request, imagehash):
     except Image.DoesNotExist:
         raise Http404('Image not found')
 
+    site_title = settings.SITE_TITLE
+
     context = {
+        'site_title': site_title,
         'image': image,
     }
 

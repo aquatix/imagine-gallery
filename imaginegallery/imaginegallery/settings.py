@@ -21,18 +21,18 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 try:
-    SECRET_KEY = os.environ['SECRET_KEY']
+    SECRET_KEY = os.environ['IMAGINE_SECRET_KEY']
 except KeyError:
-    print('No ENV var found for SECRET_KEY')
+    print('No ENV var found for IMAGINE_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]']
 try:
-    ALLOWED_HOSTS.append(os.environ['SERVER_HOST'])
+    ALLOWED_HOSTS.append(os.environ['IMAGINE_SERVER_HOST'])
 except KeyError:
-    print('No ENV var found for SERVER_HOST')
+    print('No ENV var found for IMAGINE_SERVER_HOST')
 
 
 # Application definition
@@ -91,11 +91,11 @@ DATABASES = {
 try:
     DATABASES['default'] = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ['DB_NAME'],
-        'USER': os.environ['DB_USER'],
-        'PASSWORD': os.environ['DB_PASS'],
-        'HOST': os.environ['DB_HOST'],
-        'PORT': os.environ['DB_PORT'],
+        'NAME': os.environ['IMAGINE_DB_NAME'],
+        'USER': os.environ['IMAGINE_DB_USER'],
+        'PASSWORD': os.environ['IMAGINE_DB_PASS'],
+        'HOST': os.environ['IMAGINE_DB_HOST'],
+        'PORT': os.environ['IMAGINE_DB_PORT'],
         #
     }
 except KeyError as e:
@@ -139,6 +139,13 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 try:
-    STATIC_ROOT = os.environ['STATIC_ROOT']
+    STATIC_ROOT = os.environ['IMAGINE_STATIC_ROOT']
 except KeyError:
-    print('No ENV var found for STATIC_ROOT')
+    print('No ENV var found for IMAGINE_STATIC_ROOT')
+
+SITE_TITLE = 'Imagine Gallery'
+try:
+    SITE_TITLE = os.environ['IMAGINE_SITE_TITLE']
+except KeyError:
+    print('No ENV var found for IMAGINE_SITE_TITLE')
+
