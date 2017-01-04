@@ -66,7 +66,6 @@ class Collection(BaseModel):
 
     def get_featured_image(self):
         directories = Directory.objects.filter(collection=self)
-        print(directories)
         if directories:
             return directories[0].get_featured_image()
         else:
@@ -122,13 +121,15 @@ class Directory(BaseModel):
                 return images[0]
             else:
                 try:
-                    directory = Directory.objects.filter(parent_directory=self)[0]
-                    images = directory.images(self.collection.sortmethod)
-                    return directory.images(self.collection.sortmethod)[0]
+                    for directory in Directory.objects.filter(parent_directory=self):
+                        images = directory.images(self.collection.sortmethod)
+                        if images:
+                            return images[0]
                 except Directory.DoesNotExist:
                     # This directory is empty...
                     # TODO: have a fallback thumbnail or something
                     return None
+                return None
 
     def __unicode__(self):
         return self.directory
