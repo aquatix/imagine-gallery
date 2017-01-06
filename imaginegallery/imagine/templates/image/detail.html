@@ -27,7 +27,7 @@
 
     <table>
         {% for exifitem in exif_highlights %}
-        <tr><td>{{ exifitem.key}}</td><td>{{ exifitem.value }}</td></tr>
+        <tr><td class="exifkey">{{ exifitem.key|safe }}</td><td>{{ exifitem.value }}</td></tr>
         {% endfor %}
     </table>
 </div>

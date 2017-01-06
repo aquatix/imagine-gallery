@@ -120,6 +120,12 @@ img .image_thumbnail
     font-size: .8em;
 }
 
+.exifkey
+{
+    font-size: 2em;
+    padding-right: 2em;
+}
+
 @media (max-width: 500px)
 {
     .item

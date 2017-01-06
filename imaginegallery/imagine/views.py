@@ -135,17 +135,21 @@ def image_detail(request, collection_slug, file_path, imagename):
     for exif_item in exif_highlights:
         if exif_item['key'] == 'EXIF FNumber':
             f_value = 'f/{}'.format(fraction_to_float(exif_item['value']))
-            exif_highlights_pretty.append({'key': 'Aperture', 'value': f_value})
+            exif_highlights_pretty.append({'key': '<i title="Aperture" class="ionicons ion-aperture"></i>', 'value': f_value})
         elif exif_item['key'] == 'EXIF ExposureTime':
-            exif_highlights_pretty.append({'key': 'Exposure', 'value': '{} sec'.format(exif_item['value'])})
+            exif_highlights_pretty.append({'key': '<i title="Exposure" class="material-icons">exposure</i>', 'value': '{} sec'.format(exif_item['value'])})
         elif exif_item['key'] == 'EXIF FocalLength':
-            exif_highlights_pretty.append({'key': 'Focal length', 'value': '{} mm'.format(exif_item['value'])})
+            exif_highlights_pretty.append({'key': '<i title="Focal length" class="material-icons">visibility</i>', 'value': '{}mm'.format(exif_item['value'])})
         elif exif_item['key'] == 'EXIF LensModel':
-            exif_highlights_pretty.append({'key': 'Lens', 'value': exif_item['value']})
+            exif_highlights_pretty.append({'key': '<i title="Lens" class="material-icons">lens</i>', 'value': exif_item['value']})
+        elif exif_item['key'] == 'EXIF Flash':
+            exif_highlights_pretty.append({'key': '<i title="Flash" class="ionicons ion-flash"></i>', 'value': exif_item['value']})
         elif exif_item['key'] == 'Image Model':
-            exif_highlights_pretty.append({'key': 'Camera', 'value': exif_item['value']})
+            exif_highlights_pretty.append({'key': '<i title="Camera" class="ionicons ion-camera"></i>', 'value': exif_item['value']})
         elif exif_item['key'] == 'Image Copyright':
             exif_highlights_pretty.append({'key': '&copy;', 'value': exif_item['value']})
+        elif exif_item['key'] == 'Image Artist':
+            exif_highlights_pretty.append({'key': '<i title="Image artist" class="material-icons">person</i>', 'value': exif_item['value']})
         else:
             exif_highlights_pretty.append(exif_item)
 
