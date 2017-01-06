@@ -195,14 +195,15 @@ class Image(BaseModel):
         all_exif = ExifItem.objects.filter(image=self)
 
         exif_tags = [
-            'Image Copyright',
             'Image Model',
-            'Image Artist',
-            'EXIF LensModel',
-            'EXIF ExposureTime',
             'EXIF FNumber',
-            'EXIF FocalLength',
+            'EXIF ExposureTime',
             'EXIF Flash',
+            'EXIF FocalLength',
+            'EXIF ISOSpeedRatings',
+            'EXIF LensModel',
+            'Image Copyright',
+            'Image Artist',
         ]
 
         for exif in all_exif:
