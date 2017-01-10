@@ -95,7 +95,8 @@ class Directory(BaseModel):
         if self.title:
             return self.title
         else:
-            return os.path.basename(self.relative_path)
+            title = os.path.basename(self.relative_path)
+            return title[:1].upper() + title[1:]
 
     def nr_images(self):
         return Image.objects.filter(directory__pk=self.pk).count()
