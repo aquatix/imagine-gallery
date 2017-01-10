@@ -4,6 +4,15 @@
 <head>
     <title>{% block title %}Imagine gallery{% endblock %} | {%block sitetitle %}{{ site_title }}{% endblock %}</title>
 {#    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/> #}
+
+    <!-- Chrome, Firefox OS and Opera -->
+    <meta name="theme-color" content="#3C3C3C" />
+    <!-- Windows Phone -->
+    <meta name="msapplication-navbutton-color" content="#3C3C3C">
+    <!-- iOS Safari -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
     <link rel='stylesheet' id='Droid+Sans-css'  href='https://fonts.googleapis.com/css?family=Droid+Sans%3Aregular%2C700' type='text/css' media='all' />
     <link rel="stylesheet" type="text/css" href="{% static "css/font/font.css" %}" />
     <link rel="stylesheet" type="text/css" href="{% static "css/imaginedark.css" %}" />
