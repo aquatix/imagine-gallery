@@ -1,9 +1,9 @@
 # pip-compile requirements.in
-Django>=1.10.5
+Django>=1.10.5  # Bugfix release
 django-taggit
 ExifRead
 ImageHash
 Markdown
 Pillow
 psycopg2
-utilkit>=0.4.0
+utilkit>=0.4.0  # We need some features from at least this version
