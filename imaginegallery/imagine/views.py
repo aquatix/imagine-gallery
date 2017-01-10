@@ -1,5 +1,6 @@
 import os
 from django.conf import settings
+from django.db.models.functions import Coalesce
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
@@ -45,7 +46,7 @@ def collection_detail(request, collection_slug):
         directory = None
         images = None
 
-    directory_list = Directory.objects.filter(collection=collection, parent_directory=directory)
+    directory_list = Directory.objects.annotate(dirtitle=Coalesce('title', 'relative_path')).filter(collection=collection, parent_directory=directory).order_by('dirtitle')
 
     navigation_items = []
     navigation_items.append({'url': reverse('collection_detail', args=[collection.slug]), 'title': collection.title})
@@ -74,7 +75,7 @@ def directory_detail(request, collection_slug, directory):
 
     site_title = settings.SITE_TITLE
 
-    directory_list = Directory.objects.filter(collection=collection).filter(parent_directory=directory)
+    directory_list = Directory.objects.annotate(dirtitle=Coalesce('title', 'relative_path')).filter(collection=collection, parent_directory=directory).order_by('dirtitle')
 
     images = directory.images(collection.sortmethod)
 
