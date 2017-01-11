@@ -133,6 +133,11 @@ USE_L10N = True
 
 USE_TZ = True
 
+DATETIME_FORMAT = '%Y-%m-%d %H:%M'
+try:
+    DATETIME_FORMAT = os.environ['IMAGINE_DATETIME_FORMAT']
+except KeyError:
+    print('No ENV var found for IMAGINE_DATETIME_FORMAT')
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
