@@ -18,7 +18,14 @@
 {{ image.image_hash }}
 -->
 
-    <img src="{{ image_url }}" class="image_normal" />
+    <div id="photosphere"></div>
+
+    <script>
+        var viewer = PhotoSphereViewer({
+            'container': 'photosphere',
+            'panorama': '{{ image_url }}',
+        });
+    </script>
 
 </div>
 
