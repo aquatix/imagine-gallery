@@ -229,12 +229,8 @@ def _walk_archive(collection):
                     image_counter = image_counter + 1
                 else:
                     skipped_counter = skipped_counter + 1
-                    logger.debug('skipped Image for %s', the_image)
+                    #logger.debug('skipped Image for %s', the_image)
                 the_image_hash, created = ImageMeta.objects.get_or_create(image_hash=the_image.image_hash)
-                if created:
-                    logger.debug('created ImageMeta for hash %s', the_image_hash.image_hash)
-                else:
-                    logger.debug('skipped ImageMeta for hash %s', the_image_hash.image_hash)
             else:
                 logger.info('skipped %s', filename)
 
@@ -258,7 +254,7 @@ def scale_image(image_id, destination_dir, width, height, crop=False):
     fileutil.ensure_dir_exists(filename_base)
     variant = '_{}-{}.jpg'.format(width, height)
     if os.path.isfile(filename_base + variant):
-        logger.debug('Skipping resize for existing %s%s', filename_base, variant)
+        #logger.debug('Skipping resize for existing %s%s', filename_base, variant)
         return
 
     logger.info('resizing into %s', filename_base + variant)
