@@ -259,6 +259,7 @@ def scale_image(image_id, destination_dir, width, height, crop=False):
     variant = '_{}-{}.jpg'.format(width, height)
     if os.path.isfile(filename_base + variant):
         logger.debug('Skipping resize for existing %s%s', filename_base, variant)
+        return
 
     logger.info('resizing into %s', filename_base + variant)
     # TODO: be more clever with the config
