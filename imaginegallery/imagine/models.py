@@ -157,6 +157,8 @@ class Image(BaseModel):
 
     is_visible = models.BooleanField(default=True)
 
+    is_photosphere = models.BooleanField(default=False)
+
     width = models.IntegerField(default=-1)
     height = models.IntegerField(default=-1)
 

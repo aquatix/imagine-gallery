@@ -221,7 +221,10 @@ def image_detail(request, collection_slug, file_path, imagename):
         'prevpage': prevpage,
         'nextpage': nextpage,
     }
-    return render(request, 'image/detail.html', context)
+    if image.is_photosphere:
+        return render(request, 'image/detail_photosphere.html', context)
+    else:
+        return render(request, 'image/detail.html', context)
 
 
 def rootdir_image_detail(request, collection_slug, imagename):
