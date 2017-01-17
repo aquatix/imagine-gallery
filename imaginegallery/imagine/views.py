@@ -121,6 +121,12 @@ def image_detail(request, collection_slug, file_path, imagename):
     site_title = settings.SITE_TITLE
 
     image_url = os.path.join(collection.archive_uri, image.get_normal())
+    image_orig_url = None
+    if collection.base_uri:
+        print collection.base_uri
+        #image_orig_url = os.path.join(collection.base_uri + '/', image.file_path, image.filename)
+        image_orig_url = image.get_original(collection.base_uri)
+        print image_orig_url
 
     image_title = image.filename
     try:
@@ -213,6 +219,7 @@ def image_detail(request, collection_slug, file_path, imagename):
         'directory': directory,
         'image': image,
         'image_url': image_url,
+        'image_orig_url': image_orig_url,
         'image_meta': image_meta,
         'image_title': image_title,
         'exif_highlights': exif_highlights_pretty,

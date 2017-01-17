@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load staticfiles%}
 {% block title %}{{ image_title }}{% endblock %}
 {% block extrastyling %}
 <link rel="stylesheet" href="{% static "css/photo-sphere-viewer.min.css" %}">
@@ -22,8 +23,16 @@
 
     <script>
         var viewer = PhotoSphereViewer({
-            'container': 'photosphere',
-            'panorama': '{{ image_url }}',
+            {% if image_orig_url %}
+            panorama: '{{ image_orig_url }}',
+            {% else %}
+            panorama: '{{ image_url }}',
+            {% endif %}
+            container: 'photosphere',
+            navbar: 'autorotate zoom download caption fullscreen',
+            size: {
+                height: 500
+            },
         });
     </script>
 

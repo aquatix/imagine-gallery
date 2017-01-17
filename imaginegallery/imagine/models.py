@@ -146,12 +146,12 @@ class Image(BaseModel):
     filename = models.CharField(max_length=255)
     file_ext = models.CharField(max_length=255)
     file_path = models.CharField(max_length=255)  # Directory path, for quick lookup
-    filetype = models.CharField(max_length=255, null=True)
+    filetype = models.CharField(max_length=255, null=True, blank=True)
     filesize = models.IntegerField(default=-1)
 
     # Datetime stamps
-    file_modified = models.DateTimeField(null=True)
-    exif_modified = models.DateTimeField(null=True)
+    file_modified = models.DateTimeField(null=True, blank=True)
+    exif_modified = models.DateTimeField(null=True, blank=True)
     # Contains either file_modified or exif_modified, used for filtering into events and such:
     filter_modified = models.DateTimeField(null=True)
 
@@ -163,7 +163,7 @@ class Image(BaseModel):
     height = models.IntegerField(default=-1)
 
     image_hash = models.CharField(max_length=255, null=True)
-    thumb_hash = models.CharField(max_length=255, null=True)
+    thumb_hash = models.CharField(max_length=255, null=True, blank=True)
 
     # TODO: GPS geotag
     # http://stackoverflow.com/questions/10799366/geotagging-jpegs-with-pyexiv2
@@ -245,6 +245,9 @@ class Image(BaseModel):
 
     def get_normal(self):
         return self.get_variant('normal')
+
+    def get_original(self, collection_basedir):
+        return '{}{}/{}'.format(collection_basedir, self.file_path, self.filename)
 
     @classmethod
     def is_image(cls, filename):
