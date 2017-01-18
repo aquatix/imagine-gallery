@@ -139,6 +139,9 @@ try:
 except KeyError:
     print('No ENV var found for IMAGINE_DATETIME_FORMAT')
 
+# Image settings
+EXIF_COPY_THRESHOLD = 1000  # Copy EXIF tags when variant is larger than 1000px (thumbnails are then smaller in filesize)
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 

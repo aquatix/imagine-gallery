@@ -4,6 +4,7 @@ from __future__ import absolute_import
 
 import logging
 import os
+from django.conf import settings
 from imagine.models import Collection, Directory, Image, ImageMeta, PhotoSize, ExifItem
 from PIL import Image as PILImage, ImageFile as PILImageFile, ExifTags
 import exifread
@@ -267,7 +268,15 @@ def scale_image(image_id, destination_dir, width, height, crop=False):
         im = PILImage.open(image.get_filepath())
         im.thumbnail((width, height))
         # TODO: copy EXIF info
-        im.save(filename_base + variant, 'JPEG')
+        if width >= settings.EXIF_COPY_THRESHOLD or height >= settings.EXIF_COPY_THRESHOLD:
+            try:
+                exif = im.info['exif']
+                im.save(filename_base + variant, 'JPEG', exif=exif)
+            except KeyError:
+                # No EXIF found, save normally
+                im.save(filename_base + variant, 'JPEG')
+        else:
+            im.save(filename_base + variant, 'JPEG')
     except IOError:
         logger.info('Cannot create %dx%d variant for %s', width, height, image)
 
