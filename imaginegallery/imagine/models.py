@@ -96,6 +96,7 @@ class Directory(BaseModel):
             return self.title
         else:
             title = os.path.basename(self.relative_path)
+            title = title.replace('_', ' ')
             return title[:1].upper() + title[1:]
 
     def nr_images(self):
