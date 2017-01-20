@@ -26,7 +26,11 @@ except KeyError:
     print('No ENV var found for IMAGINE_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
+try:
+    DEBUG = os.environ['DEBUG']
+except KeyError:
+    DEBUG = False
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]']
 try:
