@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.template import loader
 from django.http import Http404
 from django.urls import reverse
-from .models import Collection, Directory, Image, ImageMeta
+from .models import Collection, Directory, Image, ImageMeta, PhotoSize
 from fractions import Fraction
 
 
@@ -123,10 +123,14 @@ def image_detail(request, collection_slug, file_path, imagename):
     image_url = os.path.join(collection.archive_uri, image.get_normal())
     image_orig_url = None
     if collection.base_uri:
-        print collection.base_uri
-        #image_orig_url = os.path.join(collection.base_uri + '/', image.file_path, image.filename)
         image_orig_url = image.get_original(collection.base_uri)
-        print image_orig_url
+
+    image_thumb_url = os.path.join(collection.archive_uri, image.get_thumbnail())
+    image_thumb_sizes = (1024, 1024)
+    try:
+        image_thumb_sizes = PhotoSize.objects.get(name='thumbnail')
+    except PhotoSize.DoesNotExist:
+        pass
 
     image_title = image.filename
     try:
@@ -220,6 +224,8 @@ def image_detail(request, collection_slug, file_path, imagename):
         'image': image,
         'image_url': image_url,
         'image_orig_url': image_orig_url,
+        'image_thumb_url': image_thumb_url,
+        'image_thumb_sizes': image_thumb_sizes,
         'image_meta': image_meta,
         'image_title': image_title,
         'exif_highlights': exif_highlights_pretty,
