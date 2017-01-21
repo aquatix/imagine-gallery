@@ -111,6 +111,9 @@ def save_image_info(the_image, filename, file_ext):
         the_image.filter_modified = the_image.file_modified
     the_image.save()
 
+    # TODO: update exif highlights fields from EXIF tags
+    # exifhighlights = self.get_exif_highlights()
+
     #exif = {
     #        ExifTags.TAGS[k]: v
     #        for k, v in image._getexif().items()
@@ -157,6 +160,7 @@ def _update_directory_parents(collection):
     Correctly assign parent directories to the various directory objects
     """
     directory_list = Directory.objects.filter(collection=collection).order_by('directory')
+    # TODO: fix nesting of directories
     #print(directory_list)
 
     root_directory = None
