@@ -193,7 +193,7 @@ def _walk_archive(collection):
     skipped_counter = 0
     total_files = 0
     created_dirs = 0
-    for dirname, dirnames, filenames in os.walk(collection.base_dir):
+    for dirname, _dirnames, filenames in os.walk(collection.base_dir):
         this_dir = os.path.join(dirname, '')  # be sure to have trailing / and such
         full_dir = this_dir
         #logger.debug(this_dir)
