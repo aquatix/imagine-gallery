@@ -73,7 +73,7 @@ class Collection(BaseModel):
         return images
 
     def get_featured_image(self):
-        directories = Directory.objects.filter(collection=self)
+        directories = Directory.objects.filter(collection=self).order_by('relative_path')
         if directories:
             return directories[0].get_featured_image()
         else:
