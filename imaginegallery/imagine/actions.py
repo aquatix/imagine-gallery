@@ -54,7 +54,7 @@ def save_jpg_exif(image, filename):
     for k, v in exif.items():
         try:
             if 'thumbnail' in k.lower():
-                logger.info('Skipping thumbnail exif item for %s', filename)
+                #logger.debug('Skipping thumbnail exif item for %s', filename)
                 continue
             exif_item = ExifItem(
                     image=image,
@@ -157,7 +157,7 @@ def _update_directory_parents(collection):
     Correctly assign parent directories to the various directory objects
     """
     directory_list = Directory.objects.filter(collection=collection).order_by('directory')
-    print(directory_list)
+    #print(directory_list)
 
     root_directory = None
     previous_directory = None
@@ -196,18 +196,18 @@ def _walk_archive(collection):
     for dirname, dirnames, filenames in os.walk(collection.base_dir):
         this_dir = os.path.join(dirname, '')  # be sure to have trailing / and such
         full_dir = this_dir
-        logger.debug(this_dir)
+        #logger.debug(this_dir)
         this_dir = this_dir.replace(collection.base_dir, '')
         if this_dir[0] == '/':
             this_dir = this_dir[1:]
         if this_dir and this_dir[-1] == '/':
             this_dir = this_dir[:-1]
         directory, created = Directory.objects.get_or_create(directory=full_dir, relative_path=this_dir, collection=collection)
-        logger.debug('Directory created: %s', str(created))
+        logger.debug('Directory %s created: %s', full_dir, str(created))
         if created:
             created_dirs = created_dirs + 1
-        for subdirname in dirnames:
-            logger.debug('dir: %s', os.path.join(dirname, subdirname))
+        #for subdirname in dirnames:
+        #    logger.debug('dir: %s', os.path.join(dirname, subdirname))
         total_files = total_files + len(filenames)
         for filename in filenames:
             #print os.path.join(dirname, filename)
@@ -226,7 +226,6 @@ def _walk_archive(collection):
                 if created:
                     # Only save if new image
                     save_image_info(the_image, os.path.join(dirname, filename), this_file_ext)
-                    logger.debug(the_image)
                     logger.info('created Image for %s', the_image)
                     image_counter = image_counter + 1
                 else:
@@ -234,7 +233,8 @@ def _walk_archive(collection):
                     #logger.debug('skipped Image for %s', the_image)
                 the_image_hash, created = ImageMeta.objects.get_or_create(image_hash=the_image.image_hash)
             else:
-                logger.info('skipped %s', filename)
+                #logger.info('skipped %s', filename)
+                pass
 
     logger.info('added %d images to archive out of %d total, skipped %d; created %d directories', image_counter, total_files, skipped_counter, created_dirs)
 

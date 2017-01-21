@@ -146,10 +146,8 @@ class Directory(BaseModel):
                 relative_path = self.relative_path
                 if not relative_path:
                     relative_path = '/'
-                print relative_path
                 try:
                     image = Image.objects.filter(collection=self.collection, file_path__icontains=relative_path).order_by('-filter_modified')[0]
-                    print image
                     return image
                 except Image.DoesNotExist:
                     return None
@@ -239,7 +237,6 @@ class Image(BaseModel):
             except KeyError:
                 pass
 
-        print exif_items
         return exif_items
 
     def delete_exif_items(self):
