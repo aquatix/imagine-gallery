@@ -27,6 +27,13 @@ class Collection(BaseModel):
         (SORT_DATE_DESC, 'Date descending'),
     )
 
+    #FEATURED_FIRST = 'first'
+    #FEATURED_LATEST = 'latest'
+    #FEATURED_OPTIONS = (
+    #    (FEATURED_FIRST, 'First image in (sub)album'),
+    #    (FEATURED_LATEST, 'Newest image in collection'),
+    #)
+
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True)
     base_dir = models.CharField(max_length=255, unique=True)
@@ -38,6 +45,7 @@ class Collection(BaseModel):
     flat = models.BooleanField(default=False, help_text='Flatten a collection, or keep the nesting in directories')
 
     sortmethod = models.CharField(max_length=10, choices=SORT_OPTIONS, default=SORT_DATE_DESC)
+    #featured_default = models.CharField(max_length=10, choices=FEATURED_OPTIONS, default=FEATURED_LATEST)
 
     description = models.TextField(null=True, blank=True)
 
@@ -118,12 +126,13 @@ class Directory(BaseModel):
         if self.featured_image:
             return self.featured_image
         else:
+            #if self.collection.featured_default == self.collection.FEATURED_FIRST:
             images = self.images(self.collection.sortmethod)
             if images:
                 return images[0]
             else:
                 try:
-                    for directory in Directory.objects.filter(parent_directory=self):
+                    for directory in Directory.objects.filter(parent_directory=self).order_by('relative_path'):
                         images = directory.images(self.collection.sortmethod)
                         if images:
                             return images[0]
