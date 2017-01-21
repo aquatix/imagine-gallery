@@ -217,6 +217,7 @@ def _walk_archive(collection):
             #logger.debug('ext: %s', this_file_ext)
             if this_file_ext in Image.IMAGE_EXTENSIONS:
                 the_image, created = Image.objects.get_or_create(
+                    collection=collection,
                     directory=directory,
                     filename=filename,
                     file_ext=this_file_ext,

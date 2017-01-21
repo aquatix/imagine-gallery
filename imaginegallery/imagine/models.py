@@ -27,12 +27,12 @@ class Collection(BaseModel):
         (SORT_DATE_DESC, 'Date descending'),
     )
 
-    #FEATURED_FIRST = 'first'
-    #FEATURED_LATEST = 'latest'
-    #FEATURED_OPTIONS = (
-    #    (FEATURED_FIRST, 'First image in (sub)album'),
-    #    (FEATURED_LATEST, 'Newest image in collection'),
-    #)
+    FEATURED_FIRST = 'first'
+    FEATURED_LATEST = 'latest'
+    FEATURED_OPTIONS = (
+        (FEATURED_FIRST, 'First image in (sub)album'),
+        (FEATURED_LATEST, 'Newest image in collection'),
+    )
 
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True)
@@ -45,7 +45,7 @@ class Collection(BaseModel):
     flat = models.BooleanField(default=False, help_text='Flatten a collection, or keep the nesting in directories')
 
     sortmethod = models.CharField(max_length=10, choices=SORT_OPTIONS, default=SORT_DATE_DESC)
-    #featured_default = models.CharField(max_length=10, choices=FEATURED_OPTIONS, default=FEATURED_LATEST)
+    featured_default = models.CharField(max_length=10, choices=FEATURED_OPTIONS, default=FEATURED_LATEST)
 
     description = models.TextField(null=True, blank=True)
 
@@ -126,21 +126,33 @@ class Directory(BaseModel):
         if self.featured_image:
             return self.featured_image
         else:
-            #if self.collection.featured_default == self.collection.FEATURED_FIRST:
-            images = self.images(self.collection.sortmethod)
-            if images:
-                return images[0]
-            else:
-                try:
-                    for directory in Directory.objects.filter(parent_directory=self).order_by('relative_path'):
-                        images = directory.images(self.collection.sortmethod)
-                        if images:
-                            return images[0]
-                except Directory.DoesNotExist:
-                    # This directory is empty...
-                    # TODO: have a fallback thumbnail or something
+            if self.collection.featured_default == self.collection.FEATURED_FIRST:
+                images = self.images(self.collection.sortmethod)
+                if images:
+                    return images[0]
+                else:
+                    try:
+                        for directory in Directory.objects.filter(parent_directory=self).order_by('relative_path'):
+                            images = directory.images(self.collection.sortmethod)
+                            if images:
+                                return images[0]
+                    except Directory.DoesNotExist:
+                        # This directory is empty...
+                        # TODO: have a fallback thumbnail or something
+                        return None
                     return None
-                return None
+            else:
+                # Get latest image of this dir and all subdirs
+                relative_path = self.relative_path
+                if not relative_path:
+                    relative_path = '/'
+                print relative_path
+                try:
+                    image = Image.objects.filter(collection=self.collection, file_path__icontains=relative_path).order_by('-filter_modified')[0]
+                    print image
+                    return image
+                except Image.DoesNotExist:
+                    return None
 
     def __unicode__(self):
         return self.directory
@@ -152,6 +164,7 @@ class Image(BaseModel):
     IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'bmp', 'gif', 'cr2']
     IMAGE_EXTENSIONS_RAW = ['cr2']
 
+    collection = models.ForeignKey(Collection)
     directory = models.ForeignKey(Directory, related_name='parent', on_delete=models.CASCADE)
     filename = models.CharField(max_length=255)
     file_ext = models.CharField(max_length=255)
