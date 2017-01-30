@@ -30,6 +30,8 @@
 
 <div id="exifhighlights">
 
+    <h3>{{ image_date }}</h3>
+
     <table>
         {% for exifitem in exif_highlights %}
         <tr><td class="exifkey">{{ exifitem.key|safe }}</td><td>{{ exifitem.value }}</td></tr>

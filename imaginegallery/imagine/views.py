@@ -142,7 +142,7 @@ def image_detail(request, collection_slug, file_path, imagename):
 
     exif_highlights = image.get_exif_highlights()
     exif_highlights_pretty = []
-    exif_highlights_pretty.append({'key': '<i title="Taken on" class="material-icons">today</i>', 'value': image.filter_modified.strftime(settings.DATETIME_FORMAT)})
+    #exif_highlights_pretty.append({'key': '<i title="Taken on" class="material-icons">today</i>', 'value': image.filter_modified.strftime(settings.DATETIME_FORMAT)})
     # TODO: translate into icons and such
     for exif_item in exif_highlights:
         if exif_item['key'] == 'Image Model':
@@ -228,6 +228,7 @@ def image_detail(request, collection_slug, file_path, imagename):
         'image_thumb_sizes': image_thumb_sizes,
         'image_meta': image_meta,
         'image_title': image_title,
+        'image_date': image.filter_modified.strftime(settings.DATETIME_FORMAT),
         'exif_highlights': exif_highlights_pretty,
         'images': images,
         'navigation_items': navigation_items,

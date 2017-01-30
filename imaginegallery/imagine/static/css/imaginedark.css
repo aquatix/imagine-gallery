@@ -120,6 +120,11 @@ img .image_thumbnail
     font-size: .8em;
 }
 
+    #image_meta #exifhighlights h3
+    {
+        border-bottom: 1px solid #FFF;
+    }
+
 .exifkey
 {
     font-size: 2em;
