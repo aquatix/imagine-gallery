@@ -25,17 +25,34 @@ body
     list-style-type:none;
 }
 
-h1
+#navigation .material-icons
 {
-    /*font-family: BebasNeueRegular, arial, Georgia, serif;*/
-    font-family: BebasNeuewebfont, arial, Georgia, serif;
-    color: #FFF;
+    font-size: 1em;
 }
 
 a
 {
     color: #F88C00;
     text-decoration: none;
+}
+
+h1
+{
+    /*font-family: BebasNeueRegular, arial, Georgia, serif;*/
+    font-family: BebasNeuewebfont, arial, Georgia, serif;
+    color: #FFF;
+    float: left;
+}
+
+.zoomnav
+{
+    padding-top: 1em;
+    float: right;
+}
+
+.zoomnav .material-icons, #image_navigation .material-icons
+{
+    font-size: 32px;
 }
 
 .itemlist
@@ -96,6 +113,12 @@ a
     text-align: center;
 }
 
+#imagelarge, #imagefull
+{
+    /* Clear the floats of h1 and zoomnav */
+    clear: both;
+}
+
 img .image_thumbnail
 {
 }
@@ -106,13 +129,7 @@ img .image_thumbnail
     float: left;
 }
 
-#image_meta #description
-{
-    width: 29%;
-    float: right;
-}
-
-#image_meta #exifhighlights
+#image_meta #description, #image_meta #exifhighlights, #image_meta #image_navigation
 {
     width: 29%;
     float: right;

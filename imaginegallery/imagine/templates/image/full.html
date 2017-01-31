@@ -9,6 +9,12 @@
 {% block content %}
 <h1>{{ image_title }}</h1>
 
+<div class="zoomnav">
+    <a href="{{ image_detail_url }}"><i title="Go back to normal view" class="material-icons">close</i></a>
+    {#<i title="Go fullscreen" class="material-icons">fullscreen</i>#}
+    {#<i title="Exit fullscreen" class="material-icons">fullscreen_exit</i>#}
+</div>
+
 <div id="imagefull">
 <!--
 {{ image.image_hash }}
@@ -24,6 +30,10 @@
 </div>
 {% endif %}
 
+<div id="image_navigation">
+    <a href="{{ prevpage }}" title="Back to image detail page [backspace]"><i class="material-icons">keyboard_backspace</i></a>
+</div>
+
 <div id="exifhighlights">
 
     <h3>{{ image_date }}</h3>
@@ -36,7 +46,7 @@
 </div>
 
 <script type="text/javascript">
-function backspacePressed() {
+function goToImageDetail() {
     // Navigate to the previous image
     var location = '{{ prevpage }}';
     if (location != '')
@@ -49,7 +59,12 @@ document.onkeydown = function(evt) {
     evt = evt || window.event;
     switch (evt.keyCode) {
         case 8:
-            backspacePressed();
+            # backspace
+            goToImageDetail();
+            break;
+        case 27:
+            # esc
+            goToImageDetail();
             break;
     }
 };

@@ -184,6 +184,7 @@ def _get_image_details(request, collection_slug, file_path, imagename, thumbs=Fa
     next_image = None
     prevpage = ''
     nextpage = ''
+    uppage = ''
     find_next = False
 
     if thumbs:
@@ -207,19 +208,25 @@ def _get_image_details(request, collection_slug, file_path, imagename, thumbs=Fa
             nextpage = reverse('image_detail', args=[collection.slug, directory.relative_path, next_image.filename])
         #navigation_items.append({'url': reverse('directory_detail', args=[collection.slug, directory.relative_path]), 'title': directory.relative_path})
 
+        uppage = reverse('directory_detail', args=[collection.slug, directory.relative_path])
         nav_dir = directory
         while nav_dir.parent_directory:
             navigation_items.insert(1, {'url': reverse('directory_detail', args=[collection.slug, nav_dir.relative_path]), 'title': nav_dir.dir_name})
             nav_dir = nav_dir.parent_directory
 
-        navigation_items.append({'url': reverse('image_detail', args=[collection.slug, directory.relative_path, image.filename]), 'title': image_title})
+        image_detail_url = reverse('image_detail', args=[collection.slug, directory.relative_path, image.filename])
+        image_full_url = reverse('image_full', args=[collection.slug, directory.relative_path, image.filename])
+        navigation_items.append({'url': image_detail_url, 'title': image_title})
     else:
+        uppage = navigation_items[-1]['url']
         if prev_image:
             prevpage = reverse('rootdir_image_detail', args=[collection.slug, prev_image.filename])
         if next_image:
             nextpage = reverse('rootdir_image_detail', args=[collection.slug, next_image.filename])
         #navigation_items.append({'url': reverse('directory_detail', args=[collection.slug, directory.relative_path]), 'title': directory.relative_path})
-        navigation_items.append({'url': reverse('rootdir_image_detail', args=[collection.slug, image.filename]), 'title': image_title})
+        image_detail_url = reverse('rootdir_image_detail', args=[collection.slug, image.filename])
+        image_full_url = reverse('rootdir_image_full', args=[collection.slug, image.filename])
+        navigation_items.append({'url': image_detail_url, 'title': image_title})
 
 
     context = {
@@ -231,6 +238,8 @@ def _get_image_details(request, collection_slug, file_path, imagename, thumbs=Fa
         'image_orig_url': image_orig_url,
         'image_thumb_url': image_thumb_url,
         'image_thumb_sizes': image_thumb_sizes,
+        'image_detail_url': image_detail_url,
+        'image_full_url': image_full_url,
         'image_meta': image_meta,
         'image_title': image_title,
         'image_date': image.filter_modified.strftime(settings.DATETIME_FORMAT),
@@ -239,6 +248,7 @@ def _get_image_details(request, collection_slug, file_path, imagename, thumbs=Fa
         'navigation_items': navigation_items,
         'prevpage': prevpage,
         'nextpage': nextpage,
+        'uppage': uppage,
     }
     return context, image
 

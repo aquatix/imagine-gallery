@@ -9,6 +9,10 @@
 {% block content %}
 <h1>{{ image_title }}</h1>
 
+<div class="zoomnav">
+    <a href="{{ image_full_url }}"><i title="Show full size" class="material-icons">launch</i></a>
+</div>
+
 <div id="imagelarge">
 <!--
 {{ image.image_hash }}
@@ -27,6 +31,12 @@
     {{ description }}
 </div>
 {% endif %}
+
+<div id="image_navigation">
+    <a href="{{ prevpage }}" title="Previous image [left arrow]"><i class="material-icons">keyboard_arrow_left</i></a>
+    <a href="{{ nextpage }}" title="Next image [right arrow]"><i class="material-icons">keyboard_arrow_right</i></a>
+    <a href="{{ uppage }}" title="Go up a directory [up arrow]"><i class="material-icons">keyboard_arrow_up</i></a>
+</div>
 
 <div id="exifhighlights">
 
@@ -60,6 +70,15 @@ function rightArrowPressed() {
     }
 }
 
+function upArrowPressed() {
+    // Navigate to the directory above
+    var location = '{{ uppage }}'
+    if (location != '')
+    {
+        window.location.href = location;
+    }
+}
+
 document.onkeydown = function(evt) {
     evt = evt || window.event;
     switch (evt.keyCode) {
@@ -68,6 +87,9 @@ document.onkeydown = function(evt) {
             break;
         case 39:
             rightArrowPressed();
+            break;
+        case 38:
+            upArrowPressed();
             break;
     }
 };
