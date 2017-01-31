@@ -326,8 +326,8 @@ class ImageMeta(BaseModel):
     """
     image_hash = models.CharField(max_length=255, primary_key=True)
 
-    title = models.CharField(max_length=255, default='')
-    description = models.TextField(default='')
+    title = models.CharField(max_length=255, default='', blank=True)
+    description = models.TextField(default='', blank=True)
     #tags
 
 
