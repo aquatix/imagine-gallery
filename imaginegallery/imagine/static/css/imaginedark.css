@@ -116,11 +116,15 @@ img .image_thumbnail
 {
     width: 29%;
     float: right;
+}
+
+#exifhighlights
+{
     color: #DDD;
     font-size: .8em;
 }
 
-    #image_meta #exifhighlights h3
+    #exifhighlights h3
     {
         border-bottom: 1px solid #FFF;
     }

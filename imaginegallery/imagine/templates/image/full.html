@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}{{ image_title }}{% endblock %}
+{% block extrastyling %}
+<meta property="og:image" content="{{ image_thumb_url }}" data-dynamic="true">
+<meta property="og:image:width" content="{{ image_thumb_sizes.width }}" data-dynamic="true">
+<meta property="og:image:height" content="{{ image_thumb_sizes.height }}" data-dynamic="true">
+{% endblock %}
+
+{% block content %}
+<h1>{{ image_title }}</h1>
+
+<div id="imagefull">
+<!--
+{{ image.image_hash }}
+-->
+
+    <img src="{{ image_url }}" class="image_full" />
+
+</div>
+
+{% if image_meta.description %}
+<div id="description">
+    {{ description }}
+</div>
+{% endif %}
+
+<div id="exifhighlights">
+
+    <h3>{{ image_date }}</h3>
+
+    <table>
+        {% for exifitem in exif_highlights %}
+        <tr><td class="exifkey">{{ exifitem.key|safe }}</td><td>{{ exifitem.value }}</td></tr>
+        {% endfor %}
+    </table>
+</div>
+
+<script type="text/javascript">
+function backspacePressed() {
+    // Navigate to the previous image
+    var location = '{{ prevpage }}';
+    if (location != '')
+    {
+        window.location.href = location;
+    }
+}
+
+document.onkeydown = function(evt) {
+    evt = evt || window.event;
+    switch (evt.keyCode) {
+        case 8:
+            backspacePressed();
+            break;
+    }
+};
+</script>
+
+{% endblock %}

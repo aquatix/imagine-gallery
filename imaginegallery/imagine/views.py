@@ -98,7 +98,7 @@ def directory_detail(request, collection_slug, directory):
     return render(request, 'directory/detail.html', context)
 
 
-def image_detail(request, collection_slug, file_path, imagename):
+def _get_image_details(request, collection_slug, file_path, imagename, thumbs=False):
     """
     Show image detail page
     """
@@ -175,25 +175,30 @@ def image_detail(request, collection_slug, file_path, imagename):
             exif_highlights_pretty.append(exif_item)
 
     directory = image.directory
-    images = image.directory.images(collection.sortmethod)
 
     navigation_items = []
     navigation_items.append({'url': reverse('collection_detail', args=[collection.slug]), 'title': collection.title})
 
+    images = None
     prev_image = None
     next_image = None
     prevpage = ''
     nextpage = ''
     find_next = False
 
-    for this_image in images:
-        if this_image == image:
-            find_next = True
-        elif find_next:
-            next_image = this_image
-            break
-        else:
-            prev_image = this_image
+    if thumbs:
+        images = image.directory.images(collection.sortmethod)
+
+        for this_image in images:
+            if this_image == image:
+                find_next = True
+            elif find_next:
+                next_image = this_image
+                break
+            else:
+                prev_image = this_image
+    else:
+        prev_image = image
 
     if directory.relative_path:
         if prev_image:
@@ -235,6 +240,11 @@ def image_detail(request, collection_slug, file_path, imagename):
         'prevpage': prevpage,
         'nextpage': nextpage,
     }
+    return context, image
+
+
+def image_detail(request, collection_slug, file_path, imagename, thumbs=False):
+    context, image = _get_image_details(request, collection_slug, file_path, imagename, True)
     if image.is_photosphere:
         return render(request, 'image/detail_photosphere.html', context)
     else:
@@ -246,6 +256,21 @@ def rootdir_image_detail(request, collection_slug, imagename):
     Image from the root of a collection
     """
     return image_detail(request=request, collection_slug=collection_slug, file_path=None, imagename=imagename)
+
+
+def image_full(request, collection_slug, file_path, imagename):
+    """
+    Show image full view page (unzoomed, no album thumbnails)
+    """
+    context, image = _get_image_details(request, collection_slug, file_path, imagename, False)
+    return render(request, 'image/full.html', context)
+
+
+def rootdir_image_full(request, collection_slug, imagename):
+    """
+    Image from the root of a collection
+    """
+    return image_full(request=request, collection_slug=collection_slug, file_path=None, imagename=imagename)
 
 
 def imagehash_detail(request, imagehash):
