@@ -174,22 +174,8 @@ def _update_directory_parents(collection):
             previous_root = directory
             root_directory = directory
         else:
-            if previous_directory:
-                common_prefix = os.path.commonprefix([directory.relative_path, previous_directory.relative_path])
-                if not common_prefix:
-                    directory.parent_directory = root_directory
-                    directory.save()
-                    previous_root = directory
-                elif common_prefix[-1] == '/':
-                    # Directory's share the same root
-                    directory.parent_directory = previous_root
-                    directory.save()
-                else:
-                    # directory is a child of previous_directory
-                    directory.parent_directory = previous_directory
-                    directory.save()
-
-        previous_directory = directory
+            parent_directory_path = os.path.abspath(os.path.join(directory.directory, os.pardir)) + '/'
+            directory.parent_directory = Directory.objects.get(directory=parent_directory_path)
 
 
 def _walk_archive(collection):
