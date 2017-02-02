@@ -176,6 +176,7 @@ def _update_directory_parents(collection):
         else:
             parent_directory_path = os.path.abspath(os.path.join(directory.directory, os.pardir)) + '/'
             directory.parent_directory = Directory.objects.get(directory=parent_directory_path)
+            directory.save()
 
 
 def _walk_archive(collection):
