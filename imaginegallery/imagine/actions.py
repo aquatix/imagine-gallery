@@ -160,19 +160,12 @@ def _update_directory_parents(collection):
     Correctly assign parent directories to the various directory objects
     """
     directory_list = Directory.objects.filter(collection=collection).order_by('directory')
-    # TODO: fix nesting of directories
-    #print(directory_list)
 
-    root_directory = None
-    previous_directory = None
-    previous_root = None
     for directory in directory_list:
         # If relative_path is empty, it's the root of the collection, otherwise assign a parent
         if not directory.relative_path:
             directory.parent_directory = None  # root of Collection
             directory.save()
-            previous_root = directory
-            root_directory = directory
         else:
             parent_directory_path = os.path.abspath(os.path.join(directory.directory, os.pardir)) + '/'
             directory.parent_directory = Directory.objects.get(directory=parent_directory_path)
