@@ -150,13 +150,17 @@ def save_image_info(the_image, filename, file_ext):
     else:
         the_image.filter_modified = the_image.file_modified
 
-    if geo_exif_items:
-        lat, lon = get_exif_location(geo_exif_items)
-        the_image.geo_lat = lat
-        the_image.geo_lon = lon
-        # TODO: create config item to enable/disable geo lookups
-        # Do request to http://maps.googleapis.com/maps/api/geocode/xml?latlng=53.244921,-2.479539&sensor=true
-        save_image_geo_location(the_image)
+    try:
+        if geo_exif_items:
+            lat, lon = get_exif_location(geo_exif_items)
+            the_image.geo_lat = lat
+            the_image.geo_lon = lon
+            # TODO: create config item to enable/disable geo lookups
+            # Do request to http://maps.googleapis.com/maps/api/geocode/xml?latlng=53.244921,-2.479539&sensor=true
+            save_image_geo_location(the_image)
+    except UnboundLocalError:
+        # No geo data
+        pass
 
     the_image.save()
 
