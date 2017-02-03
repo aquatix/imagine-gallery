@@ -191,6 +191,24 @@ class Image(BaseModel):
     # https://pypi.python.org/pypi/geopy
     # https://pypi.python.org/pypi/LatLon
 
+    # http://stackoverflow.com/questions/10913870/get-city-name-from-gps-co-ordinates
+    # http://maps.googleapis.com/maps/api/geocode/xml?latlng=53.244921,-2.479539&sensor=true
+    # <address_component>
+    #    <long_name>Northwich</long_name>
+    #    <short_name>Northwich</short_name>
+    #    <type>postal_town</type>
+    # </address_component>
+    # <address_component><long_name>United Kingdom</long_name><short_name>GB</short_name>
+    # <type>country</type><type>political</type></address_component>
+
+    geo_lat = models.DecimalField(max_digits=9, decimal_places=6, blank=True)
+    geo_lon = models.DecimalField(max_digits=9, decimal_places=6, blank=True)
+
+    geo_country = models.CharField(max_length=255, blank=True)
+    geo_country_code = models.CharField(max_length=5, blank=True)
+    geo_city = models.CharField(max_length=255, blank=True)
+    geo_formatted_address = models.CharField(max_length=255, blank=True)
+
     #class Meta:
     #    order_by = ('filename',)
 
