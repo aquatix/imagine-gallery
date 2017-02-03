@@ -3,5 +3,6 @@
 
 {% block content %}
     <h1>404 not found</h1>
-    <p>The requested page (image, collection or something else) was not found.</p>
+    <p id="description">The requested page (image, collection or something else) was not found.</p>
+    <p>Go to <a href="{% url 'index' %}">the homepage</a> for some inspiration.</p>
 {% endblock %}
