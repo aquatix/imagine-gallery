@@ -201,8 +201,8 @@ class Image(BaseModel):
     # <address_component><long_name>United Kingdom</long_name><short_name>GB</short_name>
     # <type>country</type><type>political</type></address_component>
 
-    geo_lat = models.DecimalField(max_digits=9, decimal_places=6, blank=True)
-    geo_lon = models.DecimalField(max_digits=9, decimal_places=6, blank=True)
+    geo_lat = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
+    geo_lon = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
 
     geo_country = models.CharField(max_length=255, blank=True)
     geo_country_code = models.CharField(max_length=5, blank=True)

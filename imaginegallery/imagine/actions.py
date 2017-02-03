@@ -6,6 +6,7 @@ import logging
 import os
 from django.conf import settings
 from imagine.models import Collection, Directory, Image, ImageMeta, PhotoSize, ExifItem
+from imagine.util import get_exif_location
 from PIL import Image as PILImage, ImageFile as PILImageFile, ExifTags
 import exifread
 import imagehash
@@ -48,6 +49,7 @@ def save_jpg_exif(image, filename):
     f = open(filename, 'rb')
 
     datetime_taken = None
+    geo = {}
 
     # Return Exif tags
     exif = exifread.process_file(f)
@@ -64,9 +66,17 @@ def save_jpg_exif(image, filename):
             exif_item.save()
             if k == 'EXIF DateTimeOriginal':
                 datetime_taken = str(v)
+            if k == 'GPS GPSLatitude':
+                geo['GPS GPSLatitude'] = v
+            if k == 'GPS GPSLatitudeRef':
+                geo['GPS GPSLatitudeRef'] = v
+            if k == 'GPS GPSLongitude':
+                geo['GPS GPSLongitude'] = v
+            if k == 'GPS GPSLongitudeRef':
+                geo['GPS GPSLongitudeRef'] = v
         except UnicodeDecodeError:
             logger.warning('Failed to save exif item %s due to UnicodeDecodeError', k)
-    return datetime_taken
+    return datetime_taken, geo
 
 
 def save_cr2_exif(image, filename):
@@ -96,7 +106,7 @@ def save_image_info(the_image, filename, file_ext):
     exif_datetime_taken = None
 
     if file_ext == 'jpg':
-        exif_datetime_taken = save_jpg_exif(the_image, filename)
+        exif_datetime_taken, geo_exif_items = save_jpg_exif(the_image, filename)
     elif file_ext == 'cr2':
         save_cr2_exif(the_image, filename)
     else:
@@ -109,6 +119,15 @@ def save_image_info(the_image, filename, file_ext):
         the_image.filter_modified = the_image.exif_modified
     else:
         the_image.filter_modified = the_image.file_modified
+
+    if geo_exif_items:
+        print geo_exif_items
+        lat, lon = get_exif_location(geo_exif_items)
+        the_image.geo_lat = lat
+        the_image.geo_lon = lon
+        # TODO: create config item to enable/disable geo lookups
+        # Do request to http://maps.googleapis.com/maps/api/geocode/xml?latlng=53.244921,-2.479539&sensor=true
+
     the_image.save()
 
     # TODO: update exif highlights fields from EXIF tags
