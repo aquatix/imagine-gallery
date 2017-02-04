@@ -176,9 +176,9 @@ class Image(BaseModel):
     # Contains either file_modified or exif_modified, used for filtering into events and such:
     filter_modified = models.DateTimeField(null=True)
 
-    is_visible = models.BooleanField(default=True)
+    is_visible = models.BooleanField(default=True, help_text='Hide from listing if disable')
 
-    is_photosphere = models.BooleanField(default=False)
+    is_photosphere = models.BooleanField(default=False, help_text='Is photo sphere or panorama')
 
     width = models.IntegerField(default=-1)
     height = models.IntegerField(default=-1)
@@ -186,23 +186,18 @@ class Image(BaseModel):
     image_hash = models.CharField(max_length=255, null=True)
     thumb_hash = models.CharField(max_length=255, null=True, blank=True)
 
-    # TODO: GPS geotag
-    # http://stackoverflow.com/questions/10799366/geotagging-jpegs-with-pyexiv2
-    # https://pypi.python.org/pypi/geopy
-    # https://pypi.python.org/pypi/LatLon
-
     geo_lat = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
     geo_lon = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
 
-    geo_country = models.CharField(max_length=255, blank=True)
-    geo_country_code = models.CharField(max_length=5, blank=True)
-    geo_administrative_area_level_1 = models.CharField(max_length=255, blank=True)
+    geo_country = models.CharField(max_length=255, blank=True)  # e.g., 'Netherlands'
+    geo_country_code = models.CharField(max_length=5, blank=True)  # e.g., 'NL'
+    geo_administrative_area_level_1 = models.CharField(max_length=255, blank=True)  # e.g., 'Noord-Holland'
     geo_administrative_area_level_2 = models.CharField(max_length=255, blank=True)
-    geo_city = models.CharField(max_length=255, blank=True)
+    geo_city = models.CharField(max_length=255, blank=True)  # e.g., 'Haarlem'
     geo_postal_code = models.CharField(max_length=255, blank=True)
     geo_route = models.CharField(max_length=255, blank=True)  # Street
 
-    geo_formatted_address = models.CharField(max_length=255, blank=True)
+    geo_formatted_address = models.CharField(max_length=255, blank=True, help_text='Full address from geo API')
 
     #class Meta:
     #    order_by = ('filename',)
