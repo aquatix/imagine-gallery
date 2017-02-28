@@ -123,7 +123,7 @@ def save_image_info(the_image, filename, file_ext):
     if file_ext not in Image.IMAGE_EXTENSIONS_RAW:
         try:
             image = PILImage.open(filename)
-            the_image.image_hash = imagehash.average_hash(image)
+            the_image.image_hash = imagehash.dhash(image)
 
             the_image.width = image.size[0]
             the_image.height = image.size[1]
