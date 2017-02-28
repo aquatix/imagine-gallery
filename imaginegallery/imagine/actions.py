@@ -8,9 +8,11 @@ from django.conf import settings
 from imagine.models import Collection, Directory, Image, ImageMeta, PhotoSize, ExifItem
 from imagine.util import get_exif_location
 from PIL import Image as PILImage, ImageFile as PILImageFile, ExifTags
+from datetime import datetime
 import exifread
 import imagehash
 import json
+import pytz
 import requests
 from utilkit import fileutil, datetimeutil
 
@@ -142,10 +144,12 @@ def save_image_info(the_image, filename, file_ext):
     else:
         logger.warning('No supported extension found')
 
-    the_image.file_modified = datetimeutil.unix_to_python(os.path.getmtime(filename))
+    #the_image.file_modified = datetimeutil.unix_to_python(os.path.getmtime(filename))
+    the_image.file_modified = datetime.fromtimestamp(float((os.path.getmtime(filename))), tz=pytz.utc)
 
     if exif_datetime_taken:
-        the_image.exif_modified = datetimeutil.load_datetime(exif_datetime_taken, '%Y:%m:%d %H:%M:%S')
+        #the_image.exif_modified = datetimeutil.load_datetime(exif_datetime_taken, '%Y:%m:%d %H:%M:%S')
+        the_image.exif_modified = datetimeutil.load_datetime(exif_datetime_taken, '%Y:%m:%d %H:%M:%S').replace(tzinfo=pytz.utc)
         the_image.filter_modified = the_image.exif_modified
     else:
         the_image.filter_modified = the_image.file_modified
