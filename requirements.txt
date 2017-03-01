@@ -4,18 +4,19 @@
 #
 #    pip-compile --output-file requirements.txt requirements.in
 #
-django-taggit==0.21.3
-django==1.10.5
-exifread==2.1.2
+django-taggit==0.22.0
+Django==1.10.6
+ExifRead==2.1.2
 future==0.16.0            # via utilkit
-imagehash==3.1
-markdown==2.6.7
-numpy==1.11.3             # via imagehash, pywavelets
+ImageHash==3.4
+Markdown==2.6.8
+numpy==1.12.0             # via imagehash, pywavelets
 olefile==0.44             # via pillow
-pillow==4.0.0
+Pillow==4.0.0             # via imagehash
 psycopg2==2.6.2
 pytz==2016.10             # via utilkit
-pywavelets==0.5.1         # via imagehash
-requests==2.12.4          # via utilkit
+PyWavelets==0.5.1         # via imagehash
+requests==2.13.0          # via utilkit
 scipy==0.18.1             # via imagehash
+six==1.10.0               # via imagehash
 utilkit==0.4.0
