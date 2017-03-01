@@ -13,7 +13,8 @@ Markdown==2.6.8
 numpy==1.12.0             # via imagehash, pywavelets
 olefile==0.44             # via pillow
 Pillow==4.0.0             # via imagehash
-psycopg2==2.6.2
+pkg-resources==0.0.0
+psycopg2==2.7
 pytz==2016.10             # via utilkit
 PyWavelets==0.5.1         # via imagehash
 requests==2.13.0          # via utilkit
