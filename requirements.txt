@@ -10,11 +10,11 @@ ExifRead==2.1.2
 future==0.16.0            # via utilkit
 ImageHash==3.4
 Markdown==2.6.8
-numpy==1.12.0             # via imagehash, pywavelets, scipy
+numpy==1.12.1             # via imagehash, pywavelets, scipy
 olefile==0.44             # via pillow
 Pillow==4.0.0             # via imagehash
 pkg-resources==0.0.0
-psycopg2==2.7
+psycopg2==2.7.1
 pytz==2016.10             # via utilkit
 PyWavelets==0.5.2         # via imagehash
 requests==2.13.0          # via utilkit
