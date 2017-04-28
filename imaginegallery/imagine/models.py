@@ -50,11 +50,7 @@ class Collection(BaseModel):
     description = models.TextField(null=True, blank=True)
 
     is_public = models.BooleanField(default=False, help_text='If public, the collection is visible for the world')
-    password = models.CharField(max_length=255, null=True, blank=True, help_text='Optionally, password protect this collection')  # TODO: something with encryption, preferably through a function in the model
-
-    def passwordprotected(self):
-        return self.password != ''
-    passwordprotected.boolean = True
+    needs_authentication = models.BooleanField(default=False, help_text='User needs to be logged in to view the images')
 
     def nr_directories(self):
         return Directory.objects.filter(collection__pk=self.pk).count()

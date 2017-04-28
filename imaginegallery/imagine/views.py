@@ -5,6 +5,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
 from django.http import Http404
+from django.shortcuts import redirect
 from django.urls import reverse
 from .models import Collection, Directory, Image, ImageMeta, PhotoSize
 from fractions import Fraction
@@ -32,6 +33,10 @@ def collection_detail(request, collection_slug):
         collection = Collection.objects.get(slug=collection_slug)
     except Collection.DoesNotExist:
         raise Http404('Collection does not exist')
+
+    if collection.needs_authentication and not request.user.is_authenticated:
+        # redirect to login
+        return redirect('login')
 
     site_title = settings.SITE_TITLE
 

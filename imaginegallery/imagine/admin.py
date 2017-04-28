@@ -7,7 +7,7 @@ from django.utils.safestring import mark_safe
 
 
 class CollectionAdmin(admin.ModelAdmin):
-    list_display = ('title', 'base_dir', 'archive_dir', 'is_public', 'passwordprotected', 'nr_directories', 'nr_images', )
+    list_display = ('title', 'base_dir', 'archive_dir', 'is_public', 'needs_authentication', 'nr_directories', 'nr_images', )
     search_fields = ('title', 'slug', 'base_dir', 'archive_dir', 'description', )
     prepopulated_fields = {'slug': ('title',), }
 
