@@ -19,7 +19,7 @@ def fraction_to_float(fraction):
 def index(request):
     site_title = settings.SITE_TITLE
 
-    collection_list = Collection.objects.all()
+    collection_list = Collection.objects.filter(is_public=True)
     template = loader.get_template('collection/index.html')
     context = {
         'site_title': site_title,
