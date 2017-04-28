@@ -44,6 +44,13 @@ h1
     float: left;
 }
 
+.loginform
+{
+    background-color: #121212;
+    margin-top: 1em;
+    padding: 1em;
+}
+
 .zoomnav
 {
     padding-top: 1em;
@@ -71,7 +78,8 @@ h1
     float: left;
 }
 
-    .item h3
+    .item h3,
+    .loginform h3
     {
         font-family: BebasNeuewebfont, arial, Georgia, serif;
         margin: 0.3em 0 0 0;
