@@ -93,6 +93,26 @@ document.onkeydown = function(evt) {
             break;
     }
 };
+
+$(function() {
+    $("#imagemax").swipe( {
+        allowPageScroll: "vertical",
+
+        //Generic swipe handler for all directions
+        swipe:function(event, direction, distance, duration, fingerCount, fingerData) {
+            //console.log("You swiped " + direction );
+            // It's the reverse
+            if (direction == 'left')
+            {
+                rightArrowPressed();
+            }
+            if (direction == 'right')
+            {
+                leftArrowPressed();
+            }
+        }
+    });
+});
 </script>
 
 {% endblock %}
