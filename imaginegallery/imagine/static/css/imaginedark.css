@@ -116,7 +116,14 @@ h1
     max-height: 80vh;
 }
 
-#imagelarge
+#content .image_max
+{
+    max-width: 100%;
+    max-height: 100vh;
+}
+
+#imagelarge,
+#imagemax
 {
     text-align: center;
 }
@@ -126,6 +133,16 @@ h1
     /* Clear the floats of h1 and zoomnav */
     clear: both;
 }
+
+#imagemax
+{
+    max-height: 100%;
+}
+
+    #imagemax .zoomnav
+    {
+        padding-top: 0;
+    }
 
 img .image_thumbnail
 {

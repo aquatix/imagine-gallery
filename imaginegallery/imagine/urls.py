@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^(?P<collection_slug>\w+)/(?P<file_path>.+)/(?P<imagename>.+)/full/$', views.image_full, name='image_full'),
     url(r'^(?P<collection_slug>\w+)/(?P<imagename>.+)/view/$', views.rootdir_image_detail, name='rootdir_image_detail'),
     url(r'^(?P<collection_slug>\w+)/(?P<imagename>.+)/full/$', views.rootdir_image_full, name='rootdir_image_full'),
+    url(r'^(?P<collection_slug>\w+)/(?P<imagename>.+)/max/$', views.rootdir_image_max, name='rootdir_image_max'),
     url(r'^(?P<collection_slug>\w+)/(?P<directory>.+)/$', views.directory_detail, name='directory_detail'),
     url(r'^imagedetail/(?P<imagehash>\w+)/$', views.imagehash_detail, name='imagehash_detail'),
 ]

@@ -6,22 +6,18 @@
 <meta property="og:image:height" content="{{ image_thumb_sizes.height }}" data-dynamic="true">
 {% endblock %}
 
+{% block navigationbar %}
+{% endblock %}
+
 {% block content %}
-<h1>{{ image_title }}</h1>
+{#<h1>{{ image_title }}</h1>#}
 
-<div class="zoomnav">
-    <a href="{{ image_detail_url }}"><i title="Go back to normal view" class="material-icons">close</i></a>
-    {#<i title="Go fullscreen" class="material-icons">fullscreen</i>#}
-    {#<i title="Exit fullscreen" class="material-icons">fullscreen_exit</i>#}
-</div>
+<div id="imagemax">
+    <div class="zoomnav">
+        <a href="{{ image_detail_url }}"><i title="Go back to normal view [backspace]" class="material-icons">fullscreen_exit</i></a>
+    </div>
 
-<div id="imagefull">
-<!--
-{{ image.image_hash }}
--->
-
-    <img src="{{ image_url }}" class="image_full" />
-
+    <img src="{{ image_url }}" class="image_max" />
 </div>
 
 {% if image_meta.description %}
@@ -29,21 +25,6 @@
     {{ description }}
 </div>
 {% endif %}
-
-<div id="image_navigation">
-    <a href="{{ prevpage }}" title="Back to image detail page [backspace]"><i class="material-icons">keyboard_backspace</i></a>
-</div>
-
-<div id="exifhighlights">
-
-    <h3>{{ image_date }}</h3>
-
-    <table>
-        {% for exifitem in exif_highlights %}
-        <tr><td class="exifkey">{{ exifitem.key|safe }}</td><td>{{ exifitem.value }}</td></tr>
-        {% endfor %}
-    </table>
-</div>
 
 <script type="text/javascript">
 function goToImageDetail() {
@@ -57,13 +38,18 @@ function goToImageDetail() {
 
 document.onkeydown = function(evt) {
     evt = evt || window.event;
+    alert(evt.keyCode);
     switch (evt.keyCode) {
+        case 78:
+            /* 'n' key */
+            goToImageDetail();
+            break;
         case 8:
-            # backspace
+            /* backspace */
             goToImageDetail();
             break;
         case 27:
-            # esc
+            /* esc */
             goToImageDetail();
             break;
     }

@@ -220,6 +220,7 @@ def _get_image_details(request, collection_slug, file_path, imagename, thumbs=Fa
             nav_dir = nav_dir.parent_directory
 
         image_detail_url = reverse('image_detail', args=[collection.slug, directory.relative_path, image.filename])
+        image_max_url = reverse('image_max', args=[collection.slug, directory.relative_path, image.filename])
         image_full_url = reverse('image_full', args=[collection.slug, directory.relative_path, image.filename])
         navigation_items.append({'url': image_detail_url, 'title': image_title})
     else:
@@ -230,6 +231,7 @@ def _get_image_details(request, collection_slug, file_path, imagename, thumbs=Fa
             nextpage = reverse('rootdir_image_detail', args=[collection.slug, next_image.filename])
         #navigation_items.append({'url': reverse('directory_detail', args=[collection.slug, directory.relative_path]), 'title': directory.relative_path})
         image_detail_url = reverse('rootdir_image_detail', args=[collection.slug, image.filename])
+        image_max_url = reverse('rootdir_image_max', args=[collection.slug, image.filename])
         image_full_url = reverse('rootdir_image_full', args=[collection.slug, image.filename])
         navigation_items.append({'url': image_detail_url, 'title': image_title})
 
@@ -244,6 +246,7 @@ def _get_image_details(request, collection_slug, file_path, imagename, thumbs=Fa
         'image_thumb_url': image_thumb_url,
         'image_thumb_sizes': image_thumb_sizes,
         'image_detail_url': image_detail_url,
+        'image_max_url': image_max_url,
         'image_full_url': image_full_url,
         'image_meta': image_meta,
         'image_title': image_title,
@@ -281,11 +284,26 @@ def image_full(request, collection_slug, file_path, imagename):
     return render(request, 'image/full.html', context)
 
 
+def image_max(request, collection_slug, file_path, imagename):
+    """
+    Show image fullscreen page (zoomed to fit screen, no album thumbnails and details)
+    """
+    context, image = _get_image_details(request, collection_slug, file_path, imagename, False)
+    return render(request, 'image/max.html', context)
+
+
 def rootdir_image_full(request, collection_slug, imagename):
     """
-    Image from the root of a collection
+    Image from the root of a collection, large size
     """
     return image_full(request=request, collection_slug=collection_slug, file_path=None, imagename=imagename)
+
+
+def rootdir_image_max(request, collection_slug, imagename):
+    """
+    Image from the root of a collection, fullscreen
+    """
+    return image_max(request=request, collection_slug=collection_slug, file_path=None, imagename=imagename)
 
 
 def imagehash_detail(request, imagehash):
