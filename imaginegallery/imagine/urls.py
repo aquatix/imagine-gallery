@@ -9,6 +9,7 @@ urlpatterns = [
     # /family/home/fun/DCIM_4242.jpg/view
     url(r'^(?P<collection_slug>\w+)/(?P<file_path>.+)/(?P<imagename>.+)/view/$', views.image_detail, name='image_detail'),
     url(r'^(?P<collection_slug>\w+)/(?P<file_path>.+)/(?P<imagename>.+)/full/$', views.image_full, name='image_full'),
+    url(r'^(?P<collection_slug>\w+)/(?P<file_path>.+)/(?P<imagename>.+)/max/$', views.image_full, name='image_max'),
     url(r'^(?P<collection_slug>\w+)/(?P<imagename>.+)/view/$', views.rootdir_image_detail, name='rootdir_image_detail'),
     url(r'^(?P<collection_slug>\w+)/(?P<imagename>.+)/full/$', views.rootdir_image_full, name='rootdir_image_full'),
     url(r'^(?P<collection_slug>\w+)/(?P<imagename>.+)/max/$', views.rootdir_image_max, name='rootdir_image_max'),
