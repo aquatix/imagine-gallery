@@ -10,8 +10,8 @@
 <h1>{{ image_title }}</h1>
 
 <div class="zoomnav">
-    <a href="{{ image_max_url }}"><i title="Show fullscreen" class="material-icons">fullscreen</i></a>
-    <a href="{{ image_full_url }}"><i title="Show full size" class="material-icons">launch</i></a>
+    <a href="{{ image_max_url }}"><i title="Show fullscreen [m]" class="material-icons">fullscreen</i></a>
+    <a href="{{ image_full_url }}"><i title="Show full size [f]" class="material-icons">launch</i></a>
 </div>
 
 <div id="imagelarge">
@@ -80,6 +80,24 @@ function upArrowPressed() {
     }
 }
 
+function goFullscreen() {
+    // Open the image in /max/ view (fullscreen image)
+    var location = '{{ image_max_url }}'
+    if (location != '')
+    {
+        window.location.href = location;
+    }
+}
+
+function goFullsize() {
+    // Open the image in /full/ view (full size image)
+    var location = '{{ image_full_url }}'
+    if (location != '')
+    {
+        window.location.href = location;
+    }
+}
+
 document.onkeydown = function(evt) {
     evt = evt || window.event;
     switch (evt.keyCode) {
@@ -91,6 +109,14 @@ document.onkeydown = function(evt) {
             break;
         case 38:
             upArrowPressed();
+            break;
+        case 70:
+            /* 'f' key */
+            goFullsize();
+            break;
+        case 77:
+            /* 'm' key */
+            goFullscreen();
             break;
     }
 };
