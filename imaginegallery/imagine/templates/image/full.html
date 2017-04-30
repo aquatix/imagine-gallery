@@ -48,7 +48,7 @@
 <script type="text/javascript">
 function goToImageDetail() {
     // Navigate to the previous image
-    var location = '{{ prevpage }}';
+    var location = '{{ image_detail_url }}';
     if (location != '')
     {
         window.location.href = location;
@@ -58,6 +58,14 @@ function goToImageDetail() {
 document.onkeydown = function(evt) {
     evt = evt || window.event;
     switch (evt.keyCode) {
+        case 68:
+            /* 'd' key ('detail') */
+            goToImageDetail();
+            break;
+        case 78:
+            /* 'n' key ('normal') */
+            goToImageDetail();
+            break;
         case 8:
             /* backspace */
             goToImageDetail();

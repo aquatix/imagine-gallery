@@ -103,9 +103,10 @@ def directory_detail(request, collection_slug, directory):
     return render(request, 'directory/detail.html', context)
 
 
-def _get_image_details(request, collection_slug, file_path, imagename, thumbs=False):
+def _get_image_details(request, collection_slug, file_path, imagename, thumbs=False, viewtype='detail'):
     """
     Show image detail page
+    viewtype: detail or max
     """
     try:
         collection = Collection.objects.get(slug=collection_slug)
@@ -192,25 +193,22 @@ def _get_image_details(request, collection_slug, file_path, imagename, thumbs=Fa
     uppage = ''
     find_next = False
 
-    if thumbs:
-        images = image.directory.images(collection.sortmethod)
+    images = image.directory.images(collection.sortmethod)
 
-        for this_image in images:
-            if this_image == image:
-                find_next = True
-            elif find_next:
-                next_image = this_image
-                break
-            else:
-                prev_image = this_image
-    else:
-        prev_image = image
+    for this_image in images:
+        if this_image == image:
+            find_next = True
+        elif find_next:
+            next_image = this_image
+            break
+        else:
+            prev_image = this_image
 
     if directory.relative_path:
         if prev_image:
-            prevpage = reverse('image_detail', args=[collection.slug, directory.relative_path, prev_image.filename])
+            prevpage = reverse('image_' + viewtype, args=[collection.slug, directory.relative_path, prev_image.filename])
         if next_image:
-            nextpage = reverse('image_detail', args=[collection.slug, directory.relative_path, next_image.filename])
+            nextpage = reverse('image_' + viewtype, args=[collection.slug, directory.relative_path, next_image.filename])
         #navigation_items.append({'url': reverse('directory_detail', args=[collection.slug, directory.relative_path]), 'title': directory.relative_path})
 
         uppage = reverse('directory_detail', args=[collection.slug, directory.relative_path])
@@ -226,9 +224,9 @@ def _get_image_details(request, collection_slug, file_path, imagename, thumbs=Fa
     else:
         uppage = navigation_items[-1]['url']
         if prev_image:
-            prevpage = reverse('rootdir_image_detail', args=[collection.slug, prev_image.filename])
+            prevpage = reverse('rootdir_image_' + viewtype, args=[collection.slug, prev_image.filename])
         if next_image:
-            nextpage = reverse('rootdir_image_detail', args=[collection.slug, next_image.filename])
+            nextpage = reverse('rootdir_image_' + viewtype, args=[collection.slug, next_image.filename])
         #navigation_items.append({'url': reverse('directory_detail', args=[collection.slug, directory.relative_path]), 'title': directory.relative_path})
         image_detail_url = reverse('rootdir_image_detail', args=[collection.slug, image.filename])
         image_max_url = reverse('rootdir_image_max', args=[collection.slug, image.filename])
@@ -288,7 +286,7 @@ def image_max(request, collection_slug, file_path, imagename):
     """
     Show image fullscreen page (zoomed to fit screen, no album thumbnails and details)
     """
-    context, image = _get_image_details(request, collection_slug, file_path, imagename, False)
+    context, image = _get_image_details(request, collection_slug, file_path, imagename, False, viewtype='max')
     return render(request, 'image/max.html', context)
 
 
