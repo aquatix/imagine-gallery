@@ -34,6 +34,21 @@ gallery2/3 and such) didn't suit my needs, were flaky, insecure or had other
 shortcomings.
 
 
+## Features
+
+Collections (basically groups of subalbums), protected and hidden collections,
+configurable album sort options and image sizes (automatic thumbnailing etc),
+swipe support on mobile devices (and laptops with touch screen and such),
+keyboard navigation, maximised and full view of images, descriptions, EXIF info, GEO locations (GPS).
+
+
+## TODO
+
+- Timeline (show latest images from select Collections)
+- Protect Collection by only allowing specific users (instead of the current 'needs to be logged in')
+- Show GEO info for images with GPS tags
+
+
 ## Third party libraries
 
 For justifying the thumbnails so they get nicely laid out, [Justified-Gallery](https://github.com/miromannino/Justified-Gallery)
