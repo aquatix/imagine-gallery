@@ -262,7 +262,7 @@ class Image(BaseModel):
         if not self.image_hash:
             # Something went wrong with the hashing, no variants available this way
             return None
-        return '{}/{}_{}-{}.jpg'.format(self.image_hash[:2], self.image_hash, photosize.width, photosize.height)
+        return '{}/{}_{}-{}.{}'.format(self.image_hash[:2], self.image_hash, photosize.width, photosize.height, self.file_ext)
 
     def get_thumbnail(self):
         return self.get_variant('thumbnail')
