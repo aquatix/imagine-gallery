@@ -1,11 +1,11 @@
 # pip-compile requirements.in
-pkg-resources==0.0.0
+#pkg-resources==0.0.0
 
 Django
 django-taggit
 ExifRead
 ImageHash
-Markdown
+django-markdownify
 Pillow
 psycopg2
 utilkit>=0.4.0  # We need some features from at least this version

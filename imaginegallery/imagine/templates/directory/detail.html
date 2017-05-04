@@ -6,7 +6,8 @@
 
 {% if directory.description %}
 <div id="description">
-    {{ directory.description }}
+    {% load markdownify %}
+    {{ directory.description | markdownify | safe }}
 </div>
 {% endif %}
 

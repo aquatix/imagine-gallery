@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'markdownify',
     'imagine',
 ]
 
@@ -144,6 +145,21 @@ try:
     DATETIME_FORMAT = os.environ['IMAGINE_DATETIME_FORMAT']
 except KeyError:
     print('No ENV var found for IMAGINE_DATETIME_FORMAT')
+
+MARKDOWNIFY_WHITELIST_TAGS = [
+    'a',
+    'abbr',
+    'acronym',
+    'b',
+    'blockquote',
+    'em',
+    'i',
+    'li',
+    'ol',
+    'p',
+    'strong',
+    'ul'
+]
 
 # Image settings
 EXIF_COPY_THRESHOLD = 1000  # Copy EXIF tags when variant is larger than 1000px (thumbnails are then smaller in filesize)
