@@ -26,7 +26,8 @@
 
 {% if image_meta.description %}
 <div id="description">
-    {{ description }}
+    {% load markdownify %}
+    {{ image_meta.description | markdownify | safe }}
 </div>
 {% endif %}
 
