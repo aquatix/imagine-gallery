@@ -7,7 +7,7 @@
 bleach==2.0.0             # via django-markdownify
 django-markdownify==0.1.0
 django-taggit==0.22.1
-django==1.11              # via django-markdownify
+django==1.11.1            # via django-markdownify
 exifread==2.1.2
 future==0.16.0            # via utilkit
 html5lib==0.999999999     # via bleach
