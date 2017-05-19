@@ -17,7 +17,7 @@ import requests
 from utilkit import fileutil, datetimeutil
 
 try:
-    DEBUG
+    DEBUG = settings.DEBUG
 except NameError:
     DEBUG = True
     #DEBUG = False
