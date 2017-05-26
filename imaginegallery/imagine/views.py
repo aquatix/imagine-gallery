@@ -7,7 +7,7 @@ from django.template import loader
 from django.http import Http404
 from django.shortcuts import redirect
 from django.urls import reverse
-from .models import Collection, Directory, Image, ImageMeta, PhotoSize
+from .models import Collection, Directory, Image, ImageMeta, PhotoSize, Stream
 from fractions import Fraction
 
 
@@ -309,7 +309,7 @@ def imagehash_detail(request, imagehash):
     Show image detail page based on imagehash identifier
     """
     try:
-        image = Image.objects.filter(imagehash=imagehash)
+        image = Image.objects.filter(image_hash=imagehash)
     except Image.DoesNotExist:
         raise Http404('Image not found')
 
@@ -321,3 +321,53 @@ def imagehash_detail(request, imagehash):
     }
 
     return render(request, 'image/detail.html', context)
+
+
+def stream_overview(request):
+    """
+    Show a choise of streams
+    """
+    pass
+
+
+def stream_detail(request, stream_slug):
+    """
+    Show a stream of images:
+    - selection from a set of Collection
+    - delimited by start_datetime and end_datetime, both not mandatory
+    """
+    try:
+        stream = Stream.objects.get(slug=stream_slug)
+    except Stream.DoesNotExist:
+        raise Http404('Stream does not exist')
+
+    print(stream.collections.all())
+
+    # Get all images that are in the selected Collections of this Stream
+    images = Image.objects.filter(collection__in=stream.collections.all()).distinct()
+
+    if stream.start_datetime:
+        images.filter(filter_modified__gte=stream.start_datetime)
+    if stream.end_datetime:
+        images.filter(filter_modified__lte=stream.end_datetime)
+
+    images.filter(is_visible=True)
+
+    if stream.sortmethod == Collection.SORT_NAME_DESC:
+        images.order_by('-filename')
+    elif stream.sortmethod == Collection.SORT_NAME_ASC:
+        images.order_by('filename')
+    elif stream.sortmethod == Collection.SORT_DATE_DESC:
+        images.order_by('-filter_modified')
+    elif stream.sortmethod == Collection.SORT_DATE_ASC:
+        images.order_by('filter_modified')
+    print images
+
+    site_title = settings.SITE_TITLE
+    context = {
+        'site_title': site_title,
+        'stream': stream,
+        'images': images,
+    }
+
+    return render(request, 'stream/detail.html', context)
