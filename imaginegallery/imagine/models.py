@@ -343,11 +343,16 @@ class Comment(BaseModel):
     comment = models.TextField(default='')
 
 
-class Event(BaseModel):
+class Stream(BaseModel):
     """Timeframe in which something happened, enabling grouping of images"""
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255)
     description = models.TextField(default='')
 
-    start_datetime = models.DateTimeField()
-    end_datetime = models.DateTimeField()
+    start_datetime = models.DateTimeField(null=True, blank=True, help_text='Keep empty to include all history')
+    end_datetime = models.DateTimeField(null=True, blank=True, help_text='Keep empty for no enddate')
+
+    collections = models.ManyToManyField(Collection, blank=True, help_text='The Collections to include in this stream/event')
+
+    def __unicode__(self):
+        return self.title
