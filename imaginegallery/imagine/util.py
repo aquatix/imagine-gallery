@@ -1,4 +1,7 @@
+import os
+from datetime import datetime, timedelta
 import exifread
+from pytz.tzinfo import StaticTzInfo
 
 # based on https://gist.github.com/snakeye/fdc372dbf11370fe29eb
 # based on https://gist.github.com/erans/983821
@@ -46,3 +49,44 @@ def get_exif_location(exif_data):
             lon = 0 - lon
 
     return lat, lon
+
+
+def ensure_dir_exists(f, fullpath=False):
+    """
+    Ensure the existence of the (parent) directory of f
+    """
+    if fullpath is False:
+        # Get parent directory
+        d = os.path.dirname(f)
+    else:
+        # Create the full path
+        d = f
+    if not os.path.exists(d):
+        os.makedirs(d)
+
+
+class OffsetTime(StaticTzInfo):
+    """
+    A dumb timezone based on offset such as +0530, -0600, etc.
+    """
+    def __init__(self, offset):
+        hours = int(offset[:3])
+        minutes = int(offset[0] + offset[3:])
+        self._utcoffset = timedelta(hours=hours, minutes=minutes)
+
+
+def load_datetime(value, dt_format):
+    """
+    Create timezone-aware datetime object
+    """
+    if dt_format.endswith('%z'):
+        dt_format = dt_format[:-2]
+        offset = value[-5:]
+        value = value[:-5]
+        if offset != offset.replace(':', ''):
+            # strip : from HHMM if needed (isoformat() adds it between HH and MM)
+            offset = '+' + offset.replace(':', '')
+            value = value[:-1]
+        return OffsetTime(offset).localize(datetime.strptime(value, dt_format))
+
+    return datetime.strptime(value, dt_format)

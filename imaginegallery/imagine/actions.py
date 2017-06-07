@@ -6,7 +6,7 @@ import logging
 import os
 from django.conf import settings
 from imagine.models import Collection, Directory, Image, ImageMeta, PhotoSize, ExifItem
-from imagine.util import get_exif_location
+from imagine import util
 from PIL import Image as PILImage, ImageFile as PILImageFile, ExifTags
 from datetime import datetime
 import exifread
@@ -14,7 +14,6 @@ import imagehash
 import json
 import pytz
 import requests
-from utilkit import fileutil, datetimeutil
 
 try:
     DEBUG = settings.DEBUG
@@ -149,14 +148,14 @@ def save_image_info(the_image, filename, file_ext):
 
     if exif_datetime_taken:
         #the_image.exif_modified = datetimeutil.load_datetime(exif_datetime_taken, '%Y:%m:%d %H:%M:%S')
-        the_image.exif_modified = datetimeutil.load_datetime(exif_datetime_taken, '%Y:%m:%d %H:%M:%S').replace(tzinfo=pytz.utc)
+        the_image.exif_modified = util.load_datetime(exif_datetime_taken, '%Y:%m:%d %H:%M:%S').replace(tzinfo=pytz.utc)
         the_image.filter_modified = the_image.exif_modified
     else:
         the_image.filter_modified = the_image.file_modified
 
     try:
         if geo_exif_items:
-            lat, lon = get_exif_location(geo_exif_items)
+            lat, lon = util.get_exif_location(geo_exif_items)
             the_image.geo_lat = lat
             the_image.geo_lon = lon
             # TODO: create config item to enable/disable geo lookups
@@ -294,7 +293,7 @@ def scale_image(image_id, destination_dir, width, height, crop=False):
         logger.info('No hash found for Image with pk %d', image.pk)
         return
     filename_base = os.path.join(destination_dir, image.image_hash[:2], image.image_hash)
-    fileutil.ensure_dir_exists(filename_base)
+    util.ensure_dir_exists(filename_base)
     variant = '_{}-{}.{}'.format(width, height, image.file_ext)
     if os.path.isfile(filename_base + variant):
         #logger.debug('Skipping resize for existing %s%s', filename_base, variant)
