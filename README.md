@@ -42,11 +42,9 @@ swipe support on mobile devices (and laptops with touch screen and such),
 keyboard navigation, maximised and full view of images, descriptions, EXIF info, GEO locations (GPS).
 
 
-## TODO
+## TODO and changes
 
-- Timeline (show latest images from select Collections)
-- Protect Collection by only allowing specific users (instead of the current 'needs to be logged in')
-- Show GEO info for images with GPS tags
+See the [changelog](https://github.com/aquatix/imagine-gallery/blob/master/CHANGELOG.md).
 
 
 ## Third party libraries
