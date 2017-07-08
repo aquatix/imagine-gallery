@@ -16,9 +16,9 @@ html5lib==0.999999999     # via bleach
 idna==2.5                 # via requests
 imagehash==3.4
 markdown==2.6.8           # via django-markdownify
-numpy==1.13.0             # via imagehash, pywavelets, scipy
+numpy==1.13.1             # via imagehash, pywavelets, scipy
 olefile==0.44             # via pillow
-pillow==4.2.0             # via imagehash
+pillow==4.2.1             # via imagehash
 pkg-resources==0.0.0
 psycopg2==2.7.1
 pytz==2017.2              # via django, utilkit
