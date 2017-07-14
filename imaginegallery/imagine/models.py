@@ -344,10 +344,13 @@ class Comment(BaseModel):
 
 
 class Stream(BaseModel):
-    """Timeframe in which something happened, enabling grouping of images"""
+    """A stream of images, like the photostream of Flickr, or a
+    timeframe in which something happened, enabling grouping of images"""
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True)
-    description = models.TextField(default='')
+    description = models.TextField(default='', null=True, blank=True)
+
+    in_navigation = models.BooleanField(help_text='Show up in the list of streams')
 
     start_datetime = models.DateTimeField(null=True, blank=True, help_text='Keep empty to include all history')
     end_datetime = models.DateTimeField(null=True, blank=True, help_text='Keep empty for no enddate')
