@@ -4,7 +4,7 @@
 #
 #    pip-compile --output-file requirements-dev.txt requirements-dev.in
 #
-astroid==1.5.3            # via pylint
+astroid==1.5.3            # via pylint, pylint-plugin-utils
 backports.functools-lru-cache==1.4  # via astroid, pylint
 bleach==2.0.0
 certifi==2017.4.17
@@ -27,6 +27,8 @@ olefile==0.44
 pillow==4.1.1
 pkg-resources==0.0.0
 psycopg2==2.7.1
+pylint-django==0.7.2
+pylint-plugin-utils==0.2.6  # via pylint-django
 pylint==1.7.4
 pytz==2017.2
 pywavelets==0.5.2
