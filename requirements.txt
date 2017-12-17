@@ -4,26 +4,26 @@
 #
 #    pip-compile --output-file requirements.txt requirements.in
 #
-bleach==2.1.1             # via django-markdownify
-certifi==2017.7.27.1      # via requests
+bleach==2.1.2             # via django-markdownify
+certifi==2017.11.5        # via requests
 chardet==3.0.4            # via requests
-django-markdownify==0.2.1
+django-markdownify==0.3.0
 django-taggit==0.22.1
-django==1.11.6            # via django-markdownify
+django==2.0
 exifread==2.1.2
 future==0.16.0            # via utilkit
-html5lib==1.0b10          # via bleach
+html5lib==1.0.1           # via bleach
 idna==2.6                 # via requests
-imagehash==3.7
-markdown==2.6.9           # via django-markdownify
+imagehash==4.0
+markdown==2.6.10          # via django-markdownify
 numpy==1.13.3             # via imagehash, pywavelets, scipy
 olefile==0.44             # via pillow
-pillow==4.3.0             # via imagehash
-psycopg2==2.7.3.1
-pytz==2017.2              # via django, utilkit
+pillow==4.3.0
+psycopg2==2.7.3.2
+pytz==2017.3              # via django, utilkit
 pywavelets==0.5.2         # via imagehash
 requests==2.18.4          # via utilkit
-scipy==0.19.1             # via imagehash
+scipy==1.0.0              # via imagehash
 six==1.11.0               # via bleach, html5lib, imagehash
 urllib3==1.22             # via requests
 utilkit==0.4.0
