@@ -8,17 +8,16 @@ bleach==2.1.2             # via django-markdownify
 certifi==2017.11.5        # via requests
 chardet==3.0.4            # via requests
 django-markdownify==0.3.0
-django-taggit==0.22.1
-django==2.0
+django-taggit==0.22.2
+django==2.0.1
 exifread==2.1.2
 future==0.16.0            # via utilkit
 html5lib==1.0.1           # via bleach
 idna==2.6                 # via requests
 imagehash==4.0
-markdown==2.6.10          # via django-markdownify
-numpy==1.13.3             # via imagehash, pywavelets, scipy
-olefile==0.44             # via pillow
-pillow==4.3.0
+markdown==2.6.11          # via django-markdownify
+numpy==1.14.0             # via imagehash, pywavelets, scipy
+pillow==5.0.0
 psycopg2==2.7.3.2
 pytz==2017.3              # via django, utilkit
 pywavelets==0.5.2         # via imagehash
