@@ -63,3 +63,9 @@ target/
 
 # vim
 *.swp
+
+# imagine
+*.sqlite3
+migrations/
+rundevmanagepy.sh
+tags

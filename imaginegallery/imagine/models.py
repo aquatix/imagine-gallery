@@ -83,13 +83,13 @@ class Directory(BaseModel):
     """Directory/collection umbrella object"""
     directory = models.CharField(max_length=255)
     relative_path = models.CharField(max_length=255, help_text='Path relative to Collection base dir')
-    collection = models.ForeignKey(Collection)
+    collection = models.ForeignKey(Collection, on_delete=models.CASCADE)
 
     title = models.CharField(max_length=255, blank=True, null=True)
     description = models.TextField(null=True, blank=True)
-    featured_image = models.ForeignKey('Image', blank=True, null=True, related_name='featured_image')
+    featured_image = models.ForeignKey('Image', blank=True, null=True, related_name='featured_image', on_delete=models.SET_NULL)
 
-    parent_directory = models.ForeignKey('self', null=True, blank=True, related_name='children')
+    parent_directory = models.ForeignKey('self', null=True, blank=True, related_name='children', on_delete=models.CASCADE)
 
     def get_filepath(self, filename):
         return '{0}{1}'.format(self.directory, filename)
@@ -158,7 +158,7 @@ class Image(BaseModel):
     IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'bmp', 'gif', 'cr2']
     IMAGE_EXTENSIONS_RAW = ['cr2']
 
-    collection = models.ForeignKey(Collection)
+    collection = models.ForeignKey(Collection, on_delete=models.CASCADE)
     directory = models.ForeignKey(Directory, related_name='parent', on_delete=models.CASCADE)
     filename = models.CharField(max_length=255)
     file_ext = models.CharField(max_length=255)
@@ -337,7 +337,7 @@ class ImageMeta(BaseModel):
 
 class Comment(BaseModel):
     """Comment on an image"""
-    image = models.ForeignKey(ImageMeta)
+    image = models.ForeignKey(ImageMeta, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     email = models.EmailField(max_length=254)
     comment = models.TextField(default='')

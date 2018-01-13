@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.core import urlresolvers
 from imagine.models import Collection, Directory, Image, ImageMeta, PhotoSize, ExifItem, Comment, Stream
 from imagine.actions import update_collection
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.utils.safestring import mark_safe
 
 
@@ -72,7 +72,7 @@ class ExifItemAdmin(admin.ModelAdmin):
     search_fields = ('key', 'value_int', 'value_str', 'value_float', 'image__filename', )
 
     def from_image(self, obj):
-        link=urlresolvers.reverse("admin:imagine_image_change", args=[obj.image.id]) #model name has to be lowercase
+        link=reverse("admin:imagine_image_change", args=[obj.image.id]) #model name has to be lowercase
         return u'<a href="%s">%s</a>' % (link,obj.image.filename)
     from_image.allow_tags=True
 
@@ -82,7 +82,7 @@ class CommentAdmin(admin.ModelAdmin):
     search_fields = ('name', 'email', 'comment', )
 
     def from_image(self, obj):
-        link=urlresolvers.reverse("admin:imagine_image_change", args=[obj.image.id]) #model name has to be lowercase
+        link=reverse("admin:imagine_image_change", args=[obj.image.id]) #model name has to be lowercase
         return u'<a href="%s">%s</a>' % (link,obj.image.filename)
     from_image.allow_tags=True
 
