@@ -54,6 +54,9 @@ def save_image_geo_location(image):
 
     # Pick the first one, this is generally the most specific result
     # https://developers.google.com/maps/documentation/geocoding/intro#ReverseGeocoding
+    if not json_data:
+        logger.warning('No geo found for %s', str(image))
+        return
     image.geo_formatted_address = json_data['results'][0]['formatted_address']
     for component in json_data['results'][0]['address_components']:
         if 'route' in component['types']:
