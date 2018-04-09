@@ -361,7 +361,7 @@ def stream_detail(request, stream_slug):
         images.order_by('-filter_modified')
     elif stream.sortmethod == Collection.SORT_DATE_ASC:
         images.order_by('filter_modified')
-    print images
+    print(images)
 
     site_title = settings.SITE_TITLE
     context = {

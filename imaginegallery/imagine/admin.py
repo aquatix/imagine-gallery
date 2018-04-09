@@ -1,5 +1,4 @@
 from django.contrib import admin
-from django.core import urlresolvers
 from imagine.models import Collection, Directory, Image, ImageMeta, PhotoSize, ExifItem, Comment, Stream
 from imagine.actions import update_collection
 from django.urls import reverse
