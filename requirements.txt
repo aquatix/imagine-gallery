@@ -9,19 +9,19 @@ certifi==2018.1.18        # via requests
 chardet==3.0.4            # via requests
 django-markdownify==0.8.0
 django-taggit==0.22.2
-django==2.0.3
+django==2.0.4
 exifread==2.1.2
 html5lib==1.0.1           # via bleach
 idna==2.6                 # via requests
 imagehash==4.0
 markdown==2.6.11          # via django-markdownify
-numpy==1.14.1             # via imagehash, pywavelets, scipy
-pillow==5.0.0
-psycopg2==2.7.4
+numpy==1.14.2             # via imagehash, pywavelets, scipy
+pillow==5.1.0
+psycopg2-binary==2.7.4
 pytz==2018.3              # via django
 pywavelets==0.5.2         # via imagehash
 requests==2.18.4
-scipy==1.0.0              # via imagehash
+scipy==1.0.1              # via imagehash
 six==1.11.0               # via bleach, html5lib, imagehash
 urllib3==1.22             # via requests
 webencodings==0.5.1       # via html5lib
