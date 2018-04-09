@@ -5,5 +5,5 @@ django-taggit
 ExifRead
 ImageHash
 Pillow
-psycopg2
+psycopg2-binary
 requests
