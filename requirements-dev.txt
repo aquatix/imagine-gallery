@@ -10,7 +10,7 @@ certifi==2018.4.16        # via requests
 chardet==3.0.4            # via requests
 django-markdownify==0.8.0
 django-taggit==0.22.2
-django==2.0.5
+django==2.0.6
 exifread==2.1.2
 html5lib==1.0.1           # via bleach
 idna==2.6                 # via requests
@@ -22,7 +22,7 @@ mccabe==0.6.1             # via pylint
 numpy==1.14.3             # via imagehash, pywavelets, scipy
 pillow==5.1.0
 psycopg2-binary==2.7.4
-pylint-django==0.11
+pylint-django==0.11.1
 pylint-plugin-utils==0.2.6  # via pylint-django
 pylint==1.9.1
 pytz==2018.4              # via django
