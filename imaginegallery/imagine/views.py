@@ -172,11 +172,11 @@ def _get_image_details(request, collection_slug, file_path, imagename, thumbs=Fa
         elif exif_item['key'] == 'EXIF ISOSpeedRatings':
             exif_highlights_pretty.append({'key': '<i title="ISO speed" class="material-icons">iso</i>', 'value': exif_item['value']})
         elif exif_item['key'] == 'EXIF LensModel':
-            exif_highlights_pretty.append({'key': '<i title="Lens" class="material-icons">lens</i>', 'value': exif_item['value']})
+            exif_highlights_pretty.append({'key': '<ion-icon title="Lens" name="radio-button-off"></ion-icon>', 'value': exif_item['value']})
         elif exif_item['key'] == 'Image Copyright':
             exif_highlights_pretty.append({'key': '&copy;', 'value': exif_item['value']})
         elif exif_item['key'] == 'Image Artist':
-            exif_highlights_pretty.append({'key': '<i title="Image artist" class="material-icons">person</i>', 'value': exif_item['value']})
+            exif_highlights_pretty.append({'key': '<ion-icon title="Image artist" name="person"></ion-icon>', 'value': exif_item['value']})
         else:
             exif_highlights_pretty.append(exif_item)
 
