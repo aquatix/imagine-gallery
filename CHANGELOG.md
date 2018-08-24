@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Added
 - Timeline (show latest images from select Collections)
-- 
+- Django analytics module, supporting Matomo (Piwik) settings for now. Optional.
 
 ### Changed
 - Some internal housekeeping

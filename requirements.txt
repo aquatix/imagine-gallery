@@ -7,6 +7,7 @@
 bleach==2.1.4             # via django-markdownify
 certifi==2018.8.24        # via requests
 chardet==3.0.4            # via requests
+django-analytical==2.4.0
 django-markdownify==0.8.0
 django-taggit==0.23.0
 django==2.1

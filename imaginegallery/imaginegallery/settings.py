@@ -38,6 +38,12 @@ try:
 except KeyError:
     print('No ENV var found for IMAGINE_SERVER_HOST')
 
+try:
+    PIWIK_DOMAIN_PATH = os.environ['IMAGINE_MATOMO_DOMAIN_PATH']
+    PIWIK_SITE_ID = os.environ['IMAGINE_MATOMO_SITE_ID']
+except KeyError:
+    # No Matomo (Piwik) has been configured, ignore
+    print('No ENV var found for IMAGINE_MATOMO_DOMAIN_PATH and/or IMAGINE_MATOMO_SITE_ID')
 
 # Application definition
 
@@ -48,6 +54,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'analytical',
     'markdownify',
     'imagine',
 ]

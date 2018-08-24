@@ -1,7 +1,9 @@
+{% load analytical %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% analytical_head_top %}
     <title>{% block title %}Imagine gallery{% endblock %} | {%block sitetitle %}{{ site_title }}{% endblock %}</title>
 {#    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/> #}
 
@@ -30,9 +32,12 @@
 
     {% block extrastyling %}
     {% endblock %}
+
+    {% analytical_head_bottom %}
 </head>
 
 <body>
+    {% analytical_body_top %}
     {% block navigationbar %}
     <div id="navigation">
         {% block navigation %}
@@ -51,5 +56,6 @@
         {% block content %}{% endblock %}
     </div>
     <script src="https://unpkg.com/ionicons@4.4.1/dist/ionicons.js"></script>
+    {% analytical_body_bottom %}
 </body>
 </html>
