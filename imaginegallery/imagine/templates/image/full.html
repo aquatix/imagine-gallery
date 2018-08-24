@@ -10,9 +10,7 @@
 <h1>{{ image_title }}</h1>
 
 <div class="zoomnav">
-    <a href="{{ image_detail_url }}"><i title="Go back to normal view" class="material-icons">close</i></a>
-    {#<i title="Go fullscreen" class="material-icons">fullscreen</i>#}
-    {#<i title="Exit fullscreen" class="material-icons">fullscreen_exit</i>#}
+    <a href="{{ image_detail_url }}" title="Go back to normal view"><ion-icon name="close" size="large"></ion-icon></a>
 </div>
 
 <div id="imagefull">
@@ -32,7 +30,7 @@
 {% endif %}
 
 <div id="image_navigation">
-    <a href="{{ prevpage }}" title="Back to image detail page [backspace]"><i class="material-icons">keyboard_backspace</i></a>
+    <a href="{{ prevpage }}" title="Back to image detail page [backspace]"><ion-icon name="close" size="large"></ion-icon></a>
 </div>
 
 <div id="exifhighlights">

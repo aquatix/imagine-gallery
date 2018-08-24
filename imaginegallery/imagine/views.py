@@ -148,7 +148,6 @@ def _get_image_details(request, collection_slug, file_path, imagename, thumbs=Fa
 
     exif_highlights = image.get_exif_highlights()
     exif_highlights_pretty = []
-    #exif_highlights_pretty.append({'key': '<i title="Taken on" class="material-icons">today</i>', 'value': image.filter_modified.strftime(settings.DATETIME_FORMAT)})
     # TODO: translate into icons and such
     for exif_item in exif_highlights:
         if exif_item['key'] == 'Image Model':
@@ -170,7 +169,7 @@ def _get_image_details(request, collection_slug, file_path, imagename, thumbs=Fa
         elif exif_item['key'] == 'EXIF FocalLength':
             exif_highlights_pretty.append({'key': '<ion-icon title="Focal length" name="eye"></ion-icon>', 'value': '{}mm'.format(exif_item['value'])})
         elif exif_item['key'] == 'EXIF ISOSpeedRatings':
-            exif_highlights_pretty.append({'key': '<i title="ISO speed" class="material-icons">iso</i>', 'value': exif_item['value']})
+            exif_highlights_pretty.append({'key': '<ion-icon title="ISO speed" name="timer"></ion-icon>', 'value': exif_item['value']})
         elif exif_item['key'] == 'EXIF LensModel':
             exif_highlights_pretty.append({'key': '<ion-icon title="Lens" name="radio-button-off"></ion-icon>', 'value': exif_item['value']})
         elif exif_item['key'] == 'Image Copyright':
