@@ -4,18 +4,18 @@
 #
 #    pip-compile --output-file requirements.txt requirements.in
 #
-bleach==2.1.3             # via django-markdownify
-certifi==2018.4.16        # via requests
+bleach==2.1.4             # via django-markdownify
+certifi==2018.8.24        # via requests
 chardet==3.0.4            # via requests
 django-markdownify==0.8.0
-django-taggit==0.22.2
-django==2.0.7
+django-taggit==0.23.0
+django==2.1
 exifread==2.1.2
 html5lib==1.0.1           # via bleach
 idna==2.7                 # via requests
 imagehash==4.0
 markdown==2.6.11          # via django-markdownify
-numpy==1.14.5             # via imagehash, pywavelets, scipy
+numpy==1.15.1             # via imagehash, pywavelets, scipy
 pillow==5.2.0
 psycopg2-binary==2.7.5
 pytz==2018.5              # via django
