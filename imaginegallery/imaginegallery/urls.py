@@ -19,7 +19,7 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     url(r'^login/$', auth_views.LoginView.as_view(redirect_authenticated_user=True), name='login'),
-    url(r'^logout/$', auth_views.logout, {'next_page': '/'}, name='logout'),
+    url(r'^logout/$', auth_views.LogoutView, {'next_page': '/'}, name='logout'),
     url(r'^admin/', admin.site.urls),
     url(r'^', include('imagine.urls')),
 ]
