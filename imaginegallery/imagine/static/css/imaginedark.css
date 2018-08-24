@@ -128,7 +128,7 @@ h1
     text-align: center;
 }
 
-#imagelarge, #imagefull, .itemlist, #description
+#imagelarge, #imagefull, .itemlist
 {
     /* Clear the floats of h1 and zoomnav */
     clear: both;
