@@ -57,7 +57,11 @@ def save_image_geo_location(image):
     if not json_data:
         logger.warning('No geo found for %s', str(image))
         return
-    image.geo_formatted_address = json_data['results'][0]['formatted_address']
+    try:
+        image.geo_formatted_address = json_data['results'][0]['formatted_address']
+    except IndexError:
+        logger.error('Geo missing for %s', str(image))
+        print(json_data['results'])
     for component in json_data['results'][0]['address_components']:
         if 'route' in component['types']:
             # 'Street'
