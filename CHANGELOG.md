@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## TODO
 
+- GIF support (do not resize?)
 - Sort EXIF tags in a logical, fixed order (at least the important ones)
 - Protect Collection by only allowing specific users (instead of the current 'needs to be logged in')
 - Show GEO info for images with GPS tags
