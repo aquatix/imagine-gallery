@@ -62,21 +62,24 @@ def save_image_geo_location(image):
     except IndexError:
         logger.error('Geo missing for %s', str(image))
         print(json_data['results'])
-    for component in json_data['results'][0]['address_components']:
-        if 'route' in component['types']:
-            # 'Street'
-            image.geo_route = component['long_name']
-        elif 'postal_code' in component['types']:
-            image.geo_postal_code = component['long_name']
-        elif 'locality' in component['types']:
-            image.geo_city = component['long_name']
-        elif 'administrative_area_level_1' in component['types']:
-            image.geo_administrative_area_level_1 = component['long_name']
-        elif 'geo_administrative_area_level_2' in component['types']:
-            image.geo_administrative_area_level_2 = component['long_name']
-        elif 'country' in component['types']:
-            image.geo_country = component['long_name']
-            image.geo_country_code = component['short_name']
+    try:
+        for component in json_data['results'][0]['address_components']:
+            if 'route' in component['types']:
+                # 'Street'
+                image.geo_route = component['long_name']
+            elif 'postal_code' in component['types']:
+                image.geo_postal_code = component['long_name']
+            elif 'locality' in component['types']:
+                image.geo_city = component['long_name']
+            elif 'administrative_area_level_1' in component['types']:
+                image.geo_administrative_area_level_1 = component['long_name']
+            elif 'geo_administrative_area_level_2' in component['types']:
+                image.geo_administrative_area_level_2 = component['long_name']
+            elif 'country' in component['types']:
+                image.geo_country = component['long_name']
+                image.geo_country_code = component['short_name']
+    except IndexError:
+        logger.warning('Error while iterating address_components for %s', str(image))
 
     image.save()
 
