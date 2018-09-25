@@ -4,6 +4,7 @@ imagine-gallery
 Image catalog/gallery: make archives of photographs more accessible.
 
 [![Code Health](https://landscape.io/github/aquatix/imagine-gallery/master/landscape.svg?style=flat)](https://landscape.io/github/aquatix/imagine-gallery/master)
+[![Known Vulnerabilities](https://snyk.io/test/github/aquatix/imagine-gallery/badge.svg?targetFile=requirements.txt)](https://snyk.io/test/github/aquatix/imagine-gallery?targetFile=requirements.txt)
 
 This is a gallery, written in Python/Django, based on the older imagine
 [crawler/updater](https://github.com/aquatix/imagine-crawler). This project
