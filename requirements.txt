@@ -10,17 +10,17 @@ chardet==3.0.4            # via requests
 django-analytical==2.4.0
 django-markdownify==0.8.0
 django-taggit==0.23.0
-django==2.1
+django==2.1.1
 exifread==2.1.2
 html5lib==1.0.1           # via bleach
 idna==2.7                 # via requests
 imagehash==4.0
-markdown==2.6.11          # via django-markdownify
-numpy==1.15.1             # via imagehash, pywavelets, scipy
+markdown==3.0             # via django-markdownify
+numpy==1.15.2             # via imagehash, pywavelets, scipy
 pillow==5.2.0
 psycopg2-binary==2.7.5
 pytz==2018.5              # via django
-pywavelets==0.5.2         # via imagehash
+pywavelets==1.0.0         # via imagehash
 requests==2.19.1
 scipy==1.1.0              # via imagehash
 six==1.11.0               # via bleach, html5lib, imagehash
