@@ -1,5 +1,5 @@
 from django.contrib import admin
-from imagine.models import Collection, Directory, Image, ImageMeta, PhotoSize, ExifItem, Comment, Event
+from imagine.models import Collection, Directory, Image, ImageMeta, PhotoSize, ExifItem, Comment, Stream
 from imagine.actions import update_collection
 from django.urls import reverse
 from django.utils.safestring import mark_safe
@@ -86,7 +86,7 @@ class CommentAdmin(admin.ModelAdmin):
     from_image.allow_tags=True
 
 
-class EventAdmin(admin.ModelAdmin):
+class StreamAdmin(admin.ModelAdmin):
     list_display = ('title', 'start_datetime', 'end_datetime', )
     search_fields = ('title', 'slug', 'description', )
     prepopulated_fields = {'slug': ('title',), }
@@ -99,4 +99,4 @@ admin.site.register(ImageMeta, ImageMetaAdmin)
 admin.site.register(PhotoSize, PhotoSizeAdmin)
 admin.site.register(ExifItem, ExifItemAdmin)
 admin.site.register(Comment, CommentAdmin)
-admin.site.register(Event, EventAdmin)
+admin.site.register(Stream, StreamAdmin)

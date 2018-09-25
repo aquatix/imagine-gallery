@@ -10,8 +10,8 @@
 <h1>{{ image_title }}</h1>
 
 <div class="zoomnav">
-    <a href="{{ image_max_url }}"><i title="Show fullscreen [m]" class="material-icons">fullscreen</i></a>
-    <a href="{{ image_full_url }}"><i title="Show full size [f]" class="material-icons">launch</i></a>
+    <a href="{{ image_max_url }}" title="Show fullscreen [m]"><ion-icon name="expand" size="large"></ion-icon></a>
+    <a href="{{ image_full_url }}" title="Show full size [f]"><ion-icon name="open" size="large"></ion-icon></a>
 </div>
 
 <div id="imagelarge">
@@ -35,9 +35,9 @@
 {% endif %}
 
 <div id="image_navigation">
-    <a href="{{ prevpage }}" title="Previous image [left arrow]"><i class="material-icons">keyboard_arrow_left</i></a>
-    <a href="{{ nextpage }}" title="Next image [right arrow]"><i class="material-icons">keyboard_arrow_right</i></a>
-    <a href="{{ uppage }}" title="Go up a directory [up arrow]"><i class="material-icons">keyboard_arrow_up</i></a>
+    <a href="{{ prevpage }}" title="Previous image [left arrow]"><ion-icon name="arrow-round-back" size="large"></ion-icon></a>
+    <a href="{{ nextpage }}" title="Next image [right arrow]"><ion-icon name="arrow-round-forward" size="large"></ion-icon></a>
+    <a href="{{ uppage }}" title="Go up a directory [up arrow]"><ion-icon name="arrow-round-up" size="large"></ion-icon></a>
 </div>
 
 <div id="exifhighlights">

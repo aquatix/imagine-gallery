@@ -6,7 +6,7 @@ import logging
 import os
 from django.conf import settings
 from imagine.models import Collection, Directory, Image, ImageMeta, PhotoSize, ExifItem
-from imagine.util import get_exif_location
+from imagine import util
 from PIL import Image as PILImage, ImageFile as PILImageFile, ExifTags
 from datetime import datetime
 import exifread
@@ -14,7 +14,6 @@ import imagehash
 import json
 import pytz
 import requests
-from utilkit import fileutil, datetimeutil
 
 try:
     DEBUG = settings.DEBUG
@@ -58,22 +57,29 @@ def save_image_geo_location(image):
     if not json_data:
         logger.warning('No geo found for %s', str(image))
         return
-    image.geo_formatted_address = json_data['results'][0]['formatted_address']
-    for component in json_data['results'][0]['address_components']:
-        if 'route' in component['types']:
-            # 'Street'
-            image.geo_route = component['long_name']
-        elif 'postal_code' in component['types']:
-            image.geo_postal_code = component['long_name']
-        elif 'locality' in component['types']:
-            image.geo_city = component['long_name']
-        elif 'administrative_area_level_1' in component['types']:
-            image.geo_administrative_area_level_1 = component['long_name']
-        elif 'geo_administrative_area_level_2' in component['types']:
-            image.geo_administrative_area_level_2 = component['long_name']
-        elif 'country' in component['types']:
-            image.geo_country = component['long_name']
-            image.geo_country_code = component['short_name']
+    try:
+        image.geo_formatted_address = json_data['results'][0]['formatted_address']
+    except IndexError:
+        logger.error('Geo missing for %s', str(image))
+        print(json_data['results'])
+    try:
+        for component in json_data['results'][0]['address_components']:
+            if 'route' in component['types']:
+                # 'Street'
+                image.geo_route = component['long_name']
+            elif 'postal_code' in component['types']:
+                image.geo_postal_code = component['long_name']
+            elif 'locality' in component['types']:
+                image.geo_city = component['long_name']
+            elif 'administrative_area_level_1' in component['types']:
+                image.geo_administrative_area_level_1 = component['long_name']
+            elif 'geo_administrative_area_level_2' in component['types']:
+                image.geo_administrative_area_level_2 = component['long_name']
+            elif 'country' in component['types']:
+                image.geo_country = component['long_name']
+                image.geo_country_code = component['short_name']
+    except IndexError:
+        logger.warning('Error while iterating address_components for %s', str(image))
 
     image.save()
 
@@ -152,14 +158,14 @@ def save_image_info(the_image, filename, file_ext):
 
     if exif_datetime_taken:
         #the_image.exif_modified = datetimeutil.load_datetime(exif_datetime_taken, '%Y:%m:%d %H:%M:%S')
-        the_image.exif_modified = datetimeutil.load_datetime(exif_datetime_taken, '%Y:%m:%d %H:%M:%S').replace(tzinfo=pytz.utc)
+        the_image.exif_modified = util.load_datetime(exif_datetime_taken, '%Y:%m:%d %H:%M:%S').replace(tzinfo=pytz.utc)
         the_image.filter_modified = the_image.exif_modified
     else:
         the_image.filter_modified = the_image.file_modified
 
     try:
         if geo_exif_items:
-            lat, lon = get_exif_location(geo_exif_items)
+            lat, lon = util.get_exif_location(geo_exif_items)
             the_image.geo_lat = lat
             the_image.geo_lon = lon
             # TODO: create config item to enable/disable geo lookups
@@ -297,7 +303,7 @@ def scale_image(image_id, destination_dir, width, height, crop=False):
         logger.info('No hash found for Image with pk %d', image.pk)
         return
     filename_base = os.path.join(destination_dir, image.image_hash[:2], image.image_hash)
-    fileutil.ensure_dir_exists(filename_base)
+    util.ensure_dir_exists(filename_base)
     variant = '_{}-{}.{}'.format(width, height, image.file_ext)
     if os.path.isfile(filename_base + variant):
         #logger.debug('Skipping resize for existing %s%s', filename_base, variant)

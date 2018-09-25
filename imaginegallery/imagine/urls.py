@@ -4,6 +4,7 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
+    url(r'^stream/(?P<stream_slug>\w+)/$', views.stream_detail, name='stream_detail'),
     # ex: /vacation/
     url(r'^(?P<collection_slug>\w+)/$', views.collection_detail, name='collection_detail'),
     # /family/home/fun/DCIM_4242.jpg/view

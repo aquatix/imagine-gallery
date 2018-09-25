@@ -1,9 +1,10 @@
 # pip-compile requirements.in
 Django
+django-analytical
+django-markdownify
 django-taggit
 ExifRead
 ImageHash
-django-markdownify
 Pillow
-psycopg2
-utilkit>=0.4.0  # We need some features from at least this version
+psycopg2-binary
+requests

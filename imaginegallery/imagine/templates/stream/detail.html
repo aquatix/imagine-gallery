@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}{{ stream.title }}{% endblock %}
+
+{% block content %}
+<h1>{{ stream.title }}</h1>
+
+{% if stream.description %}
+<div id="description">
+    {% load markdownify %}
+    {{ stream.description | markdownify | safe }}
+</div>
+{% endif %}
+
+{% include "image/thumbnails.html" %}
+
+{% endblock %}

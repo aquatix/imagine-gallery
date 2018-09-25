@@ -7,7 +7,7 @@ from django.template import loader
 from django.http import Http404
 from django.shortcuts import redirect
 from django.urls import reverse
-from .models import Collection, Directory, Image, ImageMeta, PhotoSize
+from .models import Collection, Directory, Image, ImageMeta, PhotoSize, Stream
 from fractions import Fraction
 
 
@@ -148,35 +148,34 @@ def _get_image_details(request, collection_slug, file_path, imagename, thumbs=Fa
 
     exif_highlights = image.get_exif_highlights()
     exif_highlights_pretty = []
-    #exif_highlights_pretty.append({'key': '<i title="Taken on" class="material-icons">today</i>', 'value': image.filter_modified.strftime(settings.DATETIME_FORMAT)})
     # TODO: translate into icons and such
     for exif_item in exif_highlights:
         if exif_item['key'] == 'Image Model':
             # Camera type
-            exif_highlights_pretty.append({'key': '<i title="Camera" class="ionicons ion-camera"></i>', 'value': exif_item['value']})
+            exif_highlights_pretty.append({'key': '<ion-icon title="Camera" name="camera"></ion-icon>', 'value': exif_item['value']})
         elif exif_item['key'] == 'EXIF FNumber':
             # f-number
             f_value = 'f/{}'.format(fraction_to_float(exif_item['value']))
-            exif_highlights_pretty.append({'key': '<i title="Aperture" class="ionicons ion-aperture"></i>', 'value': f_value})
+            exif_highlights_pretty.append({'key': '<ion-icon title="Aperture" name="aperture"></ion-icon>', 'value': f_value})
         elif exif_item['key'] == 'EXIF ExposureTime':
             # Exposure
-            exif_highlights_pretty.append({'key': '<i title="Exposure" class="material-icons">exposure</i>', 'value': '{} sec'.format(exif_item['value'])})
+            exif_highlights_pretty.append({'key': '<ion-icon title="Exposure" name="sunny"></ion-icon>', 'value': '{} sec'.format(exif_item['value'])})
         elif exif_item['key'] == 'EXIF Flash':
             # Flash fired or not, what mode
             if ' not ' in exif_item['value']:
-                exif_highlights_pretty.append({'key': '<i title="Flash" class="ionicons ion-flash-off"></i>', 'value': exif_item['value']})
+                exif_highlights_pretty.append({'key': '<ion-icon title="Flash off" name="flash-off"></ion-icon>', 'value': exif_item['value']})
             else:
-                exif_highlights_pretty.append({'key': '<i title="Flash" class="ionicons ion-flash"></i>', 'value': exif_item['value']})
+                exif_highlights_pretty.append({'key': '<ion-icon title="Flash on" name="flash"></ion-icon>', 'value': exif_item['value']})
         elif exif_item['key'] == 'EXIF FocalLength':
-            exif_highlights_pretty.append({'key': '<i title="Focal length" class="material-icons">visibility</i>', 'value': '{}mm'.format(exif_item['value'])})
+            exif_highlights_pretty.append({'key': '<ion-icon title="Focal length" name="eye"></ion-icon>', 'value': '{}mm'.format(exif_item['value'])})
         elif exif_item['key'] == 'EXIF ISOSpeedRatings':
-            exif_highlights_pretty.append({'key': '<i title="ISO speed" class="material-icons">iso</i>', 'value': exif_item['value']})
+            exif_highlights_pretty.append({'key': '<ion-icon title="ISO speed" name="timer"></ion-icon>', 'value': exif_item['value']})
         elif exif_item['key'] == 'EXIF LensModel':
-            exif_highlights_pretty.append({'key': '<i title="Lens" class="material-icons">lens</i>', 'value': exif_item['value']})
+            exif_highlights_pretty.append({'key': '<ion-icon title="Lens" name="radio-button-off"></ion-icon>', 'value': exif_item['value']})
         elif exif_item['key'] == 'Image Copyright':
             exif_highlights_pretty.append({'key': '&copy;', 'value': exif_item['value']})
         elif exif_item['key'] == 'Image Artist':
-            exif_highlights_pretty.append({'key': '<i title="Image artist" class="material-icons">person</i>', 'value': exif_item['value']})
+            exif_highlights_pretty.append({'key': '<ion-icon title="Image artist" name="person"></ion-icon>', 'value': exif_item['value']})
         else:
             exif_highlights_pretty.append(exif_item)
 
@@ -309,7 +308,7 @@ def imagehash_detail(request, imagehash):
     Show image detail page based on imagehash identifier
     """
     try:
-        image = Image.objects.filter(imagehash=imagehash)
+        image = Image.objects.filter(image_hash=imagehash)
     except Image.DoesNotExist:
         raise Http404('Image not found')
 
@@ -321,3 +320,53 @@ def imagehash_detail(request, imagehash):
     }
 
     return render(request, 'image/detail.html', context)
+
+
+def stream_overview(request):
+    """
+    Show a choise of streams
+    """
+    pass
+
+
+def stream_detail(request, stream_slug):
+    """
+    Show a stream of images:
+    - selection from a set of Collection
+    - delimited by start_datetime and end_datetime, both not mandatory
+    """
+    try:
+        stream = Stream.objects.get(slug=stream_slug)
+    except Stream.DoesNotExist:
+        raise Http404('Stream does not exist')
+
+    print(stream.collections.all())
+
+    # Get all images that are in the selected Collections of this Stream
+    images = Image.objects.filter(collection__in=stream.collections.all()).distinct()
+
+    if stream.start_datetime:
+        images.filter(filter_modified__gte=stream.start_datetime)
+    if stream.end_datetime:
+        images.filter(filter_modified__lte=stream.end_datetime)
+
+    images.filter(is_visible=True)
+
+    if stream.sortmethod == Collection.SORT_NAME_DESC:
+        images.order_by('-filename')
+    elif stream.sortmethod == Collection.SORT_NAME_ASC:
+        images.order_by('filename')
+    elif stream.sortmethod == Collection.SORT_DATE_DESC:
+        images.order_by('-filter_modified')
+    elif stream.sortmethod == Collection.SORT_DATE_ASC:
+        images.order_by('filter_modified')
+    print(images)
+
+    site_title = settings.SITE_TITLE
+    context = {
+        'site_title': site_title,
+        'stream': stream,
+        'images': images,
+    }
+
+    return render(request, 'stream/detail.html', context)

@@ -1,5 +1,7 @@
 {% if directory.relative_path %}
 <a href="{% url 'image_detail' collection.slug directory.relative_path image.filename %}"><img alt="{{ image.get_title }}" src="{{ collection.archive_uri }}/{{ image.get_thumbnail }}" class="image_thumbnail" /></a>
+{% elif stream %}
+<a href="{% url 'imagehash_detail' image.image_hash %}"><img alt="{{ image.get_title }}" src="{{ image.collection.archive_uri }}/{{ image.get_thumbnail }}" class="image_thumbnail" /></a>
 {% else %}
 <a href="{% url 'rootdir_image_detail' collection.slug image.filename %}"><img alt="{{ image.get_title }}" src="{{ collection.archive_uri }}/{{ image.get_thumbnail }}" class="image_thumbnail" /></a>
 {% endif %}

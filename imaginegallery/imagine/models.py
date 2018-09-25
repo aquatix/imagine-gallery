@@ -343,11 +343,21 @@ class Comment(BaseModel):
     comment = models.TextField(default='')
 
 
-class Event(BaseModel):
-    """Timeframe in which something happened, enabling grouping of images"""
+class Stream(BaseModel):
+    """A stream of images, like the photostream of Flickr, or a
+    timeframe in which something happened, enabling grouping of images"""
     title = models.CharField(max_length=255)
-    slug = models.SlugField(max_length=255)
-    description = models.TextField(default='')
+    slug = models.SlugField(max_length=255, unique=True)
+    description = models.TextField(default='', null=True, blank=True)
 
-    start_datetime = models.DateTimeField()
-    end_datetime = models.DateTimeField()
+    in_navigation = models.BooleanField(help_text='Show up in the list of streams')
+
+    start_datetime = models.DateTimeField(null=True, blank=True, help_text='Keep empty to include all history')
+    end_datetime = models.DateTimeField(null=True, blank=True, help_text='Keep empty for no enddate')
+
+    sortmethod = models.CharField(max_length=10, choices=Collection.SORT_OPTIONS, default=Collection.SORT_DATE_DESC)
+
+    collections = models.ManyToManyField(Collection, blank=True, help_text='The Collections to include in this stream/event')
+
+    def __unicode__(self):
+        return self.title
