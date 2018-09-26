@@ -3,7 +3,7 @@ imagine-gallery
 
 Image catalog/gallery: make archives of photographs more accessible.
 
-[![Code Health](https://landscape.io/github/aquatix/imagine-gallery/master/landscape.svg?style=flat)](https://landscape.io/github/aquatix/imagine-gallery/master)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/e092556230da4cb6b3e7ab9e04cf6a96)](https://www.codacy.com/app/aquatix/imagine-gallery?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=aquatix/imagine-gallery&amp;utm_campaign=Badge_Grade)
 [![Known Vulnerabilities](https://snyk.io/test/github/aquatix/imagine-gallery/badge.svg?targetFile=requirements.txt)](https://snyk.io/test/github/aquatix/imagine-gallery?targetFile=requirements.txt)
 
 This is a gallery, written in Python/Django, based on the older imagine
