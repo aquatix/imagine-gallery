@@ -43,6 +43,14 @@ swipe support on mobile devices (and laptops with touch screen and such),
 keyboard navigation, maximised and full view of images, descriptions, EXIF info, GEO locations (GPS).
 
 
+## Installing
+
+Create a virtualenv, and `pip install -r requirements.txt` (or use the excellent
+pip-tools to sync it). `libpq-dev` is needed to compile psycopg2 (the PostgreSQL
+connector), which on Debian based systems can be installed with an
+`apt install libpq-dev`.
+
+
 ## TODO and changes
 
 See the [changelog](https://github.com/aquatix/imagine-gallery/blob/master/CHANGELOG.md).

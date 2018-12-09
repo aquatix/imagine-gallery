@@ -21,7 +21,7 @@ markdown==3.0.1           # via django-markdownify
 mccabe==0.6.1             # via pylint
 numpy==1.15.4             # via imagehash, pywavelets, scipy
 pillow==5.3.0
-psycopg2-binary==2.7.6.1
+psycopg2==2.7.6.1
 pylint-django==2.0.4
 pylint-plugin-utils==0.4  # via pylint-django
 pylint==2.2.2

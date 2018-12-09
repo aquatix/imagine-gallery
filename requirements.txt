@@ -17,7 +17,7 @@ imagehash==4.0
 markdown==3.0.1           # via django-markdownify
 numpy==1.15.4             # via imagehash, pywavelets, scipy
 pillow==5.3.0
-psycopg2-binary==2.7.6.1
+psycopg2==2.7.6.1
 pytz==2018.7              # via django
 pywavelets==1.0.1         # via imagehash
 requests==2.20.1
