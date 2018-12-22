@@ -24,15 +24,15 @@ mccabe==0.6.1             # via pylint
 numpy==1.15.4             # via imagehash, pywavelets, scipy
 pillow==5.3.0
 psycopg2==2.7.6.1
-pylint-django==2.0.4
+pylint-django==2.0.5
 pylint-plugin-utils==0.4  # via pylint-django
 pylint==2.2.2
 pytz==2018.7              # via django
 pywavelets==1.0.1         # via imagehash
 requests==2.21.0
-scipy==1.1.0              # via imagehash
+scipy==1.2.0              # via imagehash
 six==1.12.0               # via astroid, bleach, imagehash
-typed-ast==1.1.0          # via astroid
+typed-ast==1.1.1          # via astroid
 urllib3==1.24.1           # via requests
 webencodings==0.5.1       # via bleach
 wrapt==1.10.11            # via astroid

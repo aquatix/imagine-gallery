@@ -23,7 +23,7 @@ psycopg2==2.7.6.1
 pytz==2018.7              # via django
 pywavelets==1.0.1         # via imagehash
 requests==2.21.0
-scipy==1.1.0              # via imagehash
+scipy==1.2.0              # via imagehash
 six==1.12.0               # via bleach, imagehash
 urllib3==1.24.1           # via requests
 webencodings==0.5.1       # via bleach
