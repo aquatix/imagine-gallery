@@ -69,7 +69,7 @@ class Collection(BaseModel):
         return images
 
     def get_featured_image(self):
-        directories = Directory.objects.filter(collection=self).order_by('relative_path')
+        directories = list(Directory.objects.filter(collection=self).order_by('relative_path'))
         if directories:
             return directories[0].get_featured_image()
         else:
@@ -123,13 +123,13 @@ class Directory(BaseModel):
             return self.featured_image
         else:
             if self.collection.featured_default == self.collection.FEATURED_FIRST:
-                images = self.images(self.collection.sortmethod)
+                images = list(self.images(self.collection.sortmethod))
                 if images:
                     return images[0]
                 else:
                     try:
                         for directory in Directory.objects.filter(parent_directory=self).order_by('relative_path'):
-                            images = directory.images(self.collection.sortmethod)
+                            images = list(directory.images(self.collection.sortmethod))
                             if images:
                                 return images[0]
                     except Directory.DoesNotExist:
