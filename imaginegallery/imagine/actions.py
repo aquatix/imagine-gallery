@@ -376,3 +376,12 @@ def update_everything():
         update_collection(collection)
         clean_collection(collection)
         update_scaled_images(collection)
+
+
+def change_root_directory(old_dir, new_dir):
+    """
+    Iterate through all Collection's, change Collection's and Directory's with old_dir to new_dir
+    """
+    collections = Collection.objects.all()
+    for collection in collections:
+        print(collection)
