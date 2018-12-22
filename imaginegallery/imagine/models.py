@@ -145,7 +145,7 @@ class Directory(BaseModel):
                 try:
                     image = Image.objects.filter(collection=self.collection, file_path__icontains=relative_path).order_by('-filter_modified')[0]
                     return image
-                except Image.DoesNotExist:
+                except (Image.DoesNotExist, IndexError):
                     return None
 
     def __unicode__(self):
