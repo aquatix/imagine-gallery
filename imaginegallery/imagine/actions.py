@@ -390,7 +390,7 @@ def change_root_directory(old_dir, new_dir):
     """
     Iterate through all Collection's, change Collection's and Directory's with old_dir to new_dir
     """
-    print('Replacing start of Collection base_dir and Directory.directory from '{}' to '{}':'.format(old_dir, new_dir))
+    print('Replacing start of Collection base_dir and Directory.directory from "{}" to "{}":'.format(old_dir, new_dir))
     collections = Collection.objects.all()
     for collection in collections:
         if (collection.base_dir.startswith(old_dir)):
