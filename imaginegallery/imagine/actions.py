@@ -378,10 +378,28 @@ def update_everything():
         update_scaled_images(collection)
 
 
+def lreplace(pattern, sub, string):
+    return sub + string[len(pattern):] if string.startswith(pattern) else string
+
+
+def rreplace(pattern, sub, string):
+    return string[-len(pattern):] + sub if string.endswith(pattern) else string
+
+
 def change_root_directory(old_dir, new_dir):
     """
     Iterate through all Collection's, change Collection's and Directory's with old_dir to new_dir
     """
+    print('Replacing start of Collection base_dir and Directory.directory from '{}' to '{}':'.format(old_dir, new_dir))
     collections = Collection.objects.all()
     for collection in collections:
-        print(collection)
+        if (collection.base_dir.startswith(old_dir)):
+            print('Collection.base_dir {} to {}'.format(collection.base_dir, lreplace(old_dir, new_dir, collection.base_dir)))
+            collection.base_dir = lreplace(old_dir, new_dir, collection.base_dir)
+            collection.save()
+        directories = Directory.objects.filter(collection=collection)
+        for directory in directories:
+            if (directory.directory.startswith(old_dir)):
+                print('Directory.directory {} to {}'.format(directory.directory, lreplace(old_dir, new_dir, directory.directory)))
+                directory.directory = lreplace(old_dir, new_dir, directory.directory)
+                directory.save()
