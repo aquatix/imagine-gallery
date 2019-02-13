@@ -6,24 +6,24 @@
 #
 --no-binary psycopg2
 
-bleach==3.0.2             # via django-markdownify
+bleach==3.1.0             # via django-markdownify
 certifi==2018.11.29       # via requests
 chardet==3.0.4            # via requests
 django-analytical==2.5.0
 django-markdownify==0.8.0
 django-taggit==0.23.0
-django==2.1.5
+django==2.1.7
 exifread==2.1.2
 idna==2.8                 # via requests
 imagehash==4.0
 markdown==3.0.1           # via django-markdownify
-numpy==1.15.4             # via imagehash, pywavelets, scipy
+numpy==1.16.1             # via imagehash, pywavelets, scipy
 pillow==5.4.1
-psycopg2==2.7.6.1
+psycopg2==2.7.7
 pytz==2018.9              # via django
 pywavelets==1.0.1         # via imagehash
 requests==2.21.0
-scipy==1.2.0              # via imagehash
+scipy==1.2.1              # via imagehash
 six==1.12.0               # via bleach, imagehash
 urllib3==1.24.1           # via requests
 webencodings==0.5.1       # via bleach
