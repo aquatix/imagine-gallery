@@ -1,12 +1,22 @@
 from django.contrib import admin
-from imagine.models import Collection, Directory, Image, ImageMeta, PhotoSize, ExifItem, Comment, Stream
-from imagine.actions import update_collection
 from django.urls import reverse
-from django.utils.safestring import mark_safe
+from django.utils.html import format_html
+
+from imagine.actions import update_collection
+from imagine.models import (Collection, Comment, Directory, ExifItem, Image,
+                            ImageMeta, PhotoSize, Stream)
 
 
 class CollectionAdmin(admin.ModelAdmin):
-    list_display = ('title', 'base_dir', 'archive_dir', 'is_public', 'needs_authentication', 'nr_directories', 'nr_images', )
+    list_display = (
+        'title',
+        'base_dir',
+        'archive_dir',
+        'is_public',
+        'needs_authentication',
+        'nr_directories',
+        'nr_images',
+    )
     search_fields = ('title', 'slug', 'base_dir', 'archive_dir', 'description', )
     prepopulated_fields = {'slug': ('title',), }
 
@@ -21,17 +31,30 @@ class CollectionAdmin(admin.ModelAdmin):
 class DirectoryAdmin(admin.ModelAdmin):
     list_display = ('directory', 'relative_path', 'parent_directory', 'collection_link', 'title', 'nr_images', )
 
-    def collection_link(self, obj):
-        return mark_safe('<a href="{}">{}</a>'.format(
+    @staticmethod
+    def collection_link(obj):
+        return format_html(
+            '<a href="{}">{}</a>',
             reverse("admin:imagine_collection_change", args=(obj.collection.pk,)),
             obj.collection.title
-        ))
+        )
     collection_link.short_description = 'collection'
 
 
 class ImageAdmin(admin.ModelAdmin):
     #list_display = ('get_filepath', 'filename', 'width', 'height', 'megapixel', 'filesize', 'image_hash', )
-    list_display = ('filename', 'collection_link', 'file_path', 'width', 'height', 'megapixel', 'filter_modified', 'filesize', 'image_hash', 'meta_link', )
+    list_display = (
+        'filename',
+        'collection_link',
+        'file_path',
+        'width',
+        'height',
+        'megapixel',
+        'filter_modified',
+        'filesize',
+        'image_hash',
+        'meta_link',
+    )
     search_fields = ('filename', )
     #readonly_fields = ('imageinegallery_collection_link',)
     list_filter = ('geo_country', 'geo_city', 'is_photosphere', 'is_visible', 'collection', )
@@ -39,21 +62,24 @@ class ImageAdmin(admin.ModelAdmin):
     # TODO: use fieldsets to make the form more usable
     # https://docs.djangoproject.com/en/1.10/ref/contrib/admin/#django.contrib.admin.ModelAdmin.fieldsets
 
-    def collection_link(self, obj):
-        return mark_safe('<a href="{}">{}</a>'.format(
+    @staticmethod
+    def collection_link(obj):
+        return format_html('<a href="{}">{}</a>',
             reverse("admin:imagine_collection_change", args=(obj.directory.collection.pk,)),
             obj.directory.collection.title
-        ))
+        )
     collection_link.short_description = 'collection'
 
-    def collection_path(self, instance):
+    @staticmethod
+    def collection_path(instance):
         return instance.directory.collection.base_dir
 
-    def meta_link(self, obj):
-        return mark_safe('<a href="{}">{}</a>'.format(
+    @staticmethod
+    def meta_link(obj):
+        return format_html('<a href="{}">{}</a>',
             reverse("admin:imagine_imagemeta_change", args=(obj.image_hash,)),
             obj.image_hash
-        ))
+        )
     meta_link.short_description = 'image meta'
 
 
@@ -70,20 +96,30 @@ class ExifItemAdmin(admin.ModelAdmin):
     list_display = ('key', 'get_value', 'from_image', )
     search_fields = ('key', 'value_int', 'value_str', 'value_float', 'image__filename', )
 
-    def from_image(self, obj):
-        link=reverse("admin:imagine_image_change", args=[obj.image.id]) #model name has to be lowercase
-        return u'<a href="%s">%s</a>' % (link,obj.image.filename)
-    from_image.allow_tags=True
+    @staticmethod
+    def from_image(obj):
+        link = reverse("admin:imagine_image_change", args=[obj.image.id])  # model name has to be lowercase
+        return format_html(
+            '<a href="{}">{}</a>',
+            link,
+            obj.image.filename
+        )
+    from_image.allow_tags = True
 
 
 class CommentAdmin(admin.ModelAdmin):
     list_display = ('from_image', 'name', 'email', )
     search_fields = ('name', 'email', 'comment', )
 
-    def from_image(self, obj):
-        link=reverse("admin:imagine_image_change", args=[obj.image.id]) #model name has to be lowercase
-        return u'<a href="%s">%s</a>' % (link,obj.image.filename)
-    from_image.allow_tags=True
+    @staticmethod
+    def from_image(obj):
+        link = reverse("admin:imagine_image_change", args=[obj.image.id])  # model name has to be lowercase
+        return format_html(
+            '<a href="{}">{}</a>',
+            link,
+            obj.image.filename
+        )
+    from_image.allow_tags = True
 
 
 class StreamAdmin(admin.ModelAdmin):
