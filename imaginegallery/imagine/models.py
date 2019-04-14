@@ -38,19 +38,22 @@ class Collection(BaseModel):
     slug = models.SlugField(max_length=255, unique=True)
     base_dir = models.CharField(max_length=255, unique=True)
     archive_dir = models.CharField(max_length=255, blank=True)
-    base_uri = models.CharField(max_length=255, blank=True, help_text='Base URI of original images')
-    archive_uri = models.CharField(max_length=255, blank=True, help_text='Base URI of image archive')
+    base_uri = models.CharField(max_length=255, blank=True, help_text=_('Base URI of original images'))
+    archive_uri = models.CharField(max_length=255, blank=True, help_text=_('Base URI of image archive'))
 
     # Flat or nested into directories
-    flat = models.BooleanField(default=False, help_text='Flatten a collection, or keep the nesting in directories')
+    flat = models.BooleanField(default=False, help_text=_('Flatten a collection, or keep the nesting in directories'))
 
     sortmethod = models.CharField(max_length=10, choices=SORT_OPTIONS, default=SORT_DATE_DESC)
     featured_default = models.CharField(max_length=10, choices=FEATURED_OPTIONS, default=FEATURED_LATEST)
 
     description = models.TextField(null=True, blank=True)
 
-    is_public = models.BooleanField(default=False, help_text='If public, the collection is visible for the world')
-    needs_authentication = models.BooleanField(default=False, help_text='User needs to be logged in to view the images')
+    is_public = models.BooleanField(default=False, help_text=_('If public, the collection is visible for the world'))
+    needs_authentication = models.BooleanField(
+        default=False,
+        help_text=_('User needs to be logged in to view the images')
+    )
 
     def nr_directories(self):
         return Directory.objects.filter(collection__pk=self.pk).count()
@@ -72,8 +75,7 @@ class Collection(BaseModel):
         directories = list(Directory.objects.filter(collection=self).order_by('relative_path'))
         if directories:
             return directories[0].get_featured_image()
-        else:
-            return None
+        return None
 
     def __repr__(self):
         return f'Collection({self.title} {self.base_dir})'
@@ -85,14 +87,26 @@ class Collection(BaseModel):
 class Directory(BaseModel):
     """Directory/collection umbrella object"""
     directory = models.CharField(max_length=255)
-    relative_path = models.CharField(max_length=255, help_text='Path relative to Collection base dir')
+    relative_path = models.CharField(max_length=255, help_text=_('Path relative to Collection base dir'))
     collection = models.ForeignKey(Collection, on_delete=models.CASCADE)
 
     title = models.CharField(max_length=255, blank=True, null=True)
     description = models.TextField(null=True, blank=True)
-    featured_image = models.ForeignKey('Image', blank=True, null=True, related_name='featured_image', on_delete=models.SET_NULL)
+    featured_image = models.ForeignKey(
+        'Image',
+        blank=True,
+        null=True,
+        related_name='featured_image',
+        on_delete=models.SET_NULL
+    )
 
-    parent_directory = models.ForeignKey('self', null=True, blank=True, related_name='children', on_delete=models.CASCADE)
+    parent_directory = models.ForeignKey(
+        'self',
+        null=True,
+        blank=True,
+        related_name='children',
+        on_delete=models.CASCADE
+    )
 
     def get_filepath(self, filename):
         return '{0}{1}'.format(self.directory, filename)
@@ -101,55 +115,55 @@ class Directory(BaseModel):
     def dir_name(self):
         if self.title:
             return self.title
-        else:
-            title = os.path.basename(self.relative_path)
-            title = title.replace('_', ' ')
-            return title[:1].upper() + title[1:]
+        title = os.path.basename(self.relative_path)
+        title = title.replace('_', ' ')
+        return title[:1].upper() + title[1:]
 
     def nr_images(self):
         return Image.objects.filter(directory__pk=self.pk).count()
 
     def images(self, sortmethod):
-        """ Return all images from this dir, sorted as Collection.sortmethod """
+        """Returns all images from this dir, sorted as Collection.sortmethod"""
         result = Image.objects.filter(directory=self)
         if sortmethod == Collection.SORT_NAME_DESC:
             return result.order_by('-filename')
-        elif sortmethod == Collection.SORT_NAME_ASC:
+        if sortmethod == Collection.SORT_NAME_ASC:
             return result.order_by('filename')
-        elif sortmethod == Collection.SORT_DATE_DESC:
+        if sortmethod == Collection.SORT_DATE_DESC:
             return result.order_by('-filter_modified')
-        elif sortmethod == Collection.SORT_DATE_ASC:
+        if sortmethod == Collection.SORT_DATE_ASC:
             return result.order_by('filter_modified')
+        return result
 
     def get_featured_image(self):
         if self.featured_image:
             return self.featured_image
-        else:
-            if self.collection.featured_default == self.collection.FEATURED_FIRST:
-                images = list(self.images(self.collection.sortmethod))
-                if images:
-                    return images[0]
-                else:
-                    try:
-                        for directory in Directory.objects.filter(parent_directory=self).order_by('relative_path'):
-                            images = list(directory.images(self.collection.sortmethod))
-                            if images:
-                                return images[0]
-                    except Directory.DoesNotExist:
-                        # This directory is empty...
-                        # TODO: have a fallback thumbnail or something
-                        return None
-                    return None
-            else:
-                # Get latest image of this dir and all subdirs
-                relative_path = self.relative_path
-                if not relative_path:
-                    relative_path = '/'
-                try:
-                    image = Image.objects.filter(collection=self.collection, file_path__icontains=relative_path).order_by('-filter_modified')[0]
-                    return image
-                except (Image.DoesNotExist, IndexError):
-                    return None
+        if self.collection.featured_default == self.collection.FEATURED_FIRST:
+            images = list(self.images(self.collection.sortmethod))
+            if images:
+                return images[0]
+            try:
+                for directory in Directory.objects.filter(parent_directory=self).order_by('relative_path'):
+                    images = list(directory.images(self.collection.sortmethod))
+                    if images:
+                        return images[0]
+            except Directory.DoesNotExist:
+                # This directory is empty...
+                # TODO: have a fallback thumbnail or something
+                return None
+            return None
+        # Get latest image of this dir and all subdirs
+        relative_path = self.relative_path
+        if not relative_path:
+            relative_path = '/'
+        try:
+            image = Image.objects.filter(
+                collection=self.collection,
+                file_path__icontains=relative_path
+            ).order_by('-filter_modified')[0]
+            return image
+        except (Image.DoesNotExist, IndexError):
+            return None
 
     def __repr__(self):
         return f'Directory({self.directory})'
@@ -178,9 +192,9 @@ class Image(BaseModel):
     # Contains either file_modified or exif_modified, used for filtering into events and such:
     filter_modified = models.DateTimeField(null=True)
 
-    is_visible = models.BooleanField(default=True, help_text='Hide from listing if disable')
+    is_visible = models.BooleanField(default=True, help_text=_('Hide from listing if disable'))
 
-    is_photosphere = models.BooleanField(default=False, help_text='Is photo sphere or panorama')
+    is_photosphere = models.BooleanField(default=False, help_text=_('Is photo sphere or panorama'))
 
     width = models.IntegerField(default=-1)
     height = models.IntegerField(default=-1)
@@ -199,7 +213,7 @@ class Image(BaseModel):
     geo_postal_code = models.CharField(max_length=255, blank=True)
     geo_route = models.CharField(max_length=255, blank=True)  # Street
 
-    geo_formatted_address = models.CharField(max_length=255, blank=True, help_text='Full address from geo API')
+    geo_formatted_address = models.CharField(max_length=255, blank=True, help_text=_('Full address from geo API'))
 
     #class Meta:
     #    order_by = ('filename',)
@@ -263,7 +277,13 @@ class Image(BaseModel):
         if not self.image_hash:
             # Something went wrong with the hashing, no variants available this way
             return None
-        return '{}/{}_{}-{}.{}'.format(self.image_hash[:2], self.image_hash, photosize.width, photosize.height, self.file_ext)
+        return '{}/{}_{}-{}.{}'.format(
+            self.image_hash[:2],
+            self.image_hash,
+            photosize.width,
+            photosize.height,
+            self.file_ext
+        )
 
     def get_thumbnail(self):
         return self.get_variant('thumbnail')
@@ -304,12 +324,11 @@ class ExifItem(BaseModel):
     def get_value(self):
         if self.value_str:
             return self.value_str
-        elif self.value_int:
+        if self.value_int:
             return self.value_int
-        elif self.value_float:
+        if self.value_float:
             return self.value_float
-        else:
-            return None
+        return None
 
     def __repr__(self):
         return f'ExifItem({self.key})'
@@ -321,9 +340,9 @@ class ExifItem(BaseModel):
 class PhotoSize(BaseModel):
     """ Size configuration """
     name = models.CharField(max_length=20)
-    width = models.IntegerField(default=640, help_text='0 for keeping aspect ratio')
-    height = models.IntegerField(default=480, help_text='0 for keeping aspect ratio')
-    crop_to_fit = models.BooleanField(default=False, help_text="Crop image instead of retaining aspect ratio")
+    width = models.IntegerField(default=640, help_text=_('0 for keeping aspect ratio'))
+    height = models.IntegerField(default=480, help_text=_('0 for keeping aspect ratio'))
+    crop_to_fit = models.BooleanField(default=False, help_text=_('Crop image instead of retaining aspect ratio'))
 
     def __repr__(self):
         return f'PhotoSize({self.name})'
@@ -371,10 +390,10 @@ class Stream(BaseModel):
     slug = models.SlugField(max_length=255, unique=True)
     description = models.TextField(default='', null=True, blank=True)
 
-    in_navigation = models.BooleanField(help_text='Show up in the list of streams')
+    in_navigation = models.BooleanField(help_text=_('Show up in the list of streams'))
 
-    start_datetime = models.DateTimeField(null=True, blank=True, help_text='Keep empty to include all history')
-    end_datetime = models.DateTimeField(null=True, blank=True, help_text='Keep empty for no enddate')
+    start_datetime = models.DateTimeField(null=True, blank=True, help_text=_('Keep empty to include all history'))
+    end_datetime = models.DateTimeField(null=True, blank=True, help_text=_('Keep empty for no enddate'))
 
     sortmethod = models.CharField(max_length=10, choices=Collection.SORT_OPTIONS, default=Collection.SORT_DATE_DESC)
 
