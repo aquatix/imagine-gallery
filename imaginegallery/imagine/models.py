@@ -75,8 +75,11 @@ class Collection(BaseModel):
         else:
             return None
 
-    def __unicode__(self):
-        return '{0} ({1})'.format(self.title, self.base_dir)
+    def __repr__(self):
+        return f'Collection({self.title} {self.base_dir})'
+
+    def __str__(self):
+        return f'{self.title} {self.base_dir}'
 
 
 class Directory(BaseModel):
@@ -148,8 +151,11 @@ class Directory(BaseModel):
                 except (Image.DoesNotExist, IndexError):
                     return None
 
-    def __unicode__(self):
-        return self.directory
+    def __repr__(self):
+        return f'Directory({self.directory})'
+
+    def __str__(self):
+        return f'{self.directory}'
 
 
 class Image(BaseModel):
@@ -198,25 +204,20 @@ class Image(BaseModel):
     #class Meta:
     #    order_by = ('filename',)
 
-
     def get_filepath(self):
         return '{0}{1}'.format(self.directory.directory, self.filename)
 
-
     def get_similar(self):
-        return Image.objects.filter(Image.image_hash==self.image_hash)
-
+        return Image.objects.filter(Image.image_hash == self.image_hash)
 
     def megapixel(self):
         return (self.width * self.height) / 1000000.0
-
 
     def modified_datetime(self):
         """Returns file_modified or exif_modified, whichever is more accurate, redundant over filter_modified"""
         if self.exif_modified:
             return self.exif_modified
-        else:
-            return self.file_modified
+        return self.file_modified
 
     def get_exif_highlights(self):
         exif_items = []
@@ -285,9 +286,11 @@ class Image(BaseModel):
                 return True
         return False
 
+    def __repr__(self):
+        return f'Image({self.get_filepath()})'
 
-    def __unicode__(self):
-        return self.get_filepath()
+    def __str__(self):
+        return f'{self.get_filepath()}'
 
 
 class ExifItem(BaseModel):
@@ -308,8 +311,11 @@ class ExifItem(BaseModel):
         else:
             return None
 
-    def __unicode__(self):
-        return self.key
+    def __repr__(self):
+        return f'ExifItem({self.key})'
+
+    def __str__(self):
+        return f'{self.key}'
 
 
 class PhotoSize(BaseModel):
@@ -319,8 +325,11 @@ class PhotoSize(BaseModel):
     height = models.IntegerField(default=480, help_text='0 for keeping aspect ratio')
     crop_to_fit = models.BooleanField(default=False, help_text="Crop image instead of retaining aspect ratio")
 
-    def __unicode__(self):
-        return self.name
+    def __repr__(self):
+        return f'PhotoSize({self.name})'
+
+    def __str__(self):
+        return f'{self.name}'
 
 
 class ImageMeta(BaseModel):
@@ -334,6 +343,12 @@ class ImageMeta(BaseModel):
     description = models.TextField(default='', blank=True)
     #tags
 
+    def __repr__(self):
+        return f'ImageMeta({self.image_hash})'
+
+    def __str__(self):
+        return f'{self.image_hash}'
+
 
 class Comment(BaseModel):
     """Comment on an image"""
@@ -341,6 +356,12 @@ class Comment(BaseModel):
     name = models.CharField(max_length=255)
     email = models.EmailField(max_length=254)
     comment = models.TextField(default='')
+
+    def __repr__(self):
+        return f'Comment({self.pk!r} {self.image!r})'
+
+    def __str__(self):
+        return f'{self.pk!r} {self.image!r}'
 
 
 class Stream(BaseModel):
@@ -357,7 +378,14 @@ class Stream(BaseModel):
 
     sortmethod = models.CharField(max_length=10, choices=Collection.SORT_OPTIONS, default=Collection.SORT_DATE_DESC)
 
-    collections = models.ManyToManyField(Collection, blank=True, help_text='The Collections to include in this stream/event')
+    collections = models.ManyToManyField(
+        Collection,
+        blank=True,
+        help_text=_('The Collections to include in this stream/event.')
+    )
 
-    def __unicode__(self):
-        return self.title
+    def __repr__(self):
+        return f'Stream({self.title})'
+
+    def __str__(self):
+        return f'{self.title}'
