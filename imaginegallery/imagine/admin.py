@@ -30,6 +30,7 @@ class CollectionAdmin(admin.ModelAdmin):
 
 class DirectoryAdmin(admin.ModelAdmin):
     list_display = ('directory', 'relative_path', 'parent_directory', 'collection_link', 'title', 'nr_images', )
+    search_fields = ('directory', 'title', )
 
     @staticmethod
     def collection_link(obj):
@@ -84,8 +85,8 @@ class ImageAdmin(admin.ModelAdmin):
 
 
 class ImageMetaAdmin(admin.ModelAdmin):
-    search_fields = ('title', 'description', 'image_hash', )
     list_display = ('image_hash', 'title', )
+    search_fields = ('title', 'description', 'image_hash', )
 
 
 class PhotoSizeAdmin(admin.ModelAdmin):
