@@ -1,3 +1,4 @@
+import datetime
 import os
 from django.conf import settings
 from django.db.models.functions import Coalesce
@@ -232,6 +233,11 @@ def _get_image_details(request, collection_slug, file_path, imagename, thumbs=Fa
         image_full_url = reverse('rootdir_image_full', args=[collection.slug, image.filename])
         navigation_items.append({'url': image_detail_url, 'title': image_title})
 
+    try:
+        image_date = image.filter_modified.strftime(settings.DATETIME_FORMAT)
+    except AttributeError:
+        # Somehow, no modified datetime to filter on has been set, fall back to current time
+        image_date = datetime.datetime.now().strftime(settings.DATETIME_FORMAT)
 
     context = {
         'site_title': site_title,
@@ -247,7 +253,7 @@ def _get_image_details(request, collection_slug, file_path, imagename, thumbs=Fa
         'image_full_url': image_full_url,
         'image_meta': image_meta,
         'image_title': image_title,
-        'image_date': image.filter_modified.strftime(settings.DATETIME_FORMAT),
+        'image_date': image_date,
         'exif_highlights': exif_highlights_pretty,
         'images': images,
         'navigation_items': navigation_items,
