@@ -158,7 +158,7 @@ def save_image_info(the_image, filename, file_ext):
 
     if exif_datetime_taken:
         #the_image.exif_modified = datetimeutil.load_datetime(exif_datetime_taken, '%Y:%m:%d %H:%M:%S')
-        the_image.exif_modified = util.load_datetime(exif_datetime_taken, '%Y:%m:%d %H:%M:%S').replace(tzinfo=pytz.utc)
+        the_image.exif_modified = util.load_datetime(exif_datetime_taken, '%Y-%m-%d %H:%M:%S').replace(tzinfo=pytz.utc)
         the_image.filter_modified = the_image.exif_modified
     else:
         the_image.filter_modified = the_image.file_modified
