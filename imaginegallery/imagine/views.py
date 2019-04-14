@@ -1,15 +1,15 @@
 import datetime
 import os
+from fractions import Fraction
+
 from django.conf import settings
 from django.db.models.functions import Coalesce
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import Http404, HttpResponse
+from django.shortcuts import redirect, render
 from django.template import loader
-from django.http import Http404
-from django.shortcuts import redirect
 from django.urls import reverse
+
 from .models import Collection, Directory, Image, ImageMeta, PhotoSize, Stream
-from fractions import Fraction
 
 
 def fraction_to_float(fraction):
@@ -52,7 +52,11 @@ def collection_detail(request, collection_slug):
         directory = None
         images = None
 
-    directory_list = Directory.objects.annotate(dirtitle=Coalesce('title', 'relative_path')).filter(collection=collection, parent_directory=directory).order_by('dirtitle')
+    directory_list = Directory.objects.annotate(
+        dirtitle=Coalesce('title', 'relative_path')).filter(
+            collection=collection,
+            parent_directory=directory
+        ).order_by('dirtitle')
 
     navigation_items = []
     navigation_items.append({'url': reverse('collection_detail', args=[collection.slug]), 'title': collection.title})
@@ -81,7 +85,10 @@ def directory_detail(request, collection_slug, directory):
 
     site_title = settings.SITE_TITLE
 
-    directory_list = Directory.objects.annotate(dirtitle=Coalesce('title', 'relative_path')).filter(collection=collection, parent_directory=directory).order_by('dirtitle')
+    directory_list = Directory.objects.annotate(dirtitle=Coalesce('title', 'relative_path')).filter(
+        collection=collection,
+        parent_directory=directory
+    ).order_by('dirtitle')
 
     images = directory.images(collection.sortmethod)
 
@@ -90,7 +97,10 @@ def directory_detail(request, collection_slug, directory):
 
     nav_dir = directory
     while nav_dir.parent_directory:
-        navigation_items.insert(1, {'url': reverse('directory_detail', args=[collection.slug, nav_dir.relative_path]), 'title': nav_dir.dir_name})
+        navigation_items.insert(1, {
+            'url': reverse('directory_detail', args=[collection.slug, nav_dir.relative_path]),
+            'title': nav_dir.dir_name
+        })
         nav_dir = nav_dir.parent_directory
 
     context = {
@@ -214,7 +224,10 @@ def _get_image_details(request, collection_slug, file_path, imagename, thumbs=Fa
         uppage = reverse('directory_detail', args=[collection.slug, directory.relative_path])
         nav_dir = directory
         while nav_dir.parent_directory:
-            navigation_items.insert(1, {'url': reverse('directory_detail', args=[collection.slug, nav_dir.relative_path]), 'title': nav_dir.dir_name})
+            navigation_items.insert(1, {
+                'url': reverse('directory_detail', args=[collection.slug, nav_dir.relative_path]),
+                'title': nav_dir.dir_name
+            })
             nav_dir = nav_dir.parent_directory
 
         image_detail_url = reverse('image_detail', args=[collection.slug, directory.relative_path, image.filename])
@@ -268,8 +281,7 @@ def image_detail(request, collection_slug, file_path, imagename, thumbs=False):
     context, image = _get_image_details(request, collection_slug, file_path, imagename, True)
     if image.is_photosphere:
         return render(request, 'image/detail_photosphere.html', context)
-    else:
-        return render(request, 'image/detail.html', context)
+    return render(request, 'image/detail.html', context)
 
 
 def rootdir_image_detail(request, collection_slug, imagename):
@@ -283,7 +295,7 @@ def image_full(request, collection_slug, file_path, imagename):
     """
     Show image full view page (unzoomed, no album thumbnails)
     """
-    context, image = _get_image_details(request, collection_slug, file_path, imagename, False)
+    context, _ = _get_image_details(request, collection_slug, file_path, imagename, False)
     return render(request, 'image/full.html', context)
 
 
@@ -291,7 +303,7 @@ def image_max(request, collection_slug, file_path, imagename):
     """
     Show image fullscreen page (zoomed to fit screen, no album thumbnails and details)
     """
-    context, image = _get_image_details(request, collection_slug, file_path, imagename, False, viewtype='max')
+    context, _ = _get_image_details(request, collection_slug, file_path, imagename, False, viewtype='max')
     return render(request, 'image/max.html', context)
 
 
