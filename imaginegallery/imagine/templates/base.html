@@ -18,6 +18,12 @@
     <link rel="stylesheet" type="text/css" href="{% static "css/font/font.css" %}" />
     <link rel="stylesheet" type="text/css" href="{% static "css/imaginedark.css" %}" />
 
+    <script src="https://unpkg.com/ionicons@4.4.1/dist/ionicons.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static "css/justifiedGallery.min.css" %}" />
+    <script src="{% static "js/jquery.justifiedGallery.min.js" %}"></script>
+    <script src="{% static "js/jquery.touchSwipe.min.js" %}"></script>
+
     <link rel="next" src="{{ nextpage }}" />
     <link rel="prev" src="{{ prevpage }}" />
     <link rel="start" src="{{ startpage }}" />
@@ -44,11 +50,6 @@
     <div id="content">
         {% block content %}{% endblock %}
     </div>
-    <script src="https://unpkg.com/ionicons@4.4.1/dist/ionicons.js"></script>
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="{% static "css/justifiedGallery.min.css" %}" />
-    <script src="{% static "js/jquery.justifiedGallery.min.js" %}"></script>
-    <script src="{% static "js/jquery.touchSwipe.min.js" %}"></script>
     {% piwik %}
 </body>
 </html>
