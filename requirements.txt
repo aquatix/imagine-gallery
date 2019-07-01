@@ -7,19 +7,19 @@
 --no-binary psycopg2
 
 bleach==3.1.0             # via django-markdownify
-certifi==2019.3.9         # via requests
+certifi==2019.6.16        # via requests
 chardet==3.0.4            # via requests
 django-analytical==2.5.0
 django-markdownify==0.8.0
 django-taggit==1.1.0
-django==2.2.2
+django==2.2.3
 exifread==2.1.2
 idna==2.8                 # via requests
 imagehash==4.0
 markdown==3.1.1           # via django-markdownify
 numpy==1.16.4             # via imagehash, pywavelets, scipy
 pillow==6.0.0
-psycopg2==2.8.2
+psycopg2==2.8.3
 pytz==2019.1              # via django
 pywavelets==1.0.3         # via imagehash
 requests==2.22.0
@@ -28,3 +28,6 @@ six==1.12.0               # via bleach, imagehash
 sqlparse==0.3.0           # via django
 urllib3==1.25.3           # via requests
 webencodings==0.5.1       # via bleach
+
+# The following packages are considered to be unsafe in a requirements file:
+# setuptools==41.0.1        # via markdown
