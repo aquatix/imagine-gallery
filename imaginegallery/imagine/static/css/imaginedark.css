@@ -207,7 +207,24 @@ img .image_thumbnail
 
     .itemthumb .image_thumbnail
     {
+        height: 256px;
         width: 100%;
+        object-fit: cover;
+    }
+}
+
+@media (min-width: 851px)
+{
+    .item
+    {
+        width: 33%;
+    }
+
+    .itemthumb .image_thumbnail
+    {
+        height: 320px;
+        width: 100%;
+        object-fit: cover;
     }
 }
 
@@ -215,6 +232,6 @@ img .image_thumbnail
 {
     .itemthumb .image_thumbnail
     {
-        height: 256px;
+        height: 420px;
     }
 }
