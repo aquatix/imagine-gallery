@@ -196,13 +196,6 @@ img .image_thumbnail
     {
         width: 49%;
     }
-
-    .itemthumb .image_thumbnail
-    {
-        height: 180px;
-        width: 100%;
-        object-fit: cover;
-    }
 }
 
 @media (max-width: 850px)
@@ -214,7 +207,9 @@ img .image_thumbnail
 
     .itemthumb .image_thumbnail
     {
-        height: 256px;
+        height: 180px;
+        width: 100%;
+        object-fit: cover;
     }
 }
 
@@ -222,16 +217,22 @@ img .image_thumbnail
 {
     .item
     {
-        width: 33%;
+        width: 33.2%;
     }
 
+    .itemthumb .image_thumbnail
+    {
+        height: 230px;
+        width: 100%;
+        object-fit: cover;
+    }
 }
 
 @media (min-width: 1251px)
 {
     .itemthumb .image_thumbnail
     {
-        height: 320px;
+        height: 280px;
     }
 }
 
@@ -239,6 +240,14 @@ img .image_thumbnail
 {
     .itemthumb .image_thumbnail
     {
-        height: 420px;
+        height: 350px;
+    }
+}
+
+@media (min-width: 1851px)
+{
+    .item
+    {
+        width: 24.8%;
     }
 }
