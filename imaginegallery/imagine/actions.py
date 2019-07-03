@@ -2,18 +2,23 @@
 
 from __future__ import absolute_import
 
+import json
 import logging
 import os
-from django.conf import settings
-from imagine.models import Collection, Directory, Image, ImageMeta, PhotoSize, ExifItem
-from imagine import util
-from PIL import Image as PILImage, ImageFile as PILImageFile, ExifTags
 from datetime import datetime
+
 import exifread
 import imagehash
-import json
 import pytz
 import requests
+from django.conf import settings
+from PIL import ExifTags
+from PIL import Image as PILImage
+from PIL import ImageFile as PILImageFile
+
+from imagine import util
+from imagine.models import (Collection, Directory, ExifItem, Image, ImageMeta,
+                            PhotoSize)
 
 try:
     DEBUG = settings.DEBUG
@@ -49,7 +54,10 @@ def get_filename(directory, filename):
 def save_image_geo_location(image):
     """Queries Google's GEO API for the location of this Image"""
 
-    response = requests.get('https://maps.googleapis.com/maps/api/geocode/json?latlng={},{}'.format(image.geo_lat, image.geo_lon))
+    response = requests.get('https://maps.googleapis.com/maps/api/geocode/json?latlng={},{}'.format(
+        image.geo_lat,
+        image.geo_lon
+    ))
     json_data = json.loads(response.text)
 
     # Pick the first one, this is generally the most specific result
@@ -100,9 +108,9 @@ def save_jpg_exif(image, filename):
                 #logger.debug('Skipping thumbnail exif item for %s', filename)
                 continue
             exif_item = ExifItem(
-                    image=image,
-                    key=k,
-                    value_str=v
+                image=image,
+                key=k,
+                value_str=v
             )
             exif_item.save()
             if k == 'EXIF DateTimeOriginal':
@@ -207,16 +215,9 @@ def save_image_info(the_image, filename, file_ext):
 #	print image.size().height()
 
 
-#def update_collection(collection_name, collection_slug, images_dir, archive_dir):
 def update_collection(collection):
     """ Creates a new image archive in archive_dir
     """
-    #logger.debug('Writing archive to %s', archive_dir)
-    #logger.debug('images_dir: %s', images_dir,'')
-
-    #create_archive()
-    #collection, created = Collection.get_or_create(name=collection_name, slug=collection_slug, base_dir=images_dir)
-    #logger.debug('Collection created: %s', str(created))
     _walk_archive(collection)
 
 
@@ -251,19 +252,19 @@ def _walk_archive(collection):
             this_dir = this_dir[1:]
         if this_dir and this_dir[-1] == '/':
             this_dir = this_dir[:-1]
-        directory, created = Directory.objects.get_or_create(directory=full_dir, relative_path=this_dir, collection=collection)
+        directory, created = Directory.objects.get_or_create(
+            directory=full_dir,
+            relative_path=this_dir,
+            collection=collection
+        )
         logger.debug('Directory %s created: %s', full_dir, str(created))
         if created:
             created_dirs = created_dirs + 1
-        #for subdirname in dirnames:
-        #    logger.debug('dir: %s', os.path.join(dirname, subdirname))
         total_files = total_files + len(filenames)
         for filename in filenames:
-            #print os.path.join(dirname, filename)
             this_file, this_file_ext = get_filename(collection.base_dir, os.path.join(dirname, filename))
             this_path = os.path.dirname(this_file)
             this_file = this_file.replace(this_dir, '')
-            #logger.debug('ext: %s', this_file_ext)
             if this_file_ext in Image.IMAGE_EXTENSIONS:
                 the_image, created = Image.objects.get_or_create(
                     collection=collection,
@@ -285,7 +286,13 @@ def _walk_archive(collection):
                 #logger.info('skipped %s', filename)
                 pass
 
-    logger.info('added %d images to archive out of %d total, skipped %d; created %d directories', image_counter, total_files, skipped_counter, created_dirs)
+    logger.info(
+        'added %d images to archive out of %d total, skipped %d; created %d directories',
+        image_counter,
+        total_files,
+        skipped_counter,
+        created_dirs
+    )
 
     #if created_dirs:
     _update_directory_parents(collection)
@@ -358,7 +365,7 @@ def update_scaled_images(collection):
     """
     images = collection.images()
     variants = PhotoSize.objects.all()
-    if len(variants) == 0:
+    if not variants:
         logger.info('No size variants defined, configure some PhotoSizes')
         return
     for image in images:
@@ -392,13 +399,19 @@ def change_root_directory(old_dir, new_dir):
     print('Replacing start of Collection base_dir and Directory.directory from "{}" to "{}":'.format(old_dir, new_dir))
     collections = Collection.objects.all()
     for collection in collections:
-        if (collection.base_dir.startswith(old_dir)):
-            print('Collection.base_dir {} to {}'.format(collection.base_dir, lreplace(old_dir, new_dir, collection.base_dir)))
+        if collection.base_dir.startswith(old_dir):
+            print('Collection.base_dir {} to {}'.format(
+                collection.base_dir,
+                lreplace(old_dir, new_dir, collection.base_dir)
+            ))
             collection.base_dir = lreplace(old_dir, new_dir, collection.base_dir)
             collection.save()
         directories = Directory.objects.filter(collection=collection)
         for directory in directories:
-            if (directory.directory.startswith(old_dir)):
-                print('Directory.directory {} to {}'.format(directory.directory, lreplace(old_dir, new_dir, directory.directory)))
+            if directory.directory.startswith(old_dir):
+                print('Directory.directory {} to {}'.format(
+                    directory.directory,
+                    lreplace(old_dir, new_dir, directory.directory)
+                ))
                 directory.directory = lreplace(old_dir, new_dir, directory.directory)
                 directory.save()
