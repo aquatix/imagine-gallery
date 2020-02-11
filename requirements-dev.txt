@@ -14,15 +14,15 @@ chardet==3.0.4            # via requests
 django-analytical==2.5.0
 django-markdownify==0.8.0
 django-taggit==1.2.0
-django==3.0.2
+django==3.0.3
 exifread==2.1.2
 idna==2.8                 # via requests
 imagehash==4.0
 isort==4.3.21             # via pylint
 lazy-object-proxy==1.4.3  # via astroid
-markdown==3.1.1           # via django-markdownify
+markdown==3.2             # via django-markdownify
 mccabe==0.6.1             # via pylint
-numpy==1.18.0             # via imagehash, pywavelets, scipy
+numpy==1.18.1             # via imagehash, pywavelets, scipy
 pillow==7.0.0
 psycopg2==2.8.4
 pylint-django==2.0.13
@@ -32,10 +32,10 @@ pytz==2019.3              # via django
 pywavelets==1.1.1         # via imagehash
 requests==2.22.0
 scipy==1.4.1              # via imagehash
-six==1.13.0               # via astroid, bleach, imagehash
+six==1.14.0               # via astroid, bleach, imagehash
 sqlparse==0.3.0           # via django
-typed-ast==1.4.0          # via astroid
-urllib3==1.25.7           # via requests
+typed-ast==1.4.1          # via astroid
+urllib3==1.25.8           # via requests
 webencodings==0.5.1       # via bleach
 wrapt==1.11.2             # via astroid
 

@@ -13,21 +13,21 @@ chardet==3.0.4            # via requests
 django-analytical==2.5.0
 django-markdownify==0.8.0
 django-taggit==1.2.0
-django==3.0.2
+django==3.0.3
 exifread==2.1.2
 idna==2.8                 # via requests
 imagehash==4.0
-markdown==3.1.1           # via django-markdownify
-numpy==1.18.0             # via imagehash, pywavelets, scipy
+markdown==3.2             # via django-markdownify
+numpy==1.18.1             # via imagehash, pywavelets, scipy
 pillow==7.0.0
 psycopg2==2.8.4
 pytz==2019.3              # via django
 pywavelets==1.1.1         # via imagehash
 requests==2.22.0
 scipy==1.4.1              # via imagehash
-six==1.13.0               # via bleach, imagehash
+six==1.14.0               # via bleach, imagehash
 sqlparse==0.3.0           # via django
-urllib3==1.25.7           # via requests
+urllib3==1.25.8           # via requests
 webencodings==0.5.1       # via bleach
 
 # The following packages are considered to be unsafe in a requirements file:
