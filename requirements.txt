@@ -7,23 +7,23 @@
 --no-binary psycopg2
 
 asgiref==3.2.3            # via django
-bleach==3.1.0             # via django-markdownify
+bleach==3.1.1             # via django-markdownify
 certifi==2019.11.28       # via requests
 chardet==3.0.4            # via requests
-django-analytical==2.5.0
-django-markdownify==0.8.0
-django-taggit==1.2.0
-django==3.0.3
-exifread==2.1.2
-idna==2.8                 # via requests
-imagehash==4.0
-markdown==3.2             # via django-markdownify
+django-analytical==2.5.0  # via -r requirements.in (line 3)
+django-markdownify==0.8.0  # via -r requirements.in (line 4)
+django-taggit==1.2.0      # via -r requirements.in (line 5)
+django==3.0.3             # via -r requirements.in (line 2), django-analytical, django-markdownify, django-taggit
+exifread==2.1.2           # via -r requirements.in (line 6)
+idna==2.9                 # via requests
+imagehash==4.0            # via -r requirements.in (line 7)
+markdown==3.2.1           # via django-markdownify
 numpy==1.18.1             # via imagehash, pywavelets, scipy
-pillow==7.0.0
-psycopg2==2.8.4
+pillow==7.0.0             # via -r requirements.in (line 8), imagehash
+psycopg2==2.8.4           # via -r requirements.in (line 9)
 pytz==2019.3              # via django
 pywavelets==1.1.1         # via imagehash
-requests==2.22.0
+requests==2.23.0          # via -r requirements.in (line 10)
 scipy==1.4.1              # via imagehash
 six==1.14.0               # via bleach, imagehash
 sqlparse==0.3.0           # via django
