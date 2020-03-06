@@ -13,7 +13,7 @@ chardet==3.0.4            # via requests
 django-analytical==2.5.0  # via -r requirements.in (line 3)
 django-markdownify==0.8.0  # via -r requirements.in (line 4)
 django-taggit==1.2.0      # via -r requirements.in (line 5)
-django==3.0.3             # via -r requirements.in (line 2), django-analytical, django-markdownify, django-taggit
+django==3.0.4             # via -r requirements.in (line 2), django-analytical, django-markdownify, django-taggit
 exifread==2.1.2           # via -r requirements.in (line 6)
 idna==2.9                 # via requests
 imagehash==4.0            # via -r requirements.in (line 7)
