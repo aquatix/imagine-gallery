@@ -14,7 +14,7 @@ chardet==3.0.4            # via requests
 django-analytical==2.6.0  # via -r requirements.in
 django-markdownify==0.8.0  # via -r requirements.in
 django-taggit==1.2.0      # via -r requirements.in
-django==3.0.6             # via -r requirements.in, django-markdownify, django-taggit
+django==3.0.7             # via -r requirements.in, django-markdownify, django-taggit
 exifread==2.1.2           # via -r requirements.in
 idna==2.9                 # via requests
 imagehash==4.1.0          # via -r requirements.in
