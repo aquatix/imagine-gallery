@@ -324,6 +324,7 @@ def scale_image(image_id, destination_dir, width, height, crop=False):
     try:
         im = PILImage.open(image.get_filepath())
         im.thumbnail((width, height))
+        im = util.image_transpose_exif(im)
         if image.file_ext == 'jpg' or image.file_ext == 'jpeg':
             if width >= settings.EXIF_COPY_THRESHOLD or height >= settings.EXIF_COPY_THRESHOLD:
                 # If variant is larger than the set threshold, copy EXIF tags
