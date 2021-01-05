@@ -24,7 +24,7 @@ markdown==3.3.3           # via django-markdownify
 mccabe==0.6.1             # via pylint
 numpy==1.19.4             # via imagehash, pywavelets, scipy
 packaging==20.4           # via bleach
-pillow==8.0.1             # via -r requirements.in, imagehash
+pillow==8.1.0             # via -r requirements.in, imagehash
 psycopg2==2.8.6           # via -r requirements.in
 pylint-django==2.3.0      # via -r requirements-dev.in
 pylint-plugin-utils==0.6  # via pylint-django
