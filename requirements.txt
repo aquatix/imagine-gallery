@@ -20,7 +20,7 @@ imagehash==4.1.0          # via -r requirements.in
 markdown==3.3.3           # via django-markdownify
 numpy==1.19.4             # via imagehash, pywavelets, scipy
 packaging==20.4           # via bleach
-pillow==8.0.1             # via -r requirements.in, imagehash
+pillow==8.1.0             # via -r requirements.in, imagehash
 psycopg2==2.8.6           # via -r requirements.in
 pyparsing==2.4.7          # via packaging
 pytz==2020.4              # via django
