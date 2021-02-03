@@ -10,7 +10,7 @@ asgiref==3.3.1
     # via django
 astroid==2.4.2
     # via pylint
-bleach==3.2.1
+bleach==3.3.0
     # via django-markdownify
 certifi==2020.12.5
     # via requests
