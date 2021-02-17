@@ -58,7 +58,7 @@ pylint-django==2.4.2
     # via -r requirements-dev.in
 pylint-plugin-utils==0.6
     # via pylint-django
-pylint==2.6.0
+pylint==2.6.1
     # via
     #   -r requirements-dev.in
     #   pylint-django
