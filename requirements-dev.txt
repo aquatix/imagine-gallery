@@ -33,9 +33,9 @@ idna==2.10
     # via requests
 imagehash==4.2.0
     # via -r requirements.in
-isort==5.7.0
+isort==5.8.0
     # via pylint
-lazy-object-proxy==1.5.2
+lazy-object-proxy==1.6.0
     # via astroid
 markdown==3.3.4
     # via django-markdownify
@@ -71,7 +71,7 @@ pywavelets==1.1.1
     # via imagehash
 requests==2.25.1
     # via -r requirements.in
-scipy==1.6.1
+scipy==1.6.2
     # via imagehash
 six==1.15.0
     # via

@@ -54,7 +54,7 @@ pywavelets==1.1.1
     # via imagehash
 requests==2.25.1
     # via -r requirements.in
-scipy==1.6.1
+scipy==1.6.2
     # via imagehash
 six==1.15.0
     # via
