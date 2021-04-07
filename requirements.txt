@@ -6,7 +6,7 @@
 #
 --no-binary psycopg2
 
-asgiref==3.3.1
+asgiref==3.3.4
     # via django
 bleach==3.3.0
     # via django-markdownify
@@ -20,7 +20,7 @@ django-markdownify==0.9.0
     # via -r requirements.in
 django-taggit==1.3.0
     # via -r requirements.in
-django==3.1.7
+django==3.2
     # via
     #   -r requirements.in
     #   django-markdownify
@@ -33,14 +33,14 @@ imagehash==4.2.0
     # via -r requirements.in
 markdown==3.3.4
     # via django-markdownify
-numpy==1.20.1
+numpy==1.20.2
     # via
     #   imagehash
     #   pywavelets
     #   scipy
 packaging==20.9
     # via bleach
-pillow==8.1.2
+pillow==8.2.0
     # via
     #   -r requirements.in
     #   imagehash
