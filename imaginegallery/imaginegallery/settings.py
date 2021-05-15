@@ -37,6 +37,7 @@ try:
     ALLOWED_HOSTS.append(os.environ['IMAGINE_SERVER_HOST'])
 except KeyError:
     print('No ENV var found for IMAGINE_SERVER_HOST')
+#ALLOWED_HOSTS = ['*']
 
 try:
     PIWIK_DOMAIN_PATH = os.environ['IMAGINE_MATOMO_DOMAIN_PATH']
