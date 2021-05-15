@@ -22,7 +22,7 @@ django-markdownify==0.9.0
     # via -r requirements.in
 django-taggit==1.4.0
     # via -r requirements.in
-django==3.2.2
+django==3.2.3
     # via
     #   -r requirements.in
     #   django-markdownify
@@ -41,7 +41,7 @@ markdown==3.3.4
     # via django-markdownify
 mccabe==0.6.1
     # via pylint
-numpy==1.20.2
+numpy==1.20.3
     # via
     #   imagehash
     #   pywavelets
