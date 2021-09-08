@@ -48,7 +48,7 @@ numpy==1.21.0
     #   scipy
 packaging==21.0
     # via bleach
-pillow==8.3.1
+pillow==8.3.2
     # via
     #   -r requirements.in
     #   imagehash
