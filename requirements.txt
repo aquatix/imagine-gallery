@@ -60,7 +60,7 @@ six==1.16.0
     # via
     #   bleach
     #   imagehash
-sqlparse==0.4.1
+sqlparse==0.4.2
     # via django
 urllib3==1.26.6
     # via requests
