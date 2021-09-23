@@ -48,7 +48,7 @@ def get_exif_location(exif_data):
     gps_longitude = _get_if_exist(exif_data, 'GPS GPSLongitude')
     gps_longitude_ref = _get_if_exist(exif_data, 'GPS GPSLongitudeRef')
 
-    if gps_latitude and gps_latitude_ref and gps_longitude and gps_longitude_ref:
+    if gps_latitude and gps_latitude_ref and gps_latitude_ref.values and gps_longitude and gps_longitude_ref:
         lat = _convert_to_degrees(gps_latitude)
         if gps_latitude_ref.values[0] != 'N':
             lat = 0 - lat
