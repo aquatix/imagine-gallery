@@ -110,6 +110,7 @@ try:
         'HOST': os.environ['IMAGINE_DB_HOST'],
         'PORT': os.environ['IMAGINE_DB_PORT'],
         #
+        'DISABLE_SERVER_SIDE_CURSORS': True,  # dumpdata will not work otherwise
     }
 except KeyError as e:
     print('No ENV var for DB config found: {}'.format(e))
