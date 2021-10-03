@@ -1,9 +1,11 @@
 {% extends "base.html" %}
 {% block title %}{{ image_title }}{% endblock %}
 {% block extrastyling %}
+<meta property="og:title" content="{{ image_title }}" data-dynamic="true">
 <meta property="og:image" content="{{ image_thumb_url }}" data-dynamic="true">
 <meta property="og:image:width" content="{{ image_thumb_sizes.width }}" data-dynamic="true">
 <meta property="og:image:height" content="{{ image_thumb_sizes.height }}" data-dynamic="true">
+<meta property="og:description" content="{{ image_meta.description | safe | truncate(196, False, '...') }}" />
 {% endblock %}
 
 {% block content %}
