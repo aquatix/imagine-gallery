@@ -5,11 +5,10 @@ from __future__ import absolute_import
 import json
 import logging
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 
 import exifread
 import imagehash
-import pytz
 import requests
 from django.conf import settings
 from PIL import ExifTags
@@ -161,11 +160,12 @@ def save_image_info(the_image, filename, file_ext):
     else:
         logger.warning('No supported extension found')
 
-    #the_image.file_modified = datetimeutil.unix_to_python(os.path.getmtime(filename))
-    the_image.file_modified = datetime.fromtimestamp(float((os.path.getmtime(filename))), tz=pytz.utc)
+    the_image.file_modified = datetime.fromtimestamp(float((os.path.getmtime(filename))), tz=timezone.utc)
 
     if exif_datetime_taken:
-        the_image.exif_modified = util.load_datetime(exif_datetime_taken, '%Y:%m:%d %H:%M:%S').replace(tzinfo=pytz.utc)
+        the_image.exif_modified = datetime.strptime(
+            exif_datetime_taken, '%Y:%m:%d %H:%M:%S'
+        ).replace(tzinfo=timezone.utc)
         the_image.filter_modified = the_image.exif_modified
     else:
         the_image.filter_modified = the_image.file_modified
