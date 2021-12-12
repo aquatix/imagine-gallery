@@ -10,11 +10,11 @@ asgiref==3.4.1
     # via django
 bleach==4.1.0
     # via django-markdownify
-certifi==2021.5.30
+certifi==2021.10.8
     # via requests
-charset-normalizer==2.0.6
+charset-normalizer==2.0.9
     # via requests
-django==3.2.7
+django==4.0
     # via
     #   -r requirements.in
     #   django-markdownify
@@ -23,38 +23,38 @@ django-analytical==3.0.0
     # via -r requirements.in
 django-markdownify==0.9.0
     # via -r requirements.in
-django-taggit==1.5.1
+django-taggit==2.0.0
     # via -r requirements.in
 exifread==2.3.2
     # via -r requirements.in
-idna==3.2
+idna==3.3
     # via requests
 imagehash==4.2.1
     # via -r requirements.in
-markdown==3.3.4
+importlib-metadata==4.8.2
+    # via markdown
+markdown==3.3.6
     # via django-markdownify
-numpy==1.21.2
+numpy==1.21.4
     # via
     #   imagehash
     #   pywavelets
     #   scipy
-packaging==21.0
+packaging==21.3
     # via bleach
-pillow==8.3.2
+pillow==8.4.0
     # via
     #   -r requirements.in
     #   imagehash
-psycopg2==2.9.1
+psycopg2==2.9.2
     # via -r requirements.in
-pyparsing==2.4.7
+pyparsing==3.0.6
     # via packaging
-pytz==2021.3
-    # via django
-pywavelets==1.1.1
+pywavelets==1.2.0
     # via imagehash
 requests==2.26.0
     # via -r requirements.in
-scipy==1.7.1
+scipy==1.7.3
     # via imagehash
 six==1.16.0
     # via
@@ -66,3 +66,5 @@ urllib3==1.26.7
     # via requests
 webencodings==0.5.1
     # via bleach
+zipp==3.6.0
+    # via importlib-metadata
