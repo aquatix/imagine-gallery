@@ -8,15 +8,15 @@
 
 asgiref==3.4.1
     # via django
-astroid==2.9.0
+astroid==2.9.2
     # via pylint
 bleach==4.1.0
     # via django-markdownify
 certifi==2021.10.8
     # via requests
-charset-normalizer==2.0.9
+charset-normalizer==2.0.10
     # via requests
-django==4.0
+django==4.0.1
     # via
     #   -r requirements.in
     #   django-markdownify
@@ -33,45 +33,45 @@ idna==3.3
     # via requests
 imagehash==4.2.1
     # via -r requirements.in
-importlib-metadata==4.8.2
+importlib-metadata==4.10.0
     # via markdown
 isort==5.10.1
     # via pylint
-lazy-object-proxy==1.6.0
+lazy-object-proxy==1.7.1
     # via astroid
 markdown==3.3.6
     # via django-markdownify
 mccabe==0.6.1
     # via pylint
-numpy==1.21.4
+numpy==1.22.0
     # via
     #   imagehash
     #   pywavelets
     #   scipy
 packaging==21.3
     # via bleach
-pillow==8.4.0
+pillow==9.0.0
     # via
     #   -r requirements.in
     #   imagehash
-platformdirs==2.4.0
+platformdirs==2.4.1
     # via pylint
-psycopg2==2.9.2
+psycopg2==2.9.3
     # via -r requirements.in
 pylint==2.12.2
     # via
     #   -r requirements-dev.in
     #   pylint-django
     #   pylint-plugin-utils
-pylint-django==2.4.4
+pylint-django==2.5.0
     # via -r requirements-dev.in
-pylint-plugin-utils==0.6
+pylint-plugin-utils==0.7
     # via pylint-django
 pyparsing==3.0.6
     # via packaging
 pywavelets==1.2.0
     # via imagehash
-requests==2.26.0
+requests==2.27.0
     # via -r requirements.in
 scipy==1.7.3
     # via imagehash
@@ -93,7 +93,7 @@ webencodings==0.5.1
     # via bleach
 wrapt==1.13.3
     # via astroid
-zipp==3.6.0
+zipp==3.7.0
     # via importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
