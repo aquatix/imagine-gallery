@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, re_path
 
 from . import views
 
@@ -8,12 +8,12 @@ urlpatterns = [
     # ex: /vacation/
     path('<collection_slug>/', views.collection_detail, name='collection_detail'),
     # /family/home/fun/DCIM_4242.jpg/view
-    path('<collection_slug>/<file_path>/<imagename>/view/', views.image_detail, name='image_detail'),
-    path('<collection_slug>/<file_path>/<imagename>/full/', views.image_full, name='image_full'),
-    path('<collection_slug>/<file_path>/<imagename>/max/', views.image_max, name='image_max'),
-    path('<collection_slug>/<imagename>/view/', views.rootdir_image_detail, name='rootdir_image_detail'),
-    path('<collection_slug>/<imagename>/full/', views.rootdir_image_full, name='rootdir_image_full'),
-    path('<collection_slug>/<imagename>/max/', views.rootdir_image_max, name='rootdir_image_max'),
-    path('<collection_slug>/<directory>/', views.directory_detail, name='directory_detail'),
-    path('imagedetail/<imagehash>/', views.imagehash_detail, name='imagehash_detail'),
+    re_path(r'^(?P<collection_slug>[-\w]+)/(?P<file_path>.+)/(?P<imagename>.+)/view/$', views.image_detail, name='image_detail'),
+    re_path(r'^(?P<collection_slug>[-\w]+)/(?P<file_path>.+)/(?P<imagename>.+)/full/$', views.image_full, name='image_full'),
+    re_path(r'^(?P<collection_slug>[-\w]+)/(?P<file_path>.+)/(?P<imagename>.+)/max/$', views.image_max, name='image_max'),
+    re_path(r'^(?P<collection_slug>[-\w]+)/(?P<imagename>.+)/view/$', views.rootdir_image_detail, name='rootdir_image_detail'),
+    re_path(r'^(?P<collection_slug>[-\w]+)/(?P<imagename>.+)/full/$', views.rootdir_image_full, name='rootdir_image_full'),
+    re_path(r'^(?P<collection_slug>[-\w]+)/(?P<imagename>.+)/max/$', views.rootdir_image_max, name='rootdir_image_max'),
+    re_path(r'^(?P<collection_slug>[-\w]+)/(?P<directory>.+)/$', views.directory_detail, name='directory_detail'),
+    re_path(r'^imagedetail/(?P<imagehash>\w+)/$', views.imagehash_detail, name='imagehash_detail'),
 ]
