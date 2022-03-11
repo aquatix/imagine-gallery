@@ -33,8 +33,6 @@ idna==3.3
     # via requests
 imagehash==4.2.1
     # via -r requirements.in
-importlib-metadata==4.10.1
-    # via markdown
 isort==5.10.1
     # via pylint
 lazy-object-proxy==1.7.1
@@ -50,7 +48,7 @@ numpy==1.22.1
     #   scipy
 packaging==21.3
     # via bleach
-pillow==9.0.0
+pillow==9.0.1
     # via
     #   -r requirements.in
     #   imagehash
@@ -83,18 +81,12 @@ sqlparse==0.4.2
     # via django
 toml==0.10.2
     # via pylint
-typing-extensions==4.0.1
-    # via
-    #   astroid
-    #   pylint
 urllib3==1.26.8
     # via requests
 webencodings==0.5.1
     # via bleach
 wrapt==1.13.3
     # via astroid
-zipp==3.7.0
-    # via importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
