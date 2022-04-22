@@ -18,7 +18,7 @@ charset-normalizer==2.0.12
     # via requests
 dill==0.3.4
     # via pylint
-django==4.0.3
+django==4.0.4
     # via
     #   -r requirements.in
     #   django-markdownify
@@ -35,8 +35,6 @@ idna==3.3
     # via requests
 imagehash==4.2.1
     # via -r requirements.in
-importlib-metadata==4.11.3
-    # via markdown
 isort==5.10.1
     # via pylint
 lazy-object-proxy==1.7.1
@@ -85,18 +83,12 @@ sqlparse==0.4.2
     # via django
 tomli==2.0.1
     # via pylint
-typing-extensions==4.1.1
-    # via
-    #   astroid
-    #   pylint
 urllib3==1.26.9
     # via requests
 webencodings==0.5.1
     # via bleach
 wrapt==1.14.0
     # via astroid
-zipp==3.7.0
-    # via importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
