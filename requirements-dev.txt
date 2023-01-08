@@ -6,9 +6,9 @@
 #
 --no-binary psycopg2
 
-asgiref==3.5.2
+asgiref==3.6.0
     # via django
-astroid==2.12.13
+astroid==2.13.0
     # via pylint
 bleach[css]==5.0.1
     # via django-markdownify
@@ -18,7 +18,7 @@ charset-normalizer==2.1.1
     # via requests
 dill==0.3.6
     # via pylint
-django==4.1.4
+django==4.1.5
     # via
     #   -r requirements.in
     #   django-markdownify
@@ -35,28 +35,28 @@ idna==3.4
     # via requests
 imagehash==4.3.1
     # via -r requirements.in
-isort==5.10.1
+isort==5.11.4
     # via pylint
-lazy-object-proxy==1.8.0
+lazy-object-proxy==1.9.0
     # via astroid
 markdown==3.4.1
     # via django-markdownify
 mccabe==0.7.0
     # via pylint
-numpy==1.23.5
+numpy==1.24.1
     # via
     #   imagehash
     #   pywavelets
     #   scipy
-pillow==9.3.0
+pillow==9.4.0
     # via
     #   -r requirements.in
     #   imagehash
-platformdirs==2.6.0
+platformdirs==2.6.2
     # via pylint
 psycopg2==2.9.5
     # via -r requirements.in
-pylint==2.15.8
+pylint==2.15.9
     # via
     #   -r requirements-dev.in
     #   pylint-django
@@ -69,7 +69,7 @@ pywavelets==1.4.1
     # via imagehash
 requests==2.28.1
     # via -r requirements.in
-scipy==1.9.3
+scipy==1.10.0
     # via imagehash
 six==1.16.0
     # via bleach
