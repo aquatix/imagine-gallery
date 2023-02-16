@@ -14,7 +14,7 @@ certifi==2022.12.7
     # via requests
 charset-normalizer==3.0.1
     # via requests
-django==4.1.6
+django==4.1.7
     # via
     #   -r requirements.in
     #   django-markdownify
@@ -33,7 +33,7 @@ imagehash==4.3.1
     # via -r requirements.in
 markdown==3.4.1
     # via django-markdownify
-numpy==1.24.1
+numpy==1.24.2
     # via
     #   imagehash
     #   pywavelets
