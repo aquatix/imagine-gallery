@@ -6,9 +6,9 @@
 #
 --no-binary psycopg2
 
-asgiref==3.6.0
+asgiref==3.7.0
     # via django
-astroid==2.15.4
+astroid==2.15.5
     # via pylint
 bleach[css]==6.0.0
     # via django-markdownify
@@ -52,7 +52,7 @@ pillow==9.5.0
     # via
     #   -r requirements.in
     #   imagehash
-platformdirs==3.5.0
+platformdirs==3.5.1
     # via pylint
 psycopg2==2.9.6
     # via -r requirements.in
@@ -63,11 +63,11 @@ pylint==2.17.4
     #   pylint-plugin-utils
 pylint-django==2.5.3
     # via -r requirements-dev.in
-pylint-plugin-utils==0.7
+pylint-plugin-utils==0.8.2
     # via pylint-django
 pywavelets==1.4.1
     # via imagehash
-requests==2.30.0
+requests==2.31.0
     # via -r requirements.in
 scipy==1.10.1
     # via imagehash
@@ -81,8 +81,10 @@ tomli==2.0.1
     # via pylint
 tomlkit==0.11.8
     # via pylint
-typing-extensions==4.5.0
-    # via astroid
+typing-extensions==4.6.0
+    # via
+    #   asgiref
+    #   astroid
 urllib3==2.0.2
     # via requests
 webencodings==0.5.1
