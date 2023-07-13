@@ -6,15 +6,15 @@
 #
 --no-binary psycopg2
 
-asgiref==3.7.0
+asgiref==3.7.2
     # via django
 bleach[css]==6.0.0
     # via django-markdownify
 certifi==2023.5.7
     # via requests
-charset-normalizer==3.1.0
+charset-normalizer==3.2.0
     # via requests
-django==4.2.1
+django==4.2.3
     # via
     #   -r requirements.in
     #   django-markdownify
@@ -33,12 +33,12 @@ imagehash==4.3.1
     # via -r requirements.in
 markdown==3.4.3
     # via django-markdownify
-numpy==1.24.3
+numpy==1.25.1
     # via
     #   imagehash
     #   pywavelets
     #   scipy
-pillow==9.5.0
+pillow==10.0.0
     # via
     #   -r requirements.in
     #   imagehash
@@ -48,7 +48,7 @@ pywavelets==1.4.1
     # via imagehash
 requests==2.31.0
     # via -r requirements.in
-scipy==1.10.1
+scipy==1.11.1
     # via imagehash
 six==1.16.0
     # via bleach
@@ -56,9 +56,9 @@ sqlparse==0.4.4
     # via django
 tinycss2==1.1.1
     # via bleach
-typing-extensions==4.6.0
+typing-extensions==4.7.1
     # via asgiref
-urllib3==2.0.2
+urllib3==2.0.3
     # via requests
 webencodings==0.5.1
     # via
