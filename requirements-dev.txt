@@ -85,7 +85,7 @@ typing-extensions==4.7.1
     # via
     #   asgiref
     #   astroid
-urllib3==2.0.4
+urllib3==2.0.6
     # via requests
 webencodings==0.5.1
     # via
