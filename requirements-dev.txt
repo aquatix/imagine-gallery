@@ -48,7 +48,7 @@ numpy==1.26.1
     #   imagehash
     #   pywavelets
     #   scipy
-pillow==10.1.0
+pillow==10.2.0
     # via
     #   -r requirements.in
     #   imagehash
