@@ -27,7 +27,7 @@ django-taggit==5.0.1
     # via -r requirements.in
 exifread==3.0.0
     # via -r requirements.in
-idna==3.6
+idna==3.7
     # via requests
 imagehash==4.3.1
     # via -r requirements.in
