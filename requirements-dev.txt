@@ -4,7 +4,7 @@ asgiref==3.8.1
     # via django
 astroid==3.1.0
     # via pylint
-bleach==6.1.0
+bleach[css]==6.1.0
     # via django-markdownify
 certifi==2024.2.2
     # via requests
@@ -14,15 +14,21 @@ dill==0.3.8
     # via pylint
 django==5.0.4
     # via
+    #   -r requirements.in
     #   django-markdownify
     #   django-taggit
 django-analytical==3.1.0
+    # via -r requirements.in
 django-markdownify==0.9.3
+    # via -r requirements.in
 django-taggit==5.0.1
+    # via -r requirements.in
 exifread==3.0.0
+    # via -r requirements.in
 idna==3.7
     # via requests
 imagehash==4.3.1
+    # via -r requirements.in
 isort==5.13.2
     # via pylint
 markdown==3.6
@@ -35,36 +41,36 @@ numpy==1.26.4
     #   pywavelets
     #   scipy
 pillow==10.3.0
-    # via imagehash
+    # via
+    #   -r requirements.in
+    #   imagehash
 platformdirs==4.2.0
     # via pylint
 psycopg2==2.9.9
+    # via -r requirements.in
 pylint==3.1.0
     # via
+    #   -r requirements-dev.in
     #   pylint-django
     #   pylint-plugin-utils
 pylint-django==2.5.5
+    # via -r requirements-dev.in
 pylint-plugin-utils==0.8.2
     # via pylint-django
 pywavelets==1.6.0
     # via imagehash
 requests==2.31.0
+    # via -r requirements.in
 scipy==1.13.0
     # via imagehash
 six==1.16.0
     # via bleach
-sqlparse==0.4.4
+sqlparse==0.5.0
     # via django
 tinycss2==1.2.1
     # via bleach
-tomli==2.0.1
-    # via pylint
 tomlkit==0.12.4
     # via pylint
-typing-extensions==4.11.0
-    # via
-    #   asgiref
-    #   astroid
 urllib3==2.2.1
     # via requests
 webencodings==0.5.1
