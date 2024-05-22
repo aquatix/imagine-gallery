@@ -48,7 +48,7 @@ pylint-plugin-utils==0.8.2
     # via pylint-django
 pywavelets==1.6.0
     # via imagehash
-requests==2.31.0
+requests==2.32.0
 scipy==1.13.0
     # via imagehash
 six==1.16.0
