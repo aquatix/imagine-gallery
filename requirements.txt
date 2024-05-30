@@ -31,12 +31,12 @@ pillow==10.3.0
 psycopg2==2.9.9
 pywavelets==1.6.0
     # via imagehash
-requests==2.31.0
+requests==2.32.0
 scipy==1.13.0
     # via imagehash
 six==1.16.0
     # via bleach
-sqlparse==0.4.4
+sqlparse==0.5.0
     # via django
 tinycss2==1.2.1
     # via bleach
