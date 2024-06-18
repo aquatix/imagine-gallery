@@ -59,7 +59,7 @@ tinycss2==1.2.1
     # via bleach
 tomlkit==0.12.5
     # via pylint
-urllib3==2.2.1
+urllib3==2.2.2
     # via requests
 webencodings==0.5.1
     # via
