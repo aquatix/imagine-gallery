@@ -4,7 +4,7 @@ asgiref==3.8.1
     # via django
 bleach==6.1.0
     # via django-markdownify
-certifi==2024.2.2
+certifi==2024.6.2
     # via requests
 charset-normalizer==3.3.2
     # via requests
@@ -21,7 +21,7 @@ idna==3.7
 imagehash==4.3.1
 markdown==3.6
     # via django-markdownify
-numpy==1.26.4
+numpy==2.0.0
     # via
     #   imagehash
     #   pywavelets
@@ -32,7 +32,7 @@ psycopg2==2.9.9
 pywavelets==1.6.0
     # via imagehash
 requests==2.32.3
-scipy==1.13.1
+scipy==1.14.0
     # via imagehash
 six==1.16.0
     # via bleach
@@ -40,7 +40,7 @@ sqlparse==0.5.0
     # via django
 tinycss2==1.2.1
     # via bleach
-urllib3==2.2.1
+urllib3==2.2.2
     # via requests
 webencodings==0.5.1
     # via
