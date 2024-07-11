@@ -12,7 +12,7 @@ charset-normalizer==3.3.2
     # via requests
 dill==0.3.8
     # via pylint
-django==5.0.6
+django==5.0.7
     # via
     #   -r requirements.in
     #   django-markdownify
@@ -69,7 +69,7 @@ sqlparse==0.5.0
     # via django
 tinycss2==1.2.1
     # via bleach
-tomlkit==0.12.5
+tomlkit==0.13.0
     # via pylint
 urllib3==2.2.2
     # via requests
