@@ -2,7 +2,7 @@
 #    uv pip compile requirements-dev.in
 asgiref==3.8.1
     # via django
-astroid==3.2.2
+astroid==3.2.4
     # via pylint
 bleach==6.1.0
     # via django-markdownify
@@ -12,7 +12,7 @@ charset-normalizer==3.3.2
     # via requests
 dill==0.3.8
     # via pylint
-django==5.0.7
+django==5.1
     # via
     #   -r requirements.in
     #   django-markdownify
@@ -21,7 +21,7 @@ django-analytical==3.1.0
     # via -r requirements.in
 django-markdownify==0.9.5
     # via -r requirements.in
-django-taggit==5.0.1
+django-taggit==6.0.0
     # via -r requirements.in
 exifread==3.0.0
     # via -r requirements.in
@@ -35,7 +35,7 @@ markdown==3.6
     # via django-markdownify
 mccabe==0.7.0
     # via pylint
-numpy==2.0.0
+numpy==2.0.1
     # via
     #   imagehash
     #   pywavelets
@@ -48,7 +48,7 @@ platformdirs==4.2.2
     # via pylint
 psycopg2==2.9.9
     # via -r requirements.in
-pylint==3.2.5
+pylint==3.2.6
     # via
     #   -r requirements-dev.in
     #   pylint-django
@@ -65,7 +65,7 @@ scipy==1.14.0
     # via imagehash
 six==1.16.0
     # via bleach
-sqlparse==0.5.0
+sqlparse==0.5.1
     # via django
 tinycss2==1.2.1
     # via bleach
