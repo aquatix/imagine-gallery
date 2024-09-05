@@ -12,7 +12,7 @@ charset-normalizer==3.3.2
     # via requests
 dill==0.3.8
     # via pylint
-django==5.1
+django==5.1.1
     # via
     #   -r requirements.in
     #   django-markdownify
