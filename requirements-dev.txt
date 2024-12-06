@@ -4,7 +4,7 @@ asgiref==3.8.1
     # via django
 astroid==3.2.4
     # via pylint
-bleach==6.1.0
+bleach[css]==6.1.0
     # via django-markdownify
 certifi==2024.7.4
     # via requests
@@ -12,7 +12,7 @@ charset-normalizer==3.3.2
     # via requests
 dill==0.3.8
     # via pylint
-django==5.1
+django==5.1.4
     # via
     #   -r requirements.in
     #   django-markdownify
