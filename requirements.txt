@@ -2,13 +2,13 @@
 #    uv pip compile requirements.in
 asgiref==3.8.1
     # via django
-bleach==6.1.0
+bleach==6.2.0
     # via django-markdownify
-certifi==2024.7.4
+certifi==2025.1.31
     # via requests
-charset-normalizer==3.3.2
+charset-normalizer==3.4.1
     # via requests
-django==5.1
+django==5.1.6
     # via
     #   -r requirements.in
     #   django-markdownify
@@ -17,40 +17,38 @@ django-analytical==3.1.0
     # via -r requirements.in
 django-markdownify==0.9.5
     # via -r requirements.in
-django-taggit==6.0.0
+django-taggit==6.1.0
     # via -r requirements.in
 exifread==3.0.0
     # via -r requirements.in
-idna==3.7
+idna==3.10
     # via requests
-imagehash==4.3.1
+imagehash==4.3.2
     # via -r requirements.in
-markdown==3.6
+markdown==3.7
     # via django-markdownify
-numpy==2.0.1
+numpy==2.2.3
     # via
     #   imagehash
     #   pywavelets
     #   scipy
-pillow==10.4.0
+pillow==11.1.0
     # via
     #   -r requirements.in
     #   imagehash
-psycopg2==2.9.9
+psycopg2==2.9.10
     # via -r requirements.in
-pywavelets==1.6.0
+pywavelets==1.8.0
     # via imagehash
 requests==2.32.3
     # via -r requirements.in
-scipy==1.14.0
+scipy==1.15.2
     # via imagehash
-six==1.16.0
-    # via bleach
-sqlparse==0.5.1
+sqlparse==0.5.3
     # via django
-tinycss2==1.2.1
+tinycss2==1.4.0
     # via bleach
-urllib3==2.2.2
+urllib3==2.3.0
     # via requests
 webencodings==0.5.1
     # via
