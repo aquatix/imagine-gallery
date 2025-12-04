@@ -12,7 +12,7 @@ charset-normalizer==3.4.4
     # via requests
 dill==0.4.0
     # via pylint
-django==5.2.8
+django==5.2.9
     # via
     #   -r requirements.in
     #   django-analytical
@@ -64,7 +64,7 @@ requests==2.32.5
     # via -r requirements.in
 scipy==1.16.3
     # via imagehash
-sqlparse==0.5.3
+sqlparse==0.5.4
     # via django
 tinycss2==1.4.0
     # via bleach
