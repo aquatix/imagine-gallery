@@ -70,7 +70,7 @@ tinycss2==1.4.0
     # via bleach
 tomlkit==0.13.3
     # via pylint
-urllib3==2.5.0
+urllib3==2.6.0
     # via requests
 webencodings==0.5.1
     # via
