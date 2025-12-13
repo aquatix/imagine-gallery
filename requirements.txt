@@ -49,7 +49,7 @@ sqlparse==0.5.3
     # via django
 tinycss2==1.4.0
     # via bleach
-urllib3==2.5.0
+urllib3==2.6.0
     # via requests
 webencodings==0.5.1
     # via
